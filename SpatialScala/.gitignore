@@ -3,6 +3,7 @@
 *.log
 
 ### For IntelliJ IDEA
+*.iml
 *.ipr
 *.iws
 .idea*
