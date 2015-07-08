@@ -1,4 +1,29 @@
-bin/
-target/
-.history
+### Scala
+*.class
+*.log
+
+### For IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+.idea
+out
+
+### sbt specific
 .cache
+.history
+.lib
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+### Scala-IDE (Eclipse)
+build
+.classpath
+.project
+.settings
+org.scala-ide.sdt.core/META-INF/MANIFEST.MF
+org.scala-ide.sdt.update-site/site.xml
