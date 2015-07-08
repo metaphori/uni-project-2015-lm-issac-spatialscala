@@ -10,7 +10,7 @@
 out
 
 ### sbt specific
-.cache
+.cache*
 .history
 .lib
 dist/*
