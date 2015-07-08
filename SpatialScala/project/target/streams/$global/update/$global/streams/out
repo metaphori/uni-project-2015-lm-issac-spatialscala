@@ -1,11 +1,11 @@
-[0m[[0minfo[0m] [0mUpdating {file:/home/roby/projects/scalaSC/project/}scalasc-build...[0m
-[0m[[0mdebug[0m] [0m:: resolving dependencies :: default#scalasc-build;0.1-SNAPSHOT[0m
+[0m[[0minfo[0m] [0mUpdating {file:/home/roby/git/spatialScala/SpatialScala/project/}spatialscala-build...[0m
+[0m[[0mdebug[0m] [0m:: resolving dependencies :: default#spatialscala-build;0.1-SNAPSHOT[0m
 [0m[[0mdebug[0m] [0m	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool][0m
 [0m[[0mdebug[0m] [0m	validate = true[0m
 [0m[[0mdebug[0m] [0m	refresh = false[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 {compile=[default(compile)]}[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0[0m
@@ -56,10 +56,100 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-effect_2.10;7.0.2 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->default(compile)][0m
+[0m[[0minfo[0m] [0mResolving com.github.mpeltonen#sbt-idea;1.6.0 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.github.mpeltonen#sbt-idea;1.6.0 {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/com.github.mpeltonen/sbt-idea/scala_2.10/sbt_0.13/1.6.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/com.github.mpeltonen/sbt-idea/scala_2.10/sbt_0.13/1.6.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: no ivy file found for com.github.mpeltonen#sbt-idea;1.6.0[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.github.mpeltonen/sbt-idea/scala_2.10/sbt_0.13/1.6.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.github.mpeltonen/sbt-idea/scala_2.10/sbt_0.13/1.6.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: no ivy file found for com.github.mpeltonen#sbt-idea;1.6.0[0m
+[0m[[0mdebug[0m] [0m		tried /home/roby/.ivy2/local/com.github.mpeltonen/sbt-idea/scala_2.10/sbt_0.13/1.6.0/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: no ivy file found for com.github.mpeltonen#sbt-idea;1.6.0[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.pom[0m
+[0m[[0mdebug[0m] [0m	public: found md file for com.github.mpeltonen#sbt-idea;1.6.0[0m
+[0m[[0mdebug[0m] [0m		=> http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.pom (1.6.0)[0m
+[0m[[0mdebug[0m] [0mdownloading http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.pom ...[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.pom[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.pom.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.pom[0m
+[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] com.github.mpeltonen#sbt-idea;1.6.0!sbt-idea.pom(pom.original) (611ms)[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/com.github.mpeltonen/sbt-idea/1.6.0/jars/sbt-idea.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/com.github.mpeltonen/sbt-idea/1.6.0/jars/sbt-idea.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.github.mpeltonen/sbt-idea/1.6.0/jars/sbt-idea.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.github.mpeltonen/sbt-idea/1.6.0/jars/sbt-idea.jar[0m
+[0m[[0mdebug[0m] [0m		tried /home/roby/.ivy2/local/com.github.mpeltonen/sbt-idea/1.6.0/jars/sbt-idea.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea/1.6.0/sbt-idea-1.6.0.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea/1.6.0/sbt-idea-1.6.0.jar[0m
+[0m[[0mdebug[0m] [0m	found com.github.mpeltonen#sbt-idea;1.6.0 in public[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->master(*)][0m
+[0m[[0minfo[0m] [0mResolving commons-io#commons-io;2.0.1 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: commons-io#commons-io;2.0.1 {compile=[compile(*), master(*)], runtime=[runtime(*)]}[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/commons-io/commons-io/2.0.1/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/commons-io/commons-io/2.0.1/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: no ivy file found for commons-io#commons-io;2.0.1[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/commons-io/commons-io/2.0.1/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/commons-io/commons-io/2.0.1/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: no ivy file found for commons-io#commons-io;2.0.1[0m
+[0m[[0mdebug[0m] [0m		tried /home/roby/.ivy2/local/commons-io/commons-io/2.0.1/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: no ivy file found for commons-io#commons-io;2.0.1[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom[0m
+[0m[[0mdebug[0m] [0m	public: found md file for commons-io#commons-io;2.0.1[0m
+[0m[[0mdebug[0m] [0m		=> http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom (2.0.1)[0m
+[0m[[0mdebug[0m] [0mdownloading http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom ...[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom[0m
+[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] commons-io#commons-io;2.0.1!commons-io.pom(pom.original) (603ms)[0m
+[0m[[0minfo[0m] [0mResolving org.apache.commons#commons-parent;15 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.apache.commons#commons-parent;15 {}[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/org.apache.commons/commons-parent/15/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/org.apache.commons/commons-parent/15/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: no ivy file found for org.apache.commons#commons-parent;15[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.apache.commons/commons-parent/15/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.apache.commons/commons-parent/15/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	sbt-plugin-releases: no ivy file found for org.apache.commons#commons-parent;15[0m
+[0m[[0mdebug[0m] [0m		tried /home/roby/.ivy2/local/org.apache.commons/commons-parent/15/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: no ivy file found for org.apache.commons#commons-parent;15[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.pom[0m
+[0m[[0mdebug[0m] [0m	public: found md file for org.apache.commons#commons-parent;15[0m
+[0m[[0mdebug[0m] [0m		=> http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.pom (15)[0m
+[0m[[0mdebug[0m] [0mdownloading http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.pom ...[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.pom[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.pom.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.pom[0m
+[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] org.apache.commons#commons-parent;15!commons-parent.pom(pom.original) (705ms)[0m
+[0m[[0minfo[0m] [0mResolving org.apache#apache;7 ...[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.apache#apache;7 {}[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.apache#apache;7[0m
+[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.apache#apache;7[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/org.apache.commons/commons-parent/15/jars/commons-parent.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/org.apache.commons/commons-parent/15/jars/commons-parent.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.apache.commons/commons-parent/15/jars/commons-parent.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.apache.commons/commons-parent/15/jars/commons-parent.jar[0m
+[0m[[0mdebug[0m] [0m		tried /home/roby/.ivy2/local/org.apache.commons/commons-parent/15/jars/commons-parent.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/apache/commons/commons-parent/15/commons-parent-15.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.typesafe.com/typesafe/ivy-releases/commons-io/commons-io/2.0.1/jars/commons-io.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.typesafe.com/typesafe/ivy-releases/commons-io/commons-io/2.0.1/jars/commons-io.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/commons-io/commons-io/2.0.1/jars/commons-io.jar[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/commons-io/commons-io/2.0.1/jars/commons-io.jar[0m
+[0m[[0mdebug[0m] [0m		tried /home/roby/.ivy2/local/commons-io/commons-io/2.0.1/jars/commons-io.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar[0m
+[0m[[0mdebug[0m] [0m	found commons-io#commons-io;2.0.1 in public[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->master][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0->com.typesafe.sbteclipse#sbteclipse-core;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->runtime][0m
@@ -81,11 +171,19 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-effect_2.10;7.0.2 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->master][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [test][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [test][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0->com.typesafe.sbteclipse#sbteclipse-core;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->runtime][0m
@@ -107,19 +205,27 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-effect_2.10;7.0.2 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->master][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'provided'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [provided][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#scala-library;2.10.4 ...[0m
-[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@58fdc4[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@10d6a3f[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-library;2.10.4[0m
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.scala-lang#scala-library;2.10.4[0m
 [0m[[0mdebug[0m] [0m	found org.scala-lang#scala-library;2.10.4 in sbt-chain[0m
 [0m[[0mdebug[0m] [0m	[2.10.4] org.scala-lang#scala-library;2.10.4[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-sbt#sbt;0.13.5 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-sbt#sbt;0.13.5 [provided->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving org.scala-sbt#sbt;0.13.5 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-sbt#sbt;0.13.5 {provided=[default(compile)]}[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-sbt#sbt;0.13.5[0m
@@ -665,11 +771,11 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#precompiled-2_9_3;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->master][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#precompiled-2_9_3;0.13.5->org.scala-sbt#interface;0.13.5 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'optional'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [optional][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile-internal'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile-internal][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile-internal][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0->com.typesafe.sbteclipse#sbteclipse-core;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->runtime][0m
@@ -697,13 +803,21 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.4 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-effect_2.10;7.0.2 [compile->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [optional][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [provided][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-sbt#sbt;0.13.5 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-sbt#sbt;0.13.5 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->runtime][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->compile][0m
@@ -1024,10 +1138,10 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#precompiled-2_9_3;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->master][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#precompiled-2_9_3;0.13.5->org.scala-sbt#interface;0.13.5 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime-internal'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [runtime-internal][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [runtime-internal][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0->com.typesafe.sbteclipse#sbteclipse-core;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->runtime][0m
@@ -1049,13 +1163,21 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.1 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-effect_2.10;7.0.2 [compile->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [optional][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test-internal'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [test-internal][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [test][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [test-internal][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [test][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0->com.typesafe.sbteclipse#sbteclipse-core;3.0.0 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-core_2.10;7.0.2 [compile->runtime][0m
@@ -1083,13 +1205,21 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scalaz#scalaz-effect_2.10;7.0.2->org.scala-lang#scala-library;2.10.4 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies com.typesafe.sbteclipse#sbteclipse-core;3.0.0->org.scalaz#scalaz-effect_2.10;7.0.2 [compile->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [optional][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [provided][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-sbt#sbt;0.13.5 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.github.mpeltonen#sbt-idea;1.6.0->commons-io#commons-io;2.0.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->com.github.mpeltonen#sbt-idea;1.6.0 [compile->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-sbt#sbt;0.13.5 [provided->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->runtime][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#sbt;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->compile][0m
@@ -1410,18 +1540,18 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#precompiled-2_9_3;0.13.5->org.scala-lang#scala-library;2.10.4 [compile->master][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-sbt#precompiled-2_9_3;0.13.5->org.scala-sbt#interface;0.13.5 [compile->default(compile)][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'plugin'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [plugin][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [plugin][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'sources'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [sources][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [sources][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'docs'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [docs][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [docs][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'pom'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [pom][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [pom][0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'scala-tool'[0m
-[0m[[0mdebug[0m] [0m== resolving dependencies for default#scalasc-build;0.1-SNAPSHOT [scala-tool][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->default][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialscala-build;0.1-SNAPSHOT [scala-tool][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->default][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->default][0m
@@ -1439,8 +1569,8 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [runtime->compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->optional(default)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-compiler;2.10.4 [scala-tool->optional(default)][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#jline;2.10.4 [optional->master(*)][0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#jline;2.10.4 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-lang#jline;2.10.4 {optional=[compile(*), master(*)]}[0m
@@ -1455,18 +1585,30 @@
 [0m[[0mdebug[0m] [0m	typesafe-ivy-releases: revision in cache: org.fusesource.jansi#jansi;1.4[0m
 [0m[[0mdebug[0m] [0m	found org.fusesource.jansi#jansi;1.4 in sbt-chain[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies org.scala-lang#jline;2.10.4->org.fusesource.jansi#jansi;1.4 [compile->compile(*)][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->default][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->runtime][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->compile][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->master][0m
-[0m[[0mdebug[0m] [0m== resolving dependencies default#scalasc-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->optional(default)][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->default][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->runtime][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->compile][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->master][0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#spatialscala-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->optional(default)][0m
 [0m[[0mdebug[0m] [0m	resolved ivy file produced in cache[0m
 [0m[[0mdebug[0m] [0m:: downloading artifacts ::[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.typesafe.sbteclipse#sbteclipse-plugin;3.0.0!sbteclipse-plugin.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.jar[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.jar ...[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.jar[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.jar.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://repo1.maven.org/maven2/com/github/mpeltonen/sbt-idea_2.10_0.13/1.6.0/sbt-idea-1.6.0.jar[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] com.github.mpeltonen#sbt-idea;1.6.0!sbt-idea.jar (1481ms)[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.typesafe.sbteclipse#sbteclipse-core;3.0.0!sbteclipse-core.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scalaz#scalaz-core_2.10;7.0.2!scalaz-core_2.10.jar(bundle)[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scalaz#scalaz-effect_2.10;7.0.2!scalaz-effect_2.10.jar(bundle)[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#scala-library;2.10.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar ...[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar[0m
+[0m[[0mdebug[0m] [0m	public: downloading http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar.sha1[0m
+[0m[[0mdebug[0m] [0msha1 OK for http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] commons-io#commons-io;2.0.1!commons-io.jar (855ms)[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#scala-library;2.10.4!scala-library.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#sbt;0.13.5!sbt.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#main;0.13.5!main.jar[0m
@@ -1515,19 +1657,19 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.5!apply-macro.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 4737ms :: artifacts dl 119ms[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT compile produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-compile.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT runtime produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-runtime.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT test produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-test.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT provided produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-provided.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT optional produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-optional.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT compile-internal produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-compile-internal.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT runtime-internal produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-runtime-internal.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT test-internal produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-test-internal.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT plugin produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-plugin.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT sources produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-sources.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT docs produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-docs.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT pom produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-pom.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#scalasc-build;0.1-SNAPSHOT scala-tool produced in /home/roby/projects/scalaSC/project/target/resolution-cache/reports/default-scalasc-build-scala-tool.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (4737ms resolve - 119ms download)[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 12646ms :: artifacts dl 2452ms[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT compile produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-compile.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT runtime produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-runtime.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT test produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-test.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT provided produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-provided.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT optional produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-optional.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT compile-internal produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-compile-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT runtime-internal produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-runtime-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT test-internal produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-test-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT plugin produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-plugin.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT sources produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-sources.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT docs produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-docs.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT pom produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-pom.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialscala-build;0.1-SNAPSHOT scala-tool produced in /home/roby/git/spatialScala/SpatialScala/project/target/resolution-cache/reports/default-spatialscala-build-scala-tool.xml[0m
+[0m[[0mdebug[0m] [0m	resolve done (12646ms resolve - 2452ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m
