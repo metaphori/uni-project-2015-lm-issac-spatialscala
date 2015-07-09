@@ -1,50 +1,91 @@
 package it.unibo.spala.actors
 
 import java.util.TimerTask
-import scala.concurrent.duration._
-import akka.actor.Actor
-import com.typesafe.scalalogging.Logger
-import it.unibo.spala.Dev
-import org.slf4j.LoggerFactory
 
-trait CyclicBehavior {
-  val interval = 1 second
-}
+import akka.actor.{Actor, ActorRef}
+import akka.dispatch.ExecutionContexts
+import akka.pattern.ask
+import akka.util.Timeout
+import com.typesafe.scalalogging.Logger
+import it.unibo.spala.{CyclicBehavior, Dev}
+import org.slf4j.LoggerFactory
+import scala.concurrent.duration._
 
 /**
  * Created by: Roberto Casadei 
  * Created on date: 08/07/15.
  */
-class DevActor[S](var device: Dev[S]) extends Actor with CyclicBehavior {
+class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])]) extends Actor with CyclicBehavior {
 
-  val Log = Logger(LoggerFactory.getLogger(self.path.name))
+  protected val Log = Logger(LoggerFactory.getLogger(self.path.name))
+
+  protected var registry: ActorRef = _
+  protected var neighbors: List[ActorRef] = List()
+  protected var neighborValues = scala.collection.mutable.Map[ActorRef, S]()
+  protected var input: I = _
 
   def receive = initialBehavior
 
-  def initialBehavior: Receive = {
+  protected def initialBehavior: Receive = {
+    case MsgStartWithInputAndRegisterTo(i:I, to) => {
+      input = i
+      registry  = to
+      Log.debug("Registering to " + to.path.name)
+      registry ! MsgRegister(device.name)
+      Start()
+    }
     case MsgStart => {
-      //context.setReceiveTimeout(Duration(1000, TimeUnit.MILLISECONDS))
-      Log.debug("Becoming a worker...")
-      context.become(workingBehavior)
-      self ! GoOn
+      Start()
     }
   }
 
-  def workingBehavior: Receive = {
-    case _:MsgGetState[S] => { Log.debug(sender.path.name + " asked my state") ; sender ! MsgReturnState(device.state) }
+  protected def Start(): Unit = {
+    Log.debug("Starting...")
+    Thread.sleep(2000)
+    DiscoverNeighbors()
+    context.become(workingBehavior)
+    self ! GoOn
+  }
+
+  protected def workingBehavior: Receive = {
+    case _:MsgGetState[S] => { sender ! MsgReturnState(device.state) }
     case GoOn => workingTask()
   }
 
-  def workingTask: Unit => Unit = (Unit) => {
+  protected def workingTask: Unit => Unit = (Unit) => {
     val oldState = device.state
-    device = device.run
+    val map = Map[ActorRef,S](neighborValues.toList : _*)
+    device = device.run((input, map))
     val newState = device.state
-    Log.debug(s"Step: $oldState => $newState")
+    //Log.debug(s"Step: $oldState => $newState")
     scheduleNextElaboration()
   }
 
-  def scheduleNextElaboration() = { new java.util.Timer().schedule(new TimerTask {
-    override def run(): Unit = self ! GoOn
+  protected def scheduleNextElaboration() = { new java.util.Timer().schedule(new TimerTask {
+    override def run(): Unit = {
+      SyncWithNeighborValue()
+      self ! GoOn
+    }
   }, interval.toMillis) }
+
+  implicit val timeout = Timeout(1 second)
+  implicit val executionContext = ExecutionContexts.global()
+
+  protected def SyncWithNeighborValue() = {
+    neighbors.foreach(n => (n ? MsgGetState()).onComplete(s => s match {
+      case scala.util.Success(MsgReturnState(nState: S)) => neighborValues(n) = nState
+      case _ => ()
+    })) // dispatch ask + sync neighbor values
+  }
+
+  protected def DiscoverNeighbors() = {
+    (registry ? MsgGetNeighbors(device.name)).onComplete(lst => lst match {
+      case scala.util.Success(MsgReturnNeighbors(t)) => {
+        Log.info("MY NEIGHBORS ARE " + t.map(_.path.name).mkString(","))
+        neighbors = t
+      }
+      case _ => ()
+    }) // dispatch ask + update neighbors
+  }
 
 }
