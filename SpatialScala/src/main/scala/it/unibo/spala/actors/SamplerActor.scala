@@ -16,8 +16,8 @@ class SamplerActor extends Actor with CyclicBehavior {
 
   def receive = {
     case MsgStartWithRecipient(recipient) => recipient ! MsgGetAll
-    case MsgReturnAllAs(all: List[ActorRef]) => {
-      obs = all
+    case MsgReturnAllAs(all: List[DevInfo]) => {
+      obs = all.map(di => di.ref)
       context.become(SamplingBehavior)
       self ! GoOn
     }

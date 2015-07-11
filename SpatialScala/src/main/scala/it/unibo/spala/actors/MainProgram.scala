@@ -13,6 +13,7 @@ object MainProgram extends App {
 
   Log.info("Actor system created")
 
+  // CONFIGURATION
   type Device = Dev[Int, (Boolean, Map[ActorRef, Int])]
   type DeviceActor = DevActor[Int, (Boolean, Map[ActorRef, Int])]
   val behavior = (state:Int, input:(Boolean, Map[ActorRef, Int])) => {
@@ -21,30 +22,34 @@ object MainProgram extends App {
     else -1
   }
 
+  val rand = new Random
+  val tolerance = 80
+  val positions = for(
+    idealx <- 200 to 600 by 120;
+    idealy <- 60 to 480 by 80;
+    rx = rand.nextDouble();
+    ry = rand.nextDouble();
+    x = idealx + (rx*tolerance - tolerance/2);
+    y = idealy + (ry*tolerance - tolerance/2)
+  )
+    yield Point2D(x,y)
+
+  // CREATE COMPONENTS
   val devs = for(i <- 1 to 10) yield new Device("D"+i, 0, behavior)
+  val devsWithPositions = devs zip positions
+
   val registry = sys.actorOf(Props[SimpleRegistryActor])
-  val actors = devs.map(d => sys.actorOf(Props(classOf[DeviceActor], d), "Actor"+d.name))
-  actors.head ! MsgStartWithInputAndRegisterTo(true, registry)
-  actors.tail.foreach(a => a ! MsgStartWithInputAndRegisterTo(false, registry) )
+  val actorsWithPositions =
+    devsWithPositions.map { case (dev,pos) => (sys.actorOf(Props(classOf[DeviceActor], dev, pos) , "Actor"+dev.name), pos) }
+
+  // START THE SYSTEM
+  actorsWithPositions.head._1 ! MsgStartWithInputAndRegisterTo(true, registry)
+  actorsWithPositions.tail.foreach { case (a,p) => a ! MsgStartWithInputAndRegisterTo(false, registry) }
 
   val sampler = sys.actorOf(Props[SamplerActor])
   sampler ! MsgStartWithRecipient(registry)
 
-  val rand = new Random
-  val tolerance = 10
-  val positions = for(
-    idealx <- 50 to 500 by 150;
-    idealy <- 50 to 500 by 100;
-    rx = rand.nextDouble();
-    ry = rand.nextDouble();
-    x = idealx + (rx*tolerance - tolerance/2);
-    y = idealy + (rx*tolerance - tolerance/2)
-  )
-    yield Point2D(x,y)
-
-  val actorsAndPositions = (actors zip positions)
-  Log.info("\n\n" + actorsAndPositions + "\n\n")
-  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, actorsAndPositions.toMap))
+  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, actorsWithPositions.toMap))
   gui ! MsgStart
 
   /*

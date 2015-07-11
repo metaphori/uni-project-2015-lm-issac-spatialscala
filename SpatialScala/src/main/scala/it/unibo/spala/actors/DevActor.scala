@@ -6,6 +6,7 @@ import akka.dispatch.ExecutionContexts
 import akka.pattern.ask
 import akka.util.Timeout
 import com.typesafe.scalalogging.Logger
+import it.unibo.spala.math.Point3D
 import it.unibo.spala.{CyclicBehavior, Dev}
 import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
@@ -14,7 +15,7 @@ import scala.concurrent.duration._
  * Created by: Roberto Casadei 
  * Created on date: 08/07/15.
  */
-class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])]) extends Actor with CyclicBehavior {
+class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], val position: Point3D) extends Actor with CyclicBehavior {
 
   protected val Log = Logger(LoggerFactory.getLogger(self.path.name))
 
@@ -30,7 +31,7 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])]) extends
       input = i
       registry  = to
       Log.debug("Registering to " + to.path.name)
-      registry ! MsgRegister(device.name)
+      registry ! MsgRegisterWithPosition(device.name, position)
       Start()
     }
     case MsgStart => {

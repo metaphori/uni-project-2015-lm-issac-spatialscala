@@ -26,7 +26,10 @@ trait Space[E,P] {
 trait Basic3DSpace[E] extends Space[E, Point3D] {
   private var elemPositions: Map[E,Point3D] = Map()
 
-  override def add(e: E, p: Point3D): Unit = elemPositions += (e -> p)
+  override def add(e: E, p: Point3D): Unit = {
+    println(s"elem $e added in position $p")
+    elemPositions += (e -> p)
+  }
 
   override def getLocation(e: E): Point3D = elemPositions(e)
 

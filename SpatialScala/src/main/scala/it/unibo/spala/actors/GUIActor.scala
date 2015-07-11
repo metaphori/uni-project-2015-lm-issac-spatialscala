@@ -7,6 +7,7 @@ import javax.swing._
 import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.CyclicBehavior
 import it.unibo.spala.math.Point2D
+
 import scala.concurrent.duration._
 
 /**
@@ -47,14 +48,15 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point2D]) e
 
   def Draw() = {
     val g = canvas.getGraphics
-    g.clearRect(0, 0, 800, 800)
     poss.foreach {  case (ref, pos) => {
       g.setColor(Color.BLUE)
-      g.drawOval(pos.x.toInt, pos.y.toInt, 50, 50)
+      g.drawOval(pos.x.toInt, pos.y.toInt, 40, 40)
       g.setColor(Color.BLACK)
-      g.drawString(ref.path.name + s": (${pos.x.toInt}., ${pos.y.toInt})", pos.x.toInt-20, pos.y.toInt-20)
-      g.drawString("S:"+devs(ref), pos.x.toInt+15, pos.y.toInt+20)
+      g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt-5, pos.y.toInt-2)
+      g.clearRect(pos.x.toInt+5, pos.y.toInt+10, 28, 20)
+      g.drawString("S:"+devs(ref), pos.x.toInt+8, pos.y.toInt+30)
     } }
+    canvas.paintComponents(g)
   }
 
   def BuildFrame(): Unit = {

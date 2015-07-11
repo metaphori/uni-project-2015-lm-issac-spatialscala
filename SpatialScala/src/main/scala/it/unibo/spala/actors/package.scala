@@ -9,6 +9,8 @@ import scala.concurrent.duration._
  * Created on date: 08/07/15.
  */
 package object actors {
+  /* DATA STRUCTURES */
+
   /* MESSAGES */
 
   /**
