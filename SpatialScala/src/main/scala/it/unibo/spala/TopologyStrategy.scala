@@ -23,17 +23,29 @@ trait Space[E,P] {
   def getAll(): Iterable[E]
 }
 
-trait Basic3DSpace[E] extends Space[E, Point3D] {
+trait MutableSpace[E,P] extends Space[E,P] {
+  def remove(e: E)
+
+  def setLocation(e: E, p: P, isRelative: Boolean)
+}
+
+trait Basic3DSpace[E] extends MutableSpace[E, Point3D] {
   private var elemPositions: Map[E,Point3D] = Map()
 
   override def add(e: E, p: Point3D): Unit = {
-    println(s"elem $e added in position $p")
     elemPositions += (e -> p)
   }
 
   override def getLocation(e: E): Point3D = elemPositions(e)
 
   override def getAll(): Iterable[E] = elemPositions.keys
+
+  override def remove(e: E) = elemPositions -= e
+
+  override def setLocation(e: E, p: Point3D, isRel: Boolean) = {
+    val newpos = if(isRel) getLocation(e)+p else p
+    add(e, newpos)
+  }
 }
 
 /**
@@ -86,6 +98,10 @@ trait BasicSpace extends Basic3DSpace[String] with EuclideanStrategy[String] {
       add("d" + k, Point2D(x, y))
       k += 1
     }
+  }
+
+  def UpdateActorPosition(id: String, pos: Point3D, isRelative: Boolean) = {
+
   }
 
 }

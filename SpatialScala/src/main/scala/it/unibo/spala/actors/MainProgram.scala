@@ -16,10 +16,14 @@ object MainProgram extends App {
   // CONFIGURATION
   type Device = Dev[Int, (Boolean, Map[ActorRef, Int])]
   type DeviceActor = DevActor[Int, (Boolean, Map[ActorRef, Int])]
-  val behavior = (state:Int, input:(Boolean, Map[ActorRef, Int])) => {
-    if(input._1) { 0 }
-    else if(!input._2.isEmpty) input._2.values.min + 1
-    else -1
+  val behavior = (state:Int, input:(Boolean, Map[ActorRef, Int])) => input match {
+    case (isSrc, states) => {
+      val ss = states.filter { case (ref, s) => s!=(-1) }
+
+      if (isSrc) { 0 }
+      else if (!ss.isEmpty) ss.values.min + 1
+      else -1
+    }
   }
 
   val rand = new Random

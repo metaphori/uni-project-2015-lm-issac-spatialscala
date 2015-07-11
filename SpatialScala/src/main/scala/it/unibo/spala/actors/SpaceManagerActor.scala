@@ -13,10 +13,13 @@ abstract class SpaceManagerActor extends Actor {
 
   protected def RegisterActor(id: String, actor: ActorRef, pos: Option[Point3D] = None): Unit
 
+  protected def UpdateActorPosition(id: String, pos: Point3D, isRelative: Boolean): Unit
+
   protected def GetNeighbors(id: String): List[String]
 
   def receive = {
     case MsgRegisterWithPosition(id, pos) => RegisterActor(id, sender, Some(pos))
+    case MsgMove(id, pos, isRelative) => UpdateActorPosition(id, pos, isRelative)
     case MsgGetNeighbors(id) => {
       val nbs: List[String] = GetNeighbors(id)
       val nbsRefs: List[ActorRef] = actors.filter(kv => nbs.contains(kv._1)).map(info => info._2.ref).toList
@@ -44,6 +47,10 @@ class SimpleRegistryActor extends SpaceManagerActor with BasicSpace {
   override protected def GetNeighbors(id: String): List[String] = {
     // Utils.neighbors(actors.keys.toList, id, 2).toList
     val nbsWithDist = getNeighborsWithDistance(id)
-    getNeighbors(id).toList
+    getNeighbors(id).filter(nb => nb!=id).toList
+  }
+
+  override def UpdateActorPosition(id: String, pos: Point3D, isRelative: Boolean): Unit = {
+    setLocation(id, pos, isRelative)
   }
 }

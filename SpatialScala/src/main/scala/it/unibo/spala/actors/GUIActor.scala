@@ -6,7 +6,7 @@ import javax.swing._
 
 import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.CyclicBehavior
-import it.unibo.spala.math.Point2D
+import it.unibo.spala.math.Point3D
 
 import scala.concurrent.duration._
 
@@ -14,10 +14,10 @@ import scala.concurrent.duration._
  * Created by: Roberto Casadei 
  * Created on date: 11/07/15.
  */
-class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point2D]) extends Actor with CyclicBehavior {
+class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) extends Actor with CyclicBehavior {
   import scala.collection.mutable.Map
   val devs: Map[ActorRef, Int] = Map(actors.keys.map(r => (r, 0)).toList :_*)
-  val poss = actors
+  var poss = actors
 
   var frame: JFrame = _
   var canvas: JPanel = _
@@ -36,18 +36,26 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point2D]) e
       Draw()
       // 2) Ask status
       AskStatusUpdate()
+      // 3) Ask positions
+      AskPositionUpdate()
       scheduleNextElaboration()
     }
     case MsgStop => ()
     case MsgReturnState(s:Int) => devs(sender) = s
+    case MsgMove(_, pos, false) => poss += (sender -> pos)
   }
 
   def AskStatusUpdate() = {
     devs.foreach(dest => dest._1 ! MsgGetState[Int])
   }
 
+  def AskPositionUpdate() = {
+    devs.foreach(dest => dest._1 ! MsgGetPosition())
+  }
+
   def Draw() = {
     val g = canvas.getGraphics
+    g.clearRect(0, 0, 600, 600)
     poss.foreach {  case (ref, pos) => {
       g.setColor(Color.BLUE)
       g.drawOval(pos.x.toInt, pos.y.toInt, 40, 40)
@@ -56,7 +64,6 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point2D]) e
       g.clearRect(pos.x.toInt+5, pos.y.toInt+10, 28, 20)
       g.drawString("S:"+devs(ref), pos.x.toInt+8, pos.y.toInt+30)
     } }
-    canvas.paintComponents(g)
   }
 
   def BuildFrame(): Unit = {
