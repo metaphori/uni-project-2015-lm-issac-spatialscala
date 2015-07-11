@@ -58,11 +58,10 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) e
     g.clearRect(0, 0, 600, 600)
     poss.foreach {  case (ref, pos) => {
       g.setColor(Color.BLUE)
-      g.drawOval(pos.x.toInt, pos.y.toInt, 40, 40)
+      g.fillOval(pos.x.toInt-10, pos.y.toInt-10, 5, 5)
       g.setColor(Color.BLACK)
-      g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt-5, pos.y.toInt-2)
-      g.clearRect(pos.x.toInt+5, pos.y.toInt+10, 28, 20)
-      g.drawString("S:"+devs(ref), pos.x.toInt+8, pos.y.toInt+30)
+      g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt, pos.y.toInt-2)
+      g.drawString("S:"+devs(ref), pos.x.toInt, pos.y.toInt+10)
     } }
   }
 

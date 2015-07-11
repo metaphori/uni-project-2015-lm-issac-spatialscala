@@ -62,5 +62,5 @@ package object actors {
 }
 
 trait CyclicBehavior {
-  val interval = 1 second
+  val interval = 500 milliseconds
 }
