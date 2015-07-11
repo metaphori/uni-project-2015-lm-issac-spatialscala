@@ -38,6 +38,6 @@ class SamplerActor extends Actor with CyclicBehavior {
       println("\n----------------------------------------------")
       self ! GoOn
     }
-  }, interval.toMillis) }
+  }, workInterval.toMillis) }
 
 }

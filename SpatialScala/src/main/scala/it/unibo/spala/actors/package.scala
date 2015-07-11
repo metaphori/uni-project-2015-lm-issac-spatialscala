@@ -1,5 +1,7 @@
 package it.unibo.spala
 
+import java.util.TimerTask
+
 import akka.actor.ActorRef
 import it.unibo.spala.math.Point3D
 import scala.concurrent.duration._
@@ -10,6 +12,15 @@ import scala.concurrent.duration._
  */
 package object actors {
   /* DATA STRUCTURES */
+
+  /* FUNCTIONS */
+  def ScheduleIn(duration: Duration)(body: => Unit): Unit = {
+    new java.util.Timer().schedule(new TimerTask {
+      override def run(): Unit = {
+        body
+      }
+    }, duration.toMillis)
+  }
 
   /* MESSAGES */
 
@@ -62,5 +73,5 @@ package object actors {
 }
 
 trait CyclicBehavior {
-  val interval = 500 milliseconds
+  val workInterval = 500 milliseconds
 }

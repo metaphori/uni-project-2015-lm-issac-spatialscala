@@ -59,35 +59,4 @@ object MainProgram extends App {
 
   val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, actorsWithPositions.toMap))
   gui ! MsgStart
-
-  /*
-  trait SlowerCyclicBehavior extends CyclicBehavior {
-    override val interval = 5000 milliseconds
-  }
-  class SlowerDevice(dev: Device) extends DevActor[Int, Boolean](dev) with SlowerCyclicBehavior
-
-  val fdev1: Device = Dev(0, behavior)
-  val fdev2: Device = Dev(0, behavior)
-
-  val registry = sys.actorOf(Props[RegistryActor])
-  val dev1 = sys.actorOf(Props(classOf[Device], fdev1), "dev1")
-  val dev2 = sys.actorOf(Props(classOf[SlowerDevice], fdev2), "dev2")
-
-  Log.info("Actors created")
-  Log.info("Starting actors...")
-
-  dev1 ! MsgStartAndRegisterTo(registry)
-  dev2 ! MsgStartAndRegisterTo(registry)
-
-
-  val devs = List(dev1,dev2)
-  implicit val timeout = Timeout(5 second)
-  implicit val executionContext = ExecutionContexts.global()
-  var k = 0
-  while(k<10) {
-    devs.foreach(d => (d ? MsgGetState[Int]).onComplete(i => Log.info(s"Sampling state = ${i}")))
-    k+=1
-    Thread.sleep(707)
-  }
-  */
 }

@@ -8,6 +8,10 @@ import it.unibo.spala.math.Point3D
  * Created by: Roberto Casadei 
  * Created on date: 08/07/15.
  */
+
+/**
+ * Class of actors responsible for managing a space (i.e., a container of devices)
+ */
 abstract class SpaceManagerActor extends Actor {
   var actors: Map[String, DevInfo]
 
