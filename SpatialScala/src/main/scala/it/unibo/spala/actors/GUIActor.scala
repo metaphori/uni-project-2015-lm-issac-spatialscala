@@ -60,8 +60,8 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) e
       g.setColor(Color.BLUE)
       g.fillOval(pos.x.toInt-10, pos.y.toInt-10, 5, 5)
       g.setColor(Color.BLACK)
-      g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt, pos.y.toInt-2)
-      g.drawString("S:"+devs(ref), pos.x.toInt, pos.y.toInt+10)
+      //g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt, pos.y.toInt-2)
+      g.drawString(""+devs(ref), pos.x.toInt-2, pos.y.toInt+2)
     } }
   }
 

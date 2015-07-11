@@ -40,7 +40,6 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], var pos
 
   protected def Start(): Unit = {
     Log.debug("Starting...")
-    Thread.sleep(2000)
     DiscoverNeighbors()
     context.become(workingBehavior)
     self ! GoOn
@@ -90,7 +89,7 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], var pos
       override def run(): Unit = {
         DiscoverNeighbors()
       }
-    }, (1 second).toMillis)
+    }, (200 milliseconds).toMillis)
   }
 
   implicit val timeout = Timeout(1 second)

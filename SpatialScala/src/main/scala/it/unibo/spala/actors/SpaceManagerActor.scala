@@ -34,9 +34,7 @@ class DevInfo(val id: String, val ref: ActorRef, val position: Option[Point3D]){
   val neighbors: Map[String, DevInfo] = Map()
 }
 
-class SimpleRegistryActor extends SpaceManagerActor with BasicSpace {
-  override val proximityThreshold:Double = 120
-
+class SimpleSpaceManagerActor extends SpaceManagerActor with BasicSpace {
   override var actors: Map[String,DevInfo] = Map[String,DevInfo]()
 
   override protected def RegisterActor(id: String, ref: ActorRef, pos: Option[Point3D] = None) = {

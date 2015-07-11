@@ -29,8 +29,8 @@ object MainProgram extends App {
   val rand = new Random
   val tolerance = 80
   val positions = for(
-    idealx <- 200 to 600 by 120;
-    idealy <- 60 to 480 by 80;
+    idealx <- 200 to 600 by 40;
+    idealy <- 60 to 480 by 40;
     rx = rand.nextDouble();
     ry = rand.nextDouble();
     x = idealx + (rx*tolerance - tolerance/2);
@@ -39,16 +39,20 @@ object MainProgram extends App {
     yield Point2D(x,y)
 
   // CREATE COMPONENTS
-  val devs = for(i <- 1 to 10) yield new Device("D"+i, 0, behavior)
+  val devs = for(i <- 1 to 100) yield new Device("D"+i, 0, behavior)
   val devsWithPositions = devs zip positions
 
-  val registry = sys.actorOf(Props[SimpleRegistryActor])
+  class MySpaceManager extends SimpleSpaceManagerActor {
+    override val proximityThreshold: Double = 30
+  }
+
+  val registry = sys.actorOf(Props[MySpaceManager])
   val actorsWithPositions =
     devsWithPositions.map { case (dev,pos) => (sys.actorOf(Props(classOf[DeviceActor], dev, pos) , "Actor"+dev.name), pos) }
 
   // START THE SYSTEM
-  actorsWithPositions.head._1 ! MsgStartWithInputAndRegisterTo(true, registry)
-  actorsWithPositions.tail.foreach { case (a,p) => a ! MsgStartWithInputAndRegisterTo(false, registry) }
+  var k = 0
+  actorsWithPositions.tail.foreach { case (a,p) => k+=1; a ! MsgStartWithInputAndRegisterTo((k%20)==19, registry) }
 
   val sampler = sys.actorOf(Props[SamplerActor])
   sampler ! MsgStartWithRecipient(registry)
