@@ -7,7 +7,7 @@
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.scala-lang#scala-library;2.11.6 [compile->default(compile)]
 [info] Resolving org.scala-lang#scala-library;2.11.6 ...
-[debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@159d816
+[debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@165e67d
 [debug] sbt-chain: module revision found in cache: org.scala-lang#scala-library;2.11.6
 [debug] 	local: revision in cache: org.scala-lang#scala-library;2.11.6
 [debug] 	found org.scala-lang#scala-library;2.11.6 in sbt-chain
@@ -42,6 +42,83 @@
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->runtime(*)]
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.akka#akka-actor_2.11;2.3.4 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->default(compile)]
+[info] Resolving com.typesafe.scala-logging#scala-logging_2.11;3.1.0 ...
+[debug] sbt-chain: Checking cache for: dependency: com.typesafe.scala-logging#scala-logging_2.11;3.1.0 {compile=[default(compile)]}
+[debug] sbt-chain: module revision found in cache: com.typesafe.scala-logging#scala-logging_2.11;3.1.0
+[debug] 	local: revision in cache: com.typesafe.scala-logging#scala-logging_2.11;3.1.0
+[debug] 	found com.typesafe.scala-logging#scala-logging_2.11;3.1.0 in sbt-chain
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->master(*)]
+[info] Resolving org.scala-lang#scala-reflect;2.11.1 ...
+[debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-reflect;2.11.1 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] sbt-chain: module revision found in cache: org.scala-lang#scala-reflect;2.11.1
+[debug] 	local: revision in cache: org.scala-lang#scala-reflect;2.11.1
+[debug] 	found org.scala-lang#scala-reflect;2.11.1 in sbt-chain
+[debug] 	[2.11.1] org.scala-lang#scala-reflect;2.11.1
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->master(*)]
+[info] Resolving org.slf4j#slf4j-api;1.7.7 ...
+[debug] sbt-chain: Checking cache for: dependency: org.slf4j#slf4j-api;1.7.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] sbt-chain: module revision found in cache: org.slf4j#slf4j-api;1.7.7
+[debug] 	local: revision in cache: org.slf4j#slf4j-api;1.7.7
+[debug] 	found org.slf4j#slf4j-api;1.7.7 in sbt-chain
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->default(compile)]
+[info] Resolving org.slf4j#slf4j-log4j12;1.7.12 ...
+[debug] sbt-chain: Checking cache for: dependency: org.slf4j#slf4j-log4j12;1.7.12 {compile=[default(compile)]}
+[debug] sbt-chain: module revision found in cache: org.slf4j#slf4j-log4j12;1.7.12
+[debug] 	local: revision in cache: org.slf4j#slf4j-log4j12;1.7.12
+[debug] 	found org.slf4j#slf4j-log4j12;1.7.12 in sbt-chain
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->master(*)]
+[info] Resolving org.slf4j#slf4j-api;1.7.12 ...
+[debug] sbt-chain: Checking cache for: dependency: org.slf4j#slf4j-api;1.7.12 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] sbt-chain: module revision found in cache: org.slf4j#slf4j-api;1.7.12
+[debug] 	local: revision in cache: org.slf4j#slf4j-api;1.7.12
+[debug] 	found org.slf4j#slf4j-api;1.7.12 in sbt-chain
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->master(*)]
+[info] Resolving log4j#log4j;1.2.17 ...
+[debug] sbt-chain: Checking cache for: dependency: log4j#log4j;1.2.17 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] sbt-chain: module revision found in cache: log4j#log4j;1.2.17
+[debug] 	local: revision in cache: log4j#log4j;1.2.17
+[debug] 	found log4j#log4j;1.2.17 in sbt-chain
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->master]
 [debug] resolving dependencies for configuration 'runtime'
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [runtime]
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [compile]
@@ -64,6 +141,44 @@
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->runtime(*)]
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.akka#akka-actor_2.11;2.3.4 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->master]
 [debug] resolving dependencies for configuration 'test'
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [test]
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [runtime]
@@ -87,6 +202,44 @@
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->runtime(*)]
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.akka#akka-actor_2.11;2.3.4 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->master]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.scalatest#scalatest_2.11;2.2.4 [test->default(compile)]
 [info] Resolving org.scalatest#scalatest_2.11;2.2.4 ...
 [debug] sbt-chain: Checking cache for: dependency: org.scalatest#scalatest_2.11;2.2.4 {test=[default(compile)]}
@@ -102,25 +255,16 @@
 [debug] == resolving dependencies org.scalatest#scalatest_2.11;2.2.4->org.scala-lang#scala-reflect;2.11.2 [compile->master(compile)]
 [info] Resolving org.scala-lang#scala-reflect;2.11.2 ...
 [debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-reflect;2.11.2 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] 		tried /home/roby/.ivy2/local/org.scala-lang/scala-reflect/2.11.2/ivys/ivy.xml
-[debug] 	local: no ivy file found for org.scala-lang#scala-reflect;2.11.2
-[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.pom
-[debug] 	public: found md file for org.scala-lang#scala-reflect;2.11.2
-[debug] 		=> http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.pom (2.11.2)
-[debug] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.pom ...
-[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.pom
-[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.pom.sha1
-[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.pom
-[debug] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.11.2!scala-reflect.pom(pom.original) (756ms)
-[debug] 		tried /home/roby/.ivy2/local/org.scala-lang/scala-reflect/2.11.2/jars/scala-reflect.jar
-[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.jar
-[debug] 	found org.scala-lang#scala-reflect;2.11.2 in public
+[debug] sbt-chain: module revision found in cache: org.scala-lang#scala-reflect;2.11.2
+[debug] 	local: revision in cache: org.scala-lang#scala-reflect;2.11.2
+[debug] 	found org.scala-lang#scala-reflect;2.11.2 in sbt-chain
 [debug] 	[2.11.2] org.scala-lang#scala-reflect;2.11.2
 [debug] == resolving dependencies org.scalatest#scalatest_2.11;2.2.4->org.scala-lang#scala-reflect;2.11.2 [compile->compile(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.2->org.scala-lang#scala-library;2.11.2 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.2->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.2->org.scala-lang#scala-library;2.11.2 [compile->compile(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.2->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies org.scalatest#scalatest_2.11;2.2.4->org.scala-lang#scala-reflect;2.11.2 [compile->master(*)]
 [debug] == resolving dependencies org.scalatest#scalatest_2.11;2.2.4->org.scala-lang#scala-reflect;2.11.2 [compile->runtime(*)]
 [debug] == resolving dependencies org.scalatest#scalatest_2.11;2.2.4->org.scala-lang#scala-reflect;2.11.2 [compile->compile]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.2->org.scala-lang#scala-library;2.11.2 [runtime->runtime(*)]
@@ -175,6 +319,44 @@
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->runtime(*)]
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.akka#akka-actor_2.11;2.3.4 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->master]
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [optional]
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [provided]
 [debug] resolving dependencies for configuration 'runtime-internal'
@@ -200,6 +382,44 @@
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->runtime(*)]
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.akka#akka-actor_2.11;2.3.4 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->master]
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [optional]
 [debug] resolving dependencies for configuration 'test-internal'
 [debug] == resolving dependencies for spatialscala#spatialscala_2.11;1.0 [test-internal]
@@ -225,6 +445,44 @@
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->runtime(*)]
 [debug] == resolving dependencies com.typesafe.akka#akka-actor_2.11;2.3.4->com.typesafe#config;1.2.1 [runtime->compile]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.akka#akka-actor_2.11;2.3.4 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->master(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [compile->compile(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.scala-lang#scala-reflect;2.11.1 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.1 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.1->org.scala-lang#scala-library;2.11.6 [runtime->compile]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->runtime(*)]
+[debug] == resolving dependencies com.typesafe.scala-logging#scala-logging_2.11;3.1.0->org.slf4j#slf4j-api;1.7.7 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->com.typesafe.scala-logging#scala-logging_2.11;3.1.0 [compile->master]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->default(compile)]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->runtime]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->master(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [compile->compile(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->org.slf4j#slf4j-api;1.7.12 [runtime->compile]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->runtime(*)]
+[debug] == resolving dependencies org.slf4j#slf4j-log4j12;1.7.12->log4j#log4j;1.2.17 [runtime->compile]
+[debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.slf4j#slf4j-log4j12;1.7.12 [compile->master]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.scalatest#scalatest_2.11;2.2.4 [test->default(compile)]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.scalatest#scalatest_2.11;2.2.4 [test->runtime]
 [debug] == resolving dependencies spatialscala#spatialscala_2.11;1.0->org.scalatest#scalatest_2.11;2.2.4 [test->compile]
@@ -356,21 +614,21 @@
 [debug] :: downloading artifacts ::
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-library;2.11.6!scala-library.jar
 [debug] 	[NOT REQUIRED] com.typesafe.akka#akka-actor_2.11;2.3.4!akka-actor_2.11.jar
+[debug] 	[NOT REQUIRED] com.typesafe.scala-logging#scala-logging_2.11;3.1.0!scala-logging_2.11.jar
+[debug] 	[NOT REQUIRED] org.slf4j#slf4j-log4j12;1.7.12!slf4j-log4j12.jar
 [debug] 	[NOT REQUIRED] com.typesafe#config;1.2.1!config.jar(bundle)
+[debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.11.1!scala-reflect.jar
+[debug] 	[NOT REQUIRED] org.slf4j#slf4j-api;1.7.12!slf4j-api.jar
+[debug] 	[NOT REQUIRED] log4j#log4j;1.2.17!log4j.jar(bundle)
 [debug] 	[NOT REQUIRED] org.scalatest#scalatest_2.11;2.2.4!scalatest_2.11.jar(bundle)
-[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.jar
-[info] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.jar ...
-[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.jar
-[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.jar.sha1
-[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.2/scala-reflect-2.11.2.jar
-[info] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.11.2!scala-reflect.jar (6513ms)
+[debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.11.2!scala-reflect.jar
 [debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.11;1.0.2!scala-xml_2.11.jar(bundle)
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-compiler;2.11.6!scala-compiler.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.11.6!scala-reflect.jar
 [debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.11;1.0.3!scala-xml_2.11.jar(bundle)
 [debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3!scala-parser-combinators_2.11.jar(bundle)
 [debug] 	[NOT REQUIRED] jline#jline;2.12.1!jline.jar
-[debug] :: resolution report :: resolve 5090ms :: artifacts dl 6818ms
+[debug] :: resolution report :: resolve 3920ms :: artifacts dl 139ms
 [debug] 	report for spatialscala#spatialscala_2.11;1.0 compile produced in /home/roby/git/spatialScala/SpatialScala/target/resolution-cache/reports/spatialscala-spatialscala_2.11-compile.xml
 [debug] 	report for spatialscala#spatialscala_2.11;1.0 runtime produced in /home/roby/git/spatialScala/SpatialScala/target/resolution-cache/reports/spatialscala-spatialscala_2.11-runtime.xml
 [debug] 	report for spatialscala#spatialscala_2.11;1.0 test produced in /home/roby/git/spatialScala/SpatialScala/target/resolution-cache/reports/spatialscala-spatialscala_2.11-test.xml
@@ -384,5 +642,5 @@
 [debug] 	report for spatialscala#spatialscala_2.11;1.0 docs produced in /home/roby/git/spatialScala/SpatialScala/target/resolution-cache/reports/spatialscala-spatialscala_2.11-docs.xml
 [debug] 	report for spatialscala#spatialscala_2.11;1.0 pom produced in /home/roby/git/spatialScala/SpatialScala/target/resolution-cache/reports/spatialscala-spatialscala_2.11-pom.xml
 [debug] 	report for spatialscala#spatialscala_2.11;1.0 scala-tool produced in /home/roby/git/spatialScala/SpatialScala/target/resolution-cache/reports/spatialscala-spatialscala_2.11-scala-tool.xml
-[debug] 	resolve done (5090ms resolve - 6818ms download)
+[debug] 	resolve done (3920ms resolve - 139ms download)
 [info] Done updating.
