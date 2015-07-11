@@ -1,0 +1,186 @@
+\documentclass[11pt]{llncs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% package sillabazione italiana e uso lettere accentate
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{float}
+
+\usepackage{listings}
+
+\lstdefinelanguage{contact}{
+  morekeywords={ContactSystem, Context, BehaviorOf, support=, TCP,
+  state, initial, endstate, transitToEnd, goToState, onMessage, showMsg, action, var, val,
+  transitTo, code., const., set, exec, call,
+  doOut, doIn, doInOut, doOutIn,
+  Dispatch, serve, accept,   Request, demand, grant,    Signal, emit, sense,
+  Invitation, forward, to, ask,
+  Subject, class, inherits, context,
+  if, null, String, Object, double, Double, Int, int, inheritedhavior},
+    alsoletter={-},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
+}
+\usepackage{courier}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{manifest}
+
+\makeatother
+
+\usepackage{ifpdf}
+
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm]{geometry}
+
+%%%%%%%
+ \newif\ifpdf
+ \ifx\pdfoutput\undefined
+ \pdffalse % we are not running PDFLaTeX
+ \else
+ \pdfoutput=1 % we are running PDFLaTeX
+ \pdftrue
+ \fi
+%%%%%%%
+ \ifpdf
+ \usepackage[pdftex]{graphicx}
+ \else
+ \usepackage{graphicx}
+ \fi
+%%%%%%%%%%%%%%%
+ \ifpdf
+ \DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+ \else
+ \DeclareGraphicsExtensions{.eps, .jpg}
+ \fi
+%%%%%%%%%%%%%%%
+
+\newcommand{\java}{\textsf{Java}}
+\newcommand{\contact}{\emph{Contact}}
+\newcommand{\corecl}{\texttt{corecl}}
+\newcommand{\medcl}{\texttt{medcl}}
+\newcommand{\msgcl}{\texttt{msgcl}}
+\newcommand{\android}{\texttt{Android}}
+\newcommand{\dsl}{\texttt{DSL}}
+\newcommand{\jazz}{\texttt{Jazz}}
+\newcommand{\rtc}{\texttt{RTC}}
+\newcommand{\ide}{\texttt{Contact-ide}}
+\newcommand{\xtext}{\texttt{XText}}
+\newcommand{\xpand}{\texttt{Xpand}}
+\newcommand{\xtend}{\texttt{Xtend}}
+\newcommand{\pojo}{\texttt{POJO}}
+\newcommand{\junit}{\texttt{JUnit}}
+
+\newcommand{\action}[1]{\texttt{#1}\xspace}
+\newcommand{\code}[1]{{\small{\texttt{#1}}}\xspace}
+\newcommand{\codescript}[1]{{\scriptsize{\texttt{#1}}}\xspace}
+
+% Cross-referencing
+\newcommand{\labelsec}[1]{\label{sec:#1}}
+\newcommand{\xs}[1]{\sectionname~\ref{sec:#1}}
+\newcommand{\xsp}[1]{\sectionname~\ref{sec:#1} \onpagename~\pageref{sec:#1}}
+\newcommand{\labelssec}[1]{\label{ssec:#1}}
+\newcommand{\xss}[1]{\subsectionname~\ref{ssec:#1}}
+\newcommand{\xssp}[1]{\subsectionname~\ref{ssec:#1} \onpagename~\pageref{ssec:#1}}
+\newcommand{\labelsssec}[1]{\label{sssec:#1}}
+\newcommand{\xsss}[1]{\subsectionname~\ref{sssec:#1}}
+\newcommand{\xsssp}[1]{\subsectionname~\ref{sssec:#1} \onpagename~\pageref{sssec:#1}}
+\newcommand{\labelfig}[1]{\label{fig:#1}}
+\newcommand{\xf}[1]{\figurename~\ref{fig:#1}}
+\newcommand{\xfp}[1]{\figurename~\ref{fig:#1} \onpagename~\pageref{fig:#1}}
+\newcommand{\labeltab}[1]{\label{tab:#1}}
+\newcommand{\xt}[1]{\tablename~\ref{tab:#1}}
+\newcommand{\xtp}[1]{\tablename~\ref{tab:#1} \onpagename~\pageref{tab:#1}}
+% Category Names
+\newcommand{\sectionname}{Section}
+\newcommand{\subsectionname}{Subsection}
+\newcommand{\sectionsname}{Sections}
+\newcommand{\subsectionsname}{Subsections}
+\newcommand{\secname}{\sectionname}
+\newcommand{\ssecname}{\subsectionname}
+\newcommand{\secsname}{\sectionsname}
+\newcommand{\ssecsname}{\subsectionsname}
+\newcommand{\onpagename}{on page}
+
+\newcommand{\xauthA}{Roberto Casadei}
+\newcommand{\xauthB}{}
+\newcommand{\xauthC}{}
+\newcommand{\xfaculty}{Ingegneria e Scienze Informatiche}
+\newcommand{\xunibo}{Alma Mater Studiorum -- University of Bologna}
+\newcommand{\xaddrBO}{viale Risorgimento 2}
+\newcommand{\xaddrCE}{via Venezia 52}
+\newcommand{\xcityBO}{40136 Bologna, Italy}
+\newcommand{\xcityCE}{47023 Cesena, Italy}
+
+%
+% Comments
+%
+%%% \newcommand{\todo}[1]{\bf{TODO:}\emph{#1}}
+
+
+\usepackage{amssymb}
+\renewcommand{\labelitemi}{\tiny$\blacksquare$}
+\begin{document}
+
+\title{Prototyping an aggregate programming framework with Scala/Akka}
+\subtitle{Project Report}
+
+%%% \author{\xauthA \and \xauthB}
+\author{\xauthA \\ roberto.casadei12@studio.unibo.it}
+
+\institute{%
+%%%  \xunibo\\\xaddrCE, \xcityCE\\\email{\{nameA.studentA, nameB.studentB\}@studio.unibo.it}
+  Complex Adaptive Software Systems Engineering course \\
+  Academic year 2014-2015, II semester \\
+  \xunibo
+}
+
+\maketitle
+
+
+ \begin{abstract}
+ \footnotesize
+ 
+ The Scala programming language and ecosystem provide developers with powerful tools for tackling complexity in software development,
+   especially with regards to concurrency and distribution.
+   
+ This project approaches the development of an 
+  aggregate programming framework with Scala and (possibly) the Akka actor framework.
+ 
+ The goal is to investigate whether these tools are adequate for such an effort 
+  and what key issues and challenges need to be tackled. 
+\end{abstract}
+
+
+
+\section{Introduction}
+
+
+\section{The problem}
+
+
+\section{The solution}
+
+
+\section{Conclusion}
+
+
+%\appendix
+\bibliographystyle{abbrv}
+\bibliography{biblio}
+
+\end{document}
