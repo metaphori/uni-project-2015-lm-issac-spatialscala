@@ -1,6 +1,9 @@
 import akka.actor.{Props, ActorRef, ActorSystem}
 import it.unibo.spala.actors._
+import it.unibo.spala.math.Point2D
 import it.unibo.spala.{Dev, Log}
+
+import scala.util.Random
 
 object MainProgram extends App {
   org.apache.log4j.BasicConfigurator.configure()
@@ -26,6 +29,23 @@ object MainProgram extends App {
 
   val sampler = sys.actorOf(Props[SamplerActor])
   sampler ! MsgStartWithRecipient(registry)
+
+  val rand = new Random
+  val tolerance = 10
+  val positions = for(
+    idealx <- 50 to 500 by 150;
+    idealy <- 50 to 500 by 100;
+    rx = rand.nextDouble();
+    ry = rand.nextDouble();
+    x = idealx + (rx*tolerance - tolerance/2);
+    y = idealy + (rx*tolerance - tolerance/2)
+  )
+    yield Point2D(x,y)
+
+  val actorsAndPositions = (actors zip positions)
+  Log.info("\n\n" + actorsAndPositions + "\n\n")
+  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, actorsAndPositions.toMap))
+  gui ! MsgStart
 
   /*
   trait SlowerCyclicBehavior extends CyclicBehavior {

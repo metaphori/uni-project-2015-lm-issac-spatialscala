@@ -1,7 +1,6 @@
 package it.unibo.spala.actors
 
 import java.util.TimerTask
-
 import akka.actor.{Actor, ActorRef}
 import akka.dispatch.ExecutionContexts
 import akka.pattern.ask

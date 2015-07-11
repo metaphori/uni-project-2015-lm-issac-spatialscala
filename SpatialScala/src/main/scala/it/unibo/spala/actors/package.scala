@@ -1,6 +1,7 @@
 package it.unibo.spala
 
 import akka.actor.ActorRef
+import it.unibo.spala.math.Point3D
 import scala.concurrent.duration._
 
 /**
@@ -40,6 +41,8 @@ package object actors {
   case class MsgReturnNeighbors(nbs: List[ActorRef])
 
   case class MsgRegister(id: String)
+
+  case class MsgRegisterWithPosition(id: String, position: Point3D)
 
   case class MsgStartAndRegisterTo(to: ActorRef)
 
