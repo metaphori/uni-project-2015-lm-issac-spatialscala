@@ -1,3 +1,18 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{FPinScala}
+P.~Chiusano and R.~Bjarnason.
+\newblock {\em Functional Programming in Scala}.
+\newblock Manning, 1st edition, 2014.
+
+\bibitem{ScalaForTheImpatient}
+C.~S. Horstmann.
+\newblock {\em Scala for the Impatient}.
+\newblock Addison-Wesley Professional, 1st edition, 2012.
+
+\bibitem{ScalaInDepth}
+J.~Suereth.
+\newblock {\em Scala In Depth}.
+\newblock Manning, 2012.
 
 \end{thebibliography}

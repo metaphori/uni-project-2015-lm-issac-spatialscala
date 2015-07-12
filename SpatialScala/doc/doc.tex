@@ -126,6 +126,76 @@
 \newcommand{\xcityBO}{40136 Bologna, Italy}
 \newcommand{\xcityCE}{47023 Cesena, Italy}
 
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\small,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  otherkeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+  title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+  columns=fullflexible,
+  lineskip={-1.5pt},
+  xleftmargin=10px,
+  belowskip={-7px},
+  aboveskip={4px},
+}
+ 
+ 
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,lazy,%
+    type,val,var,while,with,yield},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
+} 
+ 
+ 
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+ 
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+ 
+
+\newcommand{\ex}[1]{\textbf{\color{green}{#1}}}
+\newcommand{\highlight}[1]{\textbf{\color{red}{#1}}}
+\newcommand{\ttb}[1]{\textbf{\texttt{#1}}}
+\newcommand{\hlb}[1]{\highlight{\texttt{#1}}}
+
 %
 % Comments
 %
@@ -163,6 +233,7 @@
  
  The goal is to investigate whether these tools are adequate for such an effort 
   and what key issues and challenges need to be tackled. 
+  
 \end{abstract}
 
 
@@ -170,14 +241,137 @@
 \section{Introduction}
 
 
-\section{The problem}
+\section{First prototype}
+
+\subsection{Design forces}
+
+% The notion of force generalizes the kinds of criteria that software engineers use to justify designs and implementations
+% www.cs.unc.edu/~stotts/723/patterns/forces.html
+
+\begin{itemize}
+ \item Distribution
+ \item Asynchronicity
+ \item Decentralization and local interactions
+ \item Locality and spatial assumptions
+ \item Interaction-based computation
+ \item Emergence
+ \item Self-organization
+\end{itemize}
+
+\subsection{Design choices}
+
+\begin{itemize}
+ \item Eventual consistency
+    \begin{itemize}
+    \item A device does not wait to collect the updated states of all its neighbors 
+      before calculating the next state; it will use its best current knowledge
+    \item Processing and sensing are intertwined
+    \end{itemize}
+ % Eventual consistency is a consistency model used in distributed computing to achieve high availability 
+ %that informally guarantees that, if no new updates are made to a given data item, eventually all accesses 
+ %to that item will return the last updated value
+\end{itemize}
 
 
-\section{The solution}
+\subsection{Description}
+
+Basic concepts
+
+\begin{itemize}
+ \item A device \hlb{Dev[S,I]} has a name, a state, and a behavior
+ 
+ \item The behavior of a device can be seen as a function of its state \ttb{S => S} (\hlb{DevMooreBehavior})
+ or a function of its state and inputs 
+ \ttb{(S,I) => S} (\hlb{DevMealyBehavior}), producing the next device's state
+ 
+ \item A \hlb{Space[E,P]} is an abstraction for a spatial container of elements: 
+   elements can added to a certain location, elements can be retrieved, and the space can be queried for the location of an element
+ \begin{itemize}
+    \item A \hlb{MutableSpace[E,P]} allows for the move and removal of elements
+    \item A \ttb{Basic3DSpace[E]} is a mutable space of elements of type E which are located by means of 3D points (x,y,z)
+ \end{itemize}
+ 
+ \item A \hlb{DistanceStrategy[E,P,D]} defines how distances and locality (neighborhoods) 
+   are calculated for a given \texttt{Space[E,P]}
+ \begin{itemize}
+    \item \ttb{EuclideanStrategy[E]} defines the euclidean distance (Double) on a 3D space
+ \end{itemize}
+ 
+\end{itemize}
+
+Actor system structure
+
+\begin{itemize}
+ \item \hlb{DevActor[S,I]} is an actor that wraps a \ttb{Dev[S,I]}
+ \item \hlb{SpaceManagerActor} is an abstract actor that represents a spatial container for actors.
+ \ttb{SimpleSpaceManagerActor} is a 3D space manager actor with an euclidean distance strategy
+ \item \ttb{SamplerActor} and \ttb{GUIActor} sample the states of the device actors to provide a 
+   representation of the evolution of the system along time
+\end{itemize}
+
+Actor system dynamics
+
+\begin{itemize}
+ \item A device actor
+    \begin{itemize}
+    \item When started, registers itself to the space manager
+    \item Then, it periodically schedules the next state transition
+    \item When it is not processing anything, it can respond to the other actors requesting its current state
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Issues}
+
+Issues and challenges
+
+\begin{itemize}
+\item Conceptual integrity and (functional) separation of concerns
+\item Simulation of locality
+    \begin{itemize}
+    \item In the real world, locality is enforced by physical laws
+    \end{itemize}
+\item Who are responsible for keeping track of device positions?
+    \begin{itemize}
+    \item The space manager only?
+    \end{itemize}
+\item Multiple consistency requirements and synchronization patterns between devices
+\end{itemize}
+
+\begin{comment}
+\subsection{Known bugs}
+
+To be solved
+
+\begin{itemize}
+ \item Scheduling many \texttt{TimerTask}s using \texttt{java.util.Timer} may result in \texttt{OutOfMemoryError}
+    due to inability to create additional native threads
+    \begin{itemize}
+    \item Such tasks are launched by device actors to schedule the next elaboration in the future
+    \item Notes for a solution: \texttt{ActorContext.setReceiveTimeout} may help; it can't be used directly 
+      because the device actor needs to respond to other messages in the meantime.
+     We would need a \texttt{ReceiveTimeout} for a specific message type
+    \item Solution: Akka scheduler (\footnotesize{\url{http://doc.akka.io/docs/akka/snapshot/java/scheduler.html}}).
+    Can it be used inside an actor? Yes (\footnotesize{\url{http://stackoverflow.com/questions/13896638/is-it-possible-to-use-the-akka-scheduler-inside-an-actor}})
+    \end{itemize}
+    
+\end{itemize}
+\end{comment}
+
+
+\subsection{Further issues to investigate}
+
+\begin{itemize}
+ \item Open systems and system boundary porosity: devices entering/exiting the (sub-)system
+\end{itemize}
+
 
 
 \section{Conclusion}
 
+\nocite{FPinScala}
+\nocite{ScalaForTheImpatient}
+\nocite{ScalaInDepth}
 
 %\appendix
 \bibliographystyle{abbrv}
