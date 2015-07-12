@@ -16,14 +16,14 @@ import it.unibo.spala.math.{Point2D, Point3D}
  * @tparam P The type of position
  */
 trait Space[E,P] {
-  def add(e: E, p: P)
-
   def getLocation(e: E): P
 
   def getAll(): Iterable[E]
 }
 
 trait MutableSpace[E,P] extends Space[E,P] {
+  def add(e: E, p: P)
+
   def remove(e: E)
 
   def setLocation(e: E, p: P, isRelative: Boolean)
