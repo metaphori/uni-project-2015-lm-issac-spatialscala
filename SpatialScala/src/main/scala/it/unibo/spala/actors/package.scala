@@ -14,6 +14,11 @@ package object actors {
   /* DATA STRUCTURES */
 
   /* FUNCTIONS */
+
+  /**
+   * Schedule a task once, ahead in time as expressed by duration
+   * Note: actors should use Scheduler.scheduleOnce() instead
+   */
   def ScheduleIn(duration: Duration)(body: => Unit): Unit = {
     new java.util.Timer().schedule(new TimerTask {
       override def run(): Unit = {

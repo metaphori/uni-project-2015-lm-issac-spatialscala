@@ -20,6 +20,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef, acto
   /* Local imports */
 
   import scala.collection.mutable.Map
+  import context.dispatcher // Provides the ExecutionContext
 
   /* Key members */
 
@@ -101,6 +102,6 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef, acto
   }
 
   override val workInterval = 200 milliseconds
-  protected def scheduleNextElaboration() = ScheduleIn(workInterval) { self ! GoOn }
+  protected def scheduleNextElaboration() = context.system.scheduler.scheduleOnce(workInterval) { self ! GoOn }
 
 }

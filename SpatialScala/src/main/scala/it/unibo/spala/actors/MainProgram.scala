@@ -29,8 +29,8 @@ object MainProgram extends App {
   val rand = new Random
   val tolerance = 80
   val positions = for(
-    idealx <- 200 to 600 by 40;
-    idealy <- 60 to 480 by 40;
+    idealx <- 100 to 600 by 40;
+    idealy <- 100 to 480 by 40;
     rx = rand.nextDouble();
     ry = rand.nextDouble();
     x = idealx + (rx*tolerance - tolerance/2);

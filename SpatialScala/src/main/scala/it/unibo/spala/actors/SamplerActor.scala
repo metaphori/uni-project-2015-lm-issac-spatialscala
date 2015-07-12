@@ -1,8 +1,6 @@
 package it.unibo.spala.actors
 
-import java.util.TimerTask
-
-import akka.actor.{ActorRef, Actor}
+import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.CyclicBehavior
 
 /**
@@ -10,6 +8,8 @@ import it.unibo.spala.CyclicBehavior
  * Created on date: 09/07/15.
  */
 class SamplerActor extends Actor with CyclicBehavior {
+
+  import context.dispatcher // Provides the ExecutionContext
 
   var obs: List[ActorRef] = List()
   var states: Map[String,Any] = Map()
@@ -32,12 +32,10 @@ class SamplerActor extends Actor with CyclicBehavior {
     }
   }
 
-  protected def scheduleNextElaboration() = { new java.util.Timer().schedule(new TimerTask {
-    override def run(): Unit = {
+  protected def scheduleNextElaboration() = context.system.scheduler.scheduleOnce(workInterval){
       states.foreach(kv => print(s"${kv._1}=${kv._2};  "))
       println("\n----------------------------------------------")
       self ! GoOn
     }
-  }, workInterval.toMillis) }
 
 }

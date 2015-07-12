@@ -6,12 +6,11 @@ import it.unibo.spala.{CyclicBehavior, Dev}
 
 // Akka imports
 import akka.actor.{Actor, ActorRef}
-import akka.dispatch.ExecutionContexts
 
 // Utility imports
-import akka.util.Timeout
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
+
 import scala.concurrent.duration._
 import scala.util.Random
 
@@ -42,11 +41,9 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
 
   /* Implicits and variables */
 
-  implicit val timeout = Timeout(1 second)
-  // for the "ask" pattern
-  implicit val executionContext = ExecutionContexts.global()
-  // for the "ask" pattern
-  val nbsDiscoveryInterval = 500 milliseconds
+  import context.dispatcher // Provides the ExecutionContext
+  //implicit val timeout = Timeout(1 second) // for the "ask" pattern
+  private val nbsDiscoveryInterval = 500 milliseconds
 
   /* Reactive behaviors */
 
@@ -89,13 +86,13 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
   }
 
   protected def scheduleNextElaboration() = {
-    ScheduleIn(workInterval) {
+    context.system.scheduler.scheduleOnce(workInterval) {
       SyncWithNeighborValue()
       self ! GoOn
     }
 
     // Simulate locality changes by querying the space manager for neighbors
-    ScheduleIn(nbsDiscoveryInterval) {
+    context.system.scheduler.scheduleOnce(nbsDiscoveryInterval) {
       DiscoverNeighbors()
     }
   }
