@@ -21,6 +21,8 @@ abstract class SpaceManagerActor extends Actor {
 
   protected def GetNeighbors(id: String): List[String]
 
+  protected def GetPositionOf(who: String): Point3D
+
   def receive = {
     case MsgRegisterWithPosition(id, pos) => RegisterActor(id, sender, Some(pos))
     case MsgMove(id, pos, isRelative) => UpdateActorPosition(id, pos, isRelative)
@@ -30,12 +32,11 @@ abstract class SpaceManagerActor extends Actor {
       sender ! MsgReturnNeighbors(nbsRefs)
     }
     case MsgGetAll => sender ! MsgReturnAllAs[List[DevInfo]](actors.values.toList)
+    case MsgGetPositionOf(who) => sender ! MsgReturnPositionOf(who,GetPositionOf(who))
   }
 }
 
 class DevInfo(val id: String, val ref: ActorRef, val position: Option[Point3D]){
-  import scala.collection.mutable.Map
-  val neighbors: Map[String, DevInfo] = Map()
 }
 
 class SimpleSpaceManagerActor extends SpaceManagerActor with BasicSpace {
@@ -55,4 +56,6 @@ class SimpleSpaceManagerActor extends SpaceManagerActor with BasicSpace {
   override def UpdateActorPosition(id: String, pos: Point3D, isRelative: Boolean): Unit = {
     setLocation(id, pos, isRelative)
   }
+
+  override protected def GetPositionOf(who: String): Point3D = getLocation(who)
 }

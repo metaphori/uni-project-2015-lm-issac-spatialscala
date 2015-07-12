@@ -27,7 +27,7 @@ import scala.util.Random
  * @tparam S // The type of the state of the device
  * @tparam I // The type of the input of the device
  */
-class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], var position: Point3D) extends Actor with CyclicBehavior {
+class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], position: Point3D) extends Actor with CyclicBehavior {
 
   /* Key members */
 
@@ -64,15 +64,13 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], var pos
   protected def workingBehavior: Receive = {
     case _: MsgGetState[S] => sender ! MsgReturnState(device.state)
     case m: MsgMove => {
-      position = if (m.isRelative) position + m.newpos else m.newpos
-      container ! MsgMove(device.name, position, false)
+      container ! MsgMove(device.name, m.newpos, true)
     }
     case GoOn => {
       doJob()
       scheduleNextElaboration()
       MayMove() // simulate mobility
     }
-    case MsgGetPosition() => sender ! MsgMove(device.name, position, false)
     case MsgReturnNeighbors(t) => UpdateNeighbors(t)
     case MsgReturnState(nState: S) => SaveNeighborState(sender, nState)
   }

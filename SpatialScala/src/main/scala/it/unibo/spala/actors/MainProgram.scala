@@ -43,20 +43,21 @@ object MainProgram extends App {
   val devsWithPositions = devs zip positions
 
   class MySpaceManager extends SimpleSpaceManagerActor {
-    override val proximityThreshold: Double = 30
+    override val proximityThreshold: Double = 50
   }
 
   val registry = sys.actorOf(Props[MySpaceManager])
-  val actorsWithPositions =
-    devsWithPositions.map { case (dev,pos) => (sys.actorOf(Props(classOf[DeviceActor], dev, pos) , "Actor"+dev.name), pos) }
+
+  val devsInfo =
+    devsWithPositions.map { case (dev,pos) => (dev.name, sys.actorOf(Props(classOf[DeviceActor], dev, pos) , "Actor"+dev.name), pos) }
 
   // START THE SYSTEM
   var k = 0
-  actorsWithPositions.tail.foreach { case (a,p) => k+=1; a ! MsgStartWithInputAndRegisterTo((k%20)==19, registry) }
+  devsInfo.foreach { case (name,a,p) => k+=1; a ! MsgStartWithInputAndRegisterTo((k%20)==19, registry) }
 
   val sampler = sys.actorOf(Props[SamplerActor])
   sampler ! MsgStartWithRecipient(registry)
 
-  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, actorsWithPositions.toMap))
+  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, registry, devsInfo.map({ case (n,a,p) => (n, (a,p)) }).toMap))
   gui ! MsgStart
 }

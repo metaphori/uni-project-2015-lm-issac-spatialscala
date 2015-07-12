@@ -69,7 +69,9 @@ package object actors {
 
   case class MsgMove(who: String, newpos: Point3D, isRelative: Boolean)
 
-  case class MsgGetPosition()
+  case class MsgGetPositionOf[P](who: String)
+
+  case class MsgReturnPositionOf[P](who: String, pos: P)
 }
 
 trait CyclicBehavior {

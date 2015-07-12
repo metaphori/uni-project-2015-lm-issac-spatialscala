@@ -100,8 +100,4 @@ trait BasicSpace extends Basic3DSpace[String] with EuclideanStrategy[String] {
     }
   }
 
-  def UpdateActorPosition(id: String, pos: Point3D, isRelative: Boolean) = {
-
-  }
-
 }

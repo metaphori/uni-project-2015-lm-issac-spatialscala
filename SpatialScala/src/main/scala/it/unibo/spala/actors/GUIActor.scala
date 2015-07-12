@@ -14,7 +14,8 @@ import scala.concurrent.duration._
  * Created on date: 11/07/15.
  */
 
-class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) extends Actor with CyclicBehavior {
+class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef, actors: Map[String, (ActorRef,Point3D)])
+  extends Actor with CyclicBehavior {
 
   /* Local imports */
 
@@ -22,8 +23,9 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) e
 
   /* Key members */
 
-  val devs: Map[ActorRef, Int] = Map(actors.keys.map(r => (r, 0)).toList :_*)
-  var poss = actors
+  val refs: Map[String, ActorRef] = Map(actors.map({ case (n,(r,_)) => (n, r)}).toList :_*)
+  val states: Map[ActorRef, Int] = Map(actors.values.map({ case (r,_) => (r, 0)}).toList :_*)
+  var positions: Map[ActorRef, Point3D] = Map(actors.values.map({ case (r,p) => (r, p)}).toList :_*)
 
   /* GUI-related members */
   var frame: JFrame = _
@@ -50,16 +52,16 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) e
       scheduleNextElaboration()
     }
     case MsgStop => ()
-    case MsgReturnState(s:Int) => devs(sender) = s
-    case MsgMove(_, pos, false) => poss += (sender -> pos)
+    case MsgReturnState(s:Int) => states(sender) = s
+    case MsgReturnPositionOf(who, pos: Point3D) => positions += (refs(who) -> pos)
   }
 
   def AskStatusUpdate() = {
-    devs.foreach(dest => dest._1 ! MsgGetState[Int])
+    states.foreach(dest => dest._1 ! MsgGetState[Int])
   }
 
   def AskPositionUpdate() = {
-    devs.foreach(dest => dest._1 ! MsgGetPosition())
+    refs.keys.foreach(id => spaceManager ! MsgGetPositionOf[Point3D](id))
   }
 
   def DrawAll() = {
@@ -67,15 +69,15 @@ class GUIActor(val width: Int, val height: Int, actors: Map[ActorRef,Point3D]) e
     // Let's clear then canvas
     g.clearRect(0, 0, 600, 600)
     // Then we draw all the devices
-    poss.foreach {  case (ref, pos) => { DrawSingle(g, ref, pos) } }
+    positions.foreach {  case (ref, pos) => { DrawSingle(g, ref, pos) } }
   }
 
   def DrawSingle(g: Graphics, ref: ActorRef, pos: Point3D) = {
-    g.setColor(Color.BLUE)
+    g.setColor(if(states(ref)==0) Color.RED else Color.BLUE)
     g.fillOval(pos.x.toInt-10, pos.y.toInt-10, 5, 5)
     g.setColor(Color.BLACK)
     //g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt, pos.y.toInt-2)
-    g.drawString(""+devs(ref), pos.x.toInt-2, pos.y.toInt+2)
+    g.drawString(""+states(ref), pos.x.toInt-2, pos.y.toInt+2)
   }
 
   def BuildFrame(): Unit = {
