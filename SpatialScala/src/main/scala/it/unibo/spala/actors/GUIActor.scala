@@ -17,16 +17,17 @@ import scala.concurrent.duration._
 class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   extends Actor with CyclicBehavior {
 
-  /* Local imports */
+  /* Local imports and variables */
 
-  import scala.collection.mutable.Map
+  import scala.collection._
   import context.dispatcher // Provides the ExecutionContext
+  override val workInterval = 200 milliseconds
 
   /* Key members */
 
-  var refs: Map[String, ActorRef] = _
-  var states: Map[ActorRef, Int] = _
-  var positions: Map[ActorRef, Point3D] = _
+  var refs: mutable.Map[String, ActorRef] = _
+  var states: mutable.Map[ActorRef, Int] = _
+  var positions: mutable.Map[ActorRef, Point3D] = _
 
   /* GUI-related members */
   var frame: JFrame = _
@@ -34,15 +35,17 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
 
   /* Behavior */
 
-  def receive: Receive = {
+  def receive: Receive = initialBehavior
+
+  def initialBehavior: Receive = {
     case MsgStart => {
       BuildFrame()
       spaceManager ! MsgGetAllWithInfo
     }
-    case MsgReturnAllAs(all: scala.collection.immutable.Map[String, DevInfo]) => {
-      refs = Map(all.values.map(info => (info.id, info.ref)).toList :_*)
-      states = Map(all.values.map(info => (info.ref, 0)).toList :_*)
-      positions = Map(all.values.map(info => (info.ref, info.position.get)).toList :_*)
+    case MsgReturnAllAs(all: Map[String, DevInfo]) => {
+      refs = mutable.Map(all.values.map(info => (info.id, info.ref)).toList :_*)
+      states = mutable.Map(all.values.map(info => (info.ref, 0)).toList :_*)
+      positions = mutable.Map(all.values.map(info => (info.ref, info.position.get)).toList :_*)
 
       context.become(drawingBehavior)
       self ! GoOn
@@ -63,6 +66,8 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
     case MsgReturnState(s:Int) => states(sender) = s
     case MsgReturnPositionOf(who, pos: Point3D) => positions += (refs(who) -> pos)
   }
+
+  protected def scheduleNextElaboration() = context.system.scheduler.scheduleOnce(workInterval) { self ! GoOn }
 
   def AskStatusUpdate() = {
     states.foreach(dest => dest._1 ! MsgGetState[Int])
@@ -107,8 +112,5 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
     panel.add(canvas, BorderLayout.CENTER)
     canvas.setBackground(Color.WHITE)
   }
-
-  override val workInterval = 200 milliseconds
-  protected def scheduleNextElaboration() = context.system.scheduler.scheduleOnce(workInterval) { self ! GoOn }
 
 }
