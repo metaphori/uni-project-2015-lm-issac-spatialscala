@@ -13,6 +13,9 @@ import scala.concurrent.duration._
 package object actors {
   /* DATA STRUCTURES */
 
+  class DevInfo(val id: String, val ref: ActorRef, val position: Option[Point3D]){
+  }
+
   /* FUNCTIONS */
 
   /**
@@ -69,6 +72,8 @@ package object actors {
   case class MsgStartWithRecipient(recipient: ActorRef)
 
   object MsgGetAll
+
+  object MsgGetAllWithInfo
 
   case class MsgReturnAllAs[T](all: T)
 

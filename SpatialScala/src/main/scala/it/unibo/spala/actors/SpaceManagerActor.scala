@@ -32,11 +32,9 @@ abstract class SpaceManagerActor extends Actor {
       sender ! MsgReturnNeighbors(nbsRefs)
     }
     case MsgGetAll => sender ! MsgReturnAllAs[List[DevInfo]](actors.values.toList)
+    case MsgGetAllWithInfo => sender ! MsgReturnAllAs[Map[String, DevInfo]](actors)
     case MsgGetPositionOf(who) => sender ! MsgReturnPositionOf(who,GetPositionOf(who))
   }
-}
-
-class DevInfo(val id: String, val ref: ActorRef, val position: Option[Point3D]){
 }
 
 class SimpleSpaceManagerActor extends SpaceManagerActor with BasicSpace {

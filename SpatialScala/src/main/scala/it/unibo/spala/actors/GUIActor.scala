@@ -14,7 +14,7 @@ import scala.concurrent.duration._
  * Created on date: 11/07/15.
  */
 
-class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef, actors: Map[String, (ActorRef,Point3D)])
+class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   extends Actor with CyclicBehavior {
 
   /* Local imports */
@@ -24,9 +24,9 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef, acto
 
   /* Key members */
 
-  val refs: Map[String, ActorRef] = Map(actors.map({ case (n,(r,_)) => (n, r)}).toList :_*)
-  val states: Map[ActorRef, Int] = Map(actors.values.map({ case (r,_) => (r, 0)}).toList :_*)
-  var positions: Map[ActorRef, Point3D] = Map(actors.values.map({ case (r,p) => (r, p)}).toList :_*)
+  var refs: Map[String, ActorRef] = _
+  var states: Map[ActorRef, Int] = _
+  var positions: Map[ActorRef, Point3D] = _
 
   /* GUI-related members */
   var frame: JFrame = _
@@ -37,6 +37,13 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef, acto
   def receive: Receive = {
     case MsgStart => {
       BuildFrame()
+      spaceManager ! MsgGetAllWithInfo
+    }
+    case MsgReturnAllAs(all: scala.collection.immutable.Map[String, DevInfo]) => {
+      refs = Map(all.values.map(info => (info.id, info.ref)).toList :_*)
+      states = Map(all.values.map(info => (info.ref, 0)).toList :_*)
+      positions = Map(all.values.map(info => (info.ref, info.position.get)).toList :_*)
+
       context.become(drawingBehavior)
       self ! GoOn
     }

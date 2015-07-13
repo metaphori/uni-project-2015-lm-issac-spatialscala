@@ -1,12 +1,15 @@
 import akka.actor.{Props, ActorRef, ActorSystem}
+import akka.dispatch.ExecutionContexts
 import it.unibo.spala.actors._
 import it.unibo.spala.math.Point2D
-import it.unibo.spala.{Dev, Log}
+import it.unibo.spala.{DevMealyBehavior, Dev, Log}
+import scala.concurrent.duration._
 
 import scala.util.Random
 
 object MainProgram extends App {
   org.apache.log4j.BasicConfigurator.configure()
+  implicit val executionContext = ExecutionContexts.global()
   Log.info("Main program started")
 
   val sys = ActorSystem("MyActorSystem")
@@ -14,14 +17,13 @@ object MainProgram extends App {
   Log.info("Actor system created")
 
   // CONFIGURATION
-  type Device = Dev[Int, (Boolean, Map[ActorRef, Int])]
-  type DeviceActor = DevActor[Int, (Boolean, Map[ActorRef, Int])]
-  val behavior = (state:Int, input:(Boolean, Map[ActorRef, Int])) => input match {
+  type Input = (Boolean, Map[ActorRef, Int])
+  type Device = Dev[Int, Input]
+  type DeviceActor = DevActor[Int, Input]
+  val behavior: DevMealyBehavior[Int, Input] = (state:Int, input:(Boolean, Map[ActorRef, Int])) => input match {
     case (isSrc, states) => {
-      val ss = states.filter { case (ref, s) => s!=(-1) }
-
       if (isSrc) { 0 }
-      else if (!ss.isEmpty) ss.values.min + 1
+      else if (!states.isEmpty) states.values.min + 1
       else -1
     }
   }
@@ -58,6 +60,6 @@ object MainProgram extends App {
   val sampler = sys.actorOf(Props[SamplerActor])
   sampler ! MsgStartWithRecipient(registry)
 
-  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, registry, devsInfo.map({ case (n,a,p) => (n, (a,p)) }).toMap))
-  gui ! MsgStart
+  val gui = sys.actorOf(Props(classOf[GUIActor], 600, 600, registry))
+  sys.scheduler.scheduleOnce(1 second) { gui ! MsgStart } // give time to devices to register
 }
