@@ -5,7 +5,7 @@ package it.unibo.spala
  * Created on date: 08/07/15.
  */
 
-class Dev[S,I](val name: String, val state: S, val behavior: DevMealyBehavior[S,I]) {
+class Dev[S,I](val name: String, val state: S, val behavior: DevMealyBehavior[S,I]) extends Serializable {
 
   def run(input: I): Dev[S,I] = Dev(name, behavior(state, input), behavior)
 

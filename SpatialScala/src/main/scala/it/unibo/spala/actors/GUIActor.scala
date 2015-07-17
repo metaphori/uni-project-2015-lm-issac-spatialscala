@@ -103,8 +103,6 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
     val panel = new JPanel()
     frame.setContentPane(panel)
 
-    panel.getGraphics().setColor(Color.RED)
-    panel.getGraphics().drawLine(0, 10, 600, 10)
     panel.setLayout(new BorderLayout())
 
     canvas = new JPanel()

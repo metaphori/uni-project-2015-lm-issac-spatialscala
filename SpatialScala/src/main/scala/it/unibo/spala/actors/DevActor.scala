@@ -26,7 +26,8 @@ import scala.util.Random
  * @tparam S // The type of the state of the device
  * @tparam I // The type of the input of the device
  */
-class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], position: Point3D) extends Actor with CyclicBehavior {
+class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], position: Point3D)
+  extends Actor with CyclicBehavior {
 
   /* Key members */
 
@@ -43,7 +44,8 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
 
   import context.dispatcher // Provides the ExecutionContext
   //implicit val timeout = Timeout(1 second) // for the "ask" pattern
-  private val nbsDiscoveryInterval = 500 milliseconds
+  override val workInterval = 100 milliseconds
+  private val nbsDiscoveryInterval = 250 milliseconds
 
   /* Reactive behaviors */
 
@@ -73,6 +75,8 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
   }
 
   protected def Start(): Unit = {
+    val physicalPath = akka.serialization.Serialization.serializedActorPath(self)
+    Log.info(s"Starting (path=$physicalPath)")
     DiscoverNeighbors()
     context.become(workingBehavior)
     self ! GoOn

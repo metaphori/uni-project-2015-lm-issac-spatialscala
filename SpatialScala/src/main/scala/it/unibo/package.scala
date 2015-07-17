@@ -11,6 +11,5 @@ package object spala {
   val Log = Logger(LoggerFactory.getLogger("SpalaLogger"))
 
   type DevMooreBehavior[S] = S => S
-
-  type DevMealyBehavior[S,I] = (S, I) => S
+  type DevMealyBehavior[S, I] = (S,I) => S
 }

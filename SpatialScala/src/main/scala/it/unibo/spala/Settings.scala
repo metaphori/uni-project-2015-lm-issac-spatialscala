@@ -1,18 +1,24 @@
 package it.unibo.spala
 
+import akka.actor.ActorRef
 import com.typesafe.config.{ConfigFactory, Config}
+import it.unibo.spala.math.Point3D
 
 /**
  * Created by: Roberto Casadei 
  * Created on date: 16/07/15.
  */
 
-case class Settings(systemSettings: SystemSettings[_],
+case class Settings(systemSettings: SystemSettings[_,_],
                     deploymentSettings: DeploymentSettings,
                     devDistributionSettings: DeviceDistributionSettings){ }
 
-case class SystemSettings[S](name: String = "MySpatialSystem",
-                          initialDeviceState: S)
+case class SystemSettings[S, I](name: String = "MySpatialSystem",
+                          initialDeviceState: S,
+                          inputProvider: (Int, String, ActorRef, Point3D) => I,
+                          gui: Boolean = false,
+                          console: Boolean = true,
+                          proximityThreshold: Double = 100)
 
 case class DeploymentSettings() { }
 

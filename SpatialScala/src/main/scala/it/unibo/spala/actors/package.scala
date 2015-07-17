@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 package object actors {
   /* DATA STRUCTURES */
 
-  class DevInfo(val id: String, val ref: ActorRef, val position: Option[Point3D]){
+  case class DevInfo(val id: String, val ref: ActorRef, val position: Option[Point3D]){
   }
 
   /* FUNCTIONS */
@@ -35,9 +35,9 @@ package object actors {
   /**
    * Represents a message to activate an actor.
    */
-  object MsgStart
+  object MsgStart extends Serializable
 
-  object MsgStop
+  object MsgStop extends Serializable
 
   /**
    * Represents a message for asking the state of the recipient actor
@@ -55,7 +55,7 @@ package object actors {
   /**
    * Self-message used by actors to continue their job
    */
-  object GoOn
+  object GoOn extends Serializable
 
   case class MsgGetNeighbors(id: String)
 
@@ -71,9 +71,9 @@ package object actors {
 
   case class MsgStartWithRecipient(recipient: ActorRef)
 
-  object MsgGetAll
+  object MsgGetAll extends Serializable
 
-  object MsgGetAllWithInfo
+  object MsgGetAllWithInfo extends Serializable
 
   case class MsgReturnAllAs[T](all: T)
 

@@ -51,7 +51,12 @@ object MainProgram extends App {
   val registry = sys.actorOf(Props[MySpaceManager])
 
   val devsInfo =
-    devsWithPositions.map { case (dev,pos) => (dev.name, sys.actorOf(Props(classOf[DeviceActor], dev, pos) , "Actor"+dev.name), pos) }
+    devsWithPositions.map { case (dev,pos) => {
+        val actorProp = Props(classOf[DeviceActor], dev, pos)
+        val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
+        (dev.name, actorRef, pos)
+      }
+    }
 
   // START THE SYSTEM
   var k = 0

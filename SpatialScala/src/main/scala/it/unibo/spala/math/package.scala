@@ -6,7 +6,7 @@ package it.unibo.spala
  */
 package object math {
 
-  class Point3D(val x: Double, val y: Double, val z: Double){
+  class Point3D(val x: Double, val y: Double, val z: Double) extends Serializable {
     import scala.math.{sqrt, pow}
 
     def distance(p2: Point3D) = sqrt(pow(p2.x-x, 2) + pow(p2.y-y, 2) +pow(p2.z-z, 2))
