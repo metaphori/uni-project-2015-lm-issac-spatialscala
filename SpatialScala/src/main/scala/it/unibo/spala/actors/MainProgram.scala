@@ -1,8 +1,9 @@
 import akka.actor.{Props, ActorRef, ActorSystem}
 import akka.dispatch.ExecutionContexts
+import it.unibo.spala.Behaviors.DevMealyBehavior
 import it.unibo.spala.actors._
 import it.unibo.spala.math.Point2D
-import it.unibo.spala.{DevMealyBehavior, Dev, Log}
+import it.unibo.spala.{Dev, Log}
 import scala.concurrent.duration._
 
 import scala.util.Random

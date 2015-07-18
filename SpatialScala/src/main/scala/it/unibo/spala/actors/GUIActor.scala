@@ -86,11 +86,11 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   }
 
   def DrawSingle(g: Graphics, ref: ActorRef, pos: Point3D) = {
-    g.setColor(if(states(ref)==0) Color.RED else Color.BLUE)
+    g.setColor(if(states(ref).getOrElse(None)==0) Color.RED else Color.BLUE)
     g.fillOval(pos.x.toInt-10, pos.y.toInt-10, 5, 5)
     g.setColor(Color.BLACK)
     //g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt, pos.y.toInt-2)
-    g.drawString(""+states(ref), pos.x.toInt-2, pos.y.toInt+2)
+    g.drawString(""+states(ref).getOrElse(None), pos.x.toInt-2, pos.y.toInt+2)
   }
 
   def BuildFrame(): Unit = {

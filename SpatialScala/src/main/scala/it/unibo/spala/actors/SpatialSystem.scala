@@ -1,6 +1,7 @@
 package it.unibo.spala.actors
 
 import akka.actor.{Props, ActorRef, ActorSystem}
+import it.unibo.spala.Behaviors.DevMealyBehavior
 import it.unibo.spala._
 import it.unibo.spala.config._
 import it.unibo.spala.math.Point3D
@@ -16,7 +17,7 @@ class MySpaceManager(threshold: Double) extends SimpleSpaceManagerActor {
 }
 
 class SpatialSystem[S,I](val name: String,
-                         val settings: Settings,
+                         val settings: Settings[S, I],
                          val behavior: DevMealyBehavior[S, I]) {
 
     val systemSettings = settings.systemSettings
@@ -80,9 +81,10 @@ object TestHighLevel extends App {
 
   val behavior = DeviceBehaviors.GradientBehavior
 
-  val settings = Settings(
+  val settings = Settings[State,Input](
     SystemSettings(
       name = "MyActorSystem",
+      executionStrategy = AsyncExecutionStrategy,
       gui = true,
       console = false),
     DeviceSettings(

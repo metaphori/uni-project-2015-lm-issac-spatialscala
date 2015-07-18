@@ -21,7 +21,7 @@ case class SystemSettings(name: String = "MySpatialSystem",
                           console: Boolean = true)
 
 case class DeviceSettings[S, I](initialDeviceState: S,
-                          inputProvider: (Int, String, ActorRef, Point3D) => I,
+                          inputProvider: (Int, String, ActorRef, Point3D) => Any,
                           nameProvider: (Int => String) = i => "Device"+i)
 
 case class SpatialSettings(proximityThreshold: Double = 100)
