@@ -9,13 +9,14 @@ import it.unibo.spala.math.Point3D
  * Created on date: 16/07/15.
  */
 
-case class Settings(systemSettings: SystemSettings,
-                    deviceSettings: DeviceSettings[_,_],
+case class Settings[S,I](systemSettings: SystemSettings,
+                    deviceSettings: DeviceSettings[S,I],
                     spatialSettings: SpatialSettings,
                     devDistributionSettings: DeviceDistributionSettings,
                     deploymentSettings: DeploymentSettings){ }
 
 case class SystemSettings(name: String = "MySpatialSystem",
+                          executionStrategy: ExecutionStrategy,
                           gui: Boolean = false,
                           console: Boolean = true)
 
@@ -40,6 +41,10 @@ case class GridSettings(nrows: Int = 100,
                         tolerance: Double = 0,
                         offsetx: Double = 0,
                         offsety: Double = 0) extends ShapeSettings { }
+
+sealed abstract class ExecutionStrategy
+case object AsyncExecutionStrategy extends ExecutionStrategy
+case object SyncExecutionStrategy extends ExecutionStrategy
 
 // DRAFT
 /*

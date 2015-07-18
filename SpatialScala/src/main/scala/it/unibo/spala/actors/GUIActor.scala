@@ -26,7 +26,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   /* Key members */
 
   var refs: mutable.Map[String, ActorRef] = _
-  var states: mutable.Map[ActorRef, Int] = _
+  var states: mutable.Map[ActorRef, Option[Any]] = _
   var positions: mutable.Map[ActorRef, Point3D] = _
 
   /* GUI-related members */
@@ -44,7 +44,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
     }
     case MsgReturnAllAs(all: Map[String, DevInfo]) => {
       refs = mutable.Map(all.values.map(info => (info.id, info.ref)).toList :_*)
-      states = mutable.Map(all.values.map(info => (info.ref, 0)).toList :_*)
+      states = mutable.Map(all.values.map(info => (info.ref, None)).toList :_*)
       positions = mutable.Map(all.values.map(info => (info.ref, info.position.get)).toList :_*)
 
       context.become(drawingBehavior)
@@ -63,14 +63,14 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
       scheduleNextElaboration()
     }
     case MsgStop => ()
-    case MsgReturnState(s:Int) => states(sender) = s
+    case MsgReturnState(s: Any) => states(sender) = Some(s)
     case MsgReturnPositionOf(who, pos: Point3D) => positions += (refs(who) -> pos)
   }
 
   protected def scheduleNextElaboration() = context.system.scheduler.scheduleOnce(workInterval) { self ! GoOn }
 
   def AskStatusUpdate() = {
-    states.foreach(dest => dest._1 ! MsgGetState[Int])
+    states.foreach(dest => dest._1 ! MsgGetState[Any])
   }
 
   def AskPositionUpdate() = {
