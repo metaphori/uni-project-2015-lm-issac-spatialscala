@@ -1,56 +1,69 @@
 package it.unibo.spala
 
-import akka.actor.ActorRef
-
-import scala.math.abs
-
 /**
- * Created by: Roberto Casadei 
+ * Created by: Roberto Casadei
  * Created on date: 18/07/15.
  */
 
 package object Behaviors {
+  /*
+  trait DevBehavior[S] extends MealyFunType[S, DevContext] {
+    def map[T](f: S => T): (S, DevContext) => T = (s:S, ctx:DevContext) => f(this.apply(s, ctx))
+  }*/
+
+  type DevBehavior[S] = MealyFunType[S, DevContext]
+
   type MooreFunType[S] = S => S
-  class DevMooreBehavior[S](val f: MooreFunType[S]) extends MooreFunType[S] with Serializable {
-    override def apply(s: S): S = f(s)
-  }
 
   type MealyFunType[S, I] = (S, I) => S
-  class DevMealyBehavior[S, I](f: MealyFunType[S, I]) extends MealyFunType[S, I] with Serializable {
-    override def apply(s: S, i: I): S = f(s, i)
-    def map[T](f2: S => T): (S, I) => T = (s: S, i: I) => f2(f(s,i))
-  }
 
   type MemorylessFunType[S] = () => S
-  class MemorylessBehavior[S](f: MemorylessFunType[S]) extends MemorylessFunType[S] with Serializable {
-    override def apply(): S = f()
+
+  /*
+  implicit def fromMealyFunToBehavior[S, I](f: MealyFunType[S, I]): MealyBehavior[S, I] = new MealyBehavior(f)
+  class MealyBehavior[S, I](val f: MealyFunType[S, I]) extends ((S, I) => S) {
+    override def apply(s: S, i: I): S = f(s, i)
+    def map(m: MealyBehavior[S,I]) = (s: S, i: I) => m.apply(f(s,i),i)
+  }
+  */
+
+  class DBehavior[S](val f: MealyFunType[S, DevContext]) extends DevBehavior[S] with Serializable {
+    override def apply(s: S, i: DevContext): S = f(s, i)
+    def map(m: DevBehavior[S]) = (s: S, ctx: DevContext) => m.apply(f(s, ctx), ctx)
   }
 
-  implicit def fromFunToDevMealyBehavior[S,I](f: MealyFunType[S, I]) = new DevMealyBehavior(f)
+}
 
-  implicit def fromFunToDevMooreBehavior[S](f: MooreFunType[S]) = new DevMooreBehavior(f)
+trait DevContext {
+  def setInput[T](name: String, value: T): Unit
 
-  implicit def fromMealyToMoore[S, I](mealy: DevMealyBehavior[S,I])
-                                     (implicit inputProvider: () => I): DevMooreBehavior[S] = {
-    mealy(_,inputProvider())
-  }
+  def getInput[T](name: String): Option[T]
 
-  implicit def fromMemorylessToMoore[S](mless: MemorylessBehavior[S]): DevMooreBehavior[S] = {
-    (s: S) => mless()
-  }
+  def getNeighborsStates[S]: Map[String, Option[S]]
 }
 
 object DeviceBehaviors {
   import it.unibo.spala.Behaviors._
 
-  val GradientBehavior = (s: Int, i: (Boolean,Map[ActorRef,Int])) => i match {
-      case (isSrc, states) => {
-        if (isSrc) { 0 }
-        else if (!states.isEmpty) abs(states.values.min) + 1
-        else -1
-      }
+  /*
+  val GradientBehavior: DevBehavior[Int] = (s, ctx) => {
+    val states = ctx.getNeighborsStates[Int].values.map(o => o.getOrElse(-1))
+    val isSrc = ctx.getInput[Boolean]("isSrc").getOrElse(false)
+    if (isSrc) 0
+    else if (!states.isEmpty) abs(states.min) + 1
+    else -1
   }
+  */
 
-  class ConstantBehavior[T](const: MemorylessFunType[T]) extends MemorylessBehavior[T](const)
+  val GradientBehavior = new DBehavior[Int](
+    (s, ctx) => {
+      val states = ctx.getNeighborsStates[Int].values.map(o => o.getOrElse(-1))
+      val isSrc = ctx.getInput[Boolean]("isSrc").getOrElse(false)
+      if (isSrc) 0
+      else if (!states.isEmpty) scala.math.abs(states.min) + 1
+      else -1
+    })
+
+  class ConstantBehavior[T](value: => T) extends DBehavior[T]( (t,ctx) => value ) with Serializable
 
 }

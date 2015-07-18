@@ -1,8 +1,9 @@
 package it.unibo.spala.actors
 
 // Key imports
+
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{CyclicBehavior, Dev}
+import it.unibo.spala.{DevContext, CyclicBehavior, Dev}
 
 // Akka imports
 import akka.actor.{Actor, ActorRef}
@@ -21,16 +22,14 @@ import scala.util.Random
  * @param device The device behavior being wrapped
  * @param position The location of the device
  * @tparam S // The type of the state of the device
- * @tparam I // The type of the input of the device
  */
-class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], position: Point3D)
-  extends Actor with CyclicBehavior {
+class DevActor[S](protected var device: Dev[S], position: Point3D)
+  extends Actor with DevContext with CyclicBehavior {
 
   /* Key members */
 
   protected var container: ActorRef = _
   protected var neighbors = Map[ActorRef, Option[S]]()
-  protected var input: I = _
 
   /* Utility members */
 
@@ -49,8 +48,8 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
   def receive = initialBehavior
 
   protected def initialBehavior: Receive = {
-    case MsgStartWithInputAndRegisterTo(i: I, to) => {
-      input = i // save initial input
+    case MsgStartWithInputAndRegisterTo(i, to) => {
+      setInput(i.name, i.value) // save initial input
       container = to // save reference to the space manager
       container ! MsgRegisterWithPosition(device.name, position)
       Start()
@@ -83,7 +82,7 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
     // Build a map from actors to their state (and filters out those whose state is unknown, i.e., None)
     val map = Map[ActorRef, S](neighbors.filter { case (ref, Some(s)) => true; case _ => false } mapValues (x => x.get) toList: _*)
     // Run the behavior of the device by providing its input and mappings, and store the device in the new state
-    device = device.run((input, map))
+    device = device.run(this)
   }
 
   protected def scheduleNextElaboration() = {
@@ -131,4 +130,13 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
       self ! MsgMove(self.path.name, new Point3D(rx - 10, ry - 10, 0), isRelative)
     }
   }
+
+  val inputs: collection.mutable.Map[String, Any] = collection.mutable.Map()
+  override def setInput[T](name: String, value: T): Unit = inputs += (name -> value)
+
+  override def getNeighborsStates[S]: Map[String, Option[S]] =
+    neighbors.map { case (k:ActorRef, v:Option[S]) => (k.path.name, v)  }
+
+  override def getInput[T](name: String): Option[T] =
+    inputs.get(name) match { case Some(t:T) => Some(t); case _ => None }
 }

@@ -67,7 +67,7 @@ package object actors {
 
   case class MsgStartAndRegisterTo(to: ActorRef)
 
-  case class MsgStartWithInputAndRegisterTo[I](input: I, to: ActorRef)
+  case class MsgStartWithInputAndRegisterTo[I](input: InputData[I], to: ActorRef)
 
   case class MsgStartWithRecipient(recipient: ActorRef)
 
@@ -87,3 +87,5 @@ package object actors {
 trait CyclicBehavior {
   val workInterval = 500 milliseconds
 }
+
+case class InputData[T](val name: String, val value: T)

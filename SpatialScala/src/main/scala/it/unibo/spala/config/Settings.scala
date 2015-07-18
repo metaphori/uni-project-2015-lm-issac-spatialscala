@@ -2,6 +2,7 @@ package it.unibo.spala.config
 
 import akka.actor.ActorRef
 import com.typesafe.config.{Config, ConfigFactory}
+import it.unibo.spala.InputData
 import it.unibo.spala.math.Point3D
 
 /**
@@ -9,8 +10,8 @@ import it.unibo.spala.math.Point3D
  * Created on date: 16/07/15.
  */
 
-case class Settings[S,I](systemSettings: SystemSettings,
-                    deviceSettings: DeviceSettings[S,I],
+case class Settings[S](systemSettings: SystemSettings,
+                    deviceSettings: DeviceSettings[S],
                     spatialSettings: SpatialSettings,
                     devDistributionSettings: DeviceDistributionSettings,
                     deploymentSettings: DeploymentSettings){ }
@@ -20,8 +21,8 @@ case class SystemSettings(name: String = "MySpatialSystem",
                           gui: Boolean = false,
                           console: Boolean = true)
 
-case class DeviceSettings[S, I](initialDeviceState: S,
-                          inputProvider: (Int, String, ActorRef, Point3D) => Any,
+case class DeviceSettings[S](initialDeviceState: S,
+                          inputProvider: (Int, String, ActorRef, Point3D) => InputData[Any],
                           nameProvider: (Int => String) = i => "Device"+i)
 
 case class SpatialSettings(proximityThreshold: Double = 100)

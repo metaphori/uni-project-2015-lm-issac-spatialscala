@@ -1,10 +1,11 @@
 package it.unibo.spala.actors
 
-import akka.actor.{Props, ActorRef, ActorSystem}
-import it.unibo.spala.Behaviors.DevMealyBehavior
+import akka.actor.{ActorRef, ActorSystem, Props}
+import it.unibo.spala.Behaviors.DevBehavior
 import it.unibo.spala._
 import it.unibo.spala.config._
 import it.unibo.spala.math.Point3D
+
 import scala.concurrent.duration._
 
 /**
@@ -16,9 +17,9 @@ class MySpaceManager(threshold: Double) extends SimpleSpaceManagerActor {
   override val proximityThreshold: Double = threshold
 }
 
-class SpatialSystem[S,I](val name: String,
-                         val settings: Settings[S, I],
-                         val behavior: DevMealyBehavior[S, I]) {
+class SpatialSystem[S](val name: String,
+                         val settings: Settings[S],
+                         val behavior: DevBehavior[S]) {
 
     val systemSettings = settings.systemSettings
     val devSettings = settings.deviceSettings
@@ -36,7 +37,7 @@ class SpatialSystem[S,I](val name: String,
 
     // CREATE COMPONENTS
     val devs = for(i <- 1 to devdistributionSettings.n)
-      yield new Dev[S,I](devSettings.nameProvider(i), devSettings.initialDeviceState.asInstanceOf[S], behavior)
+      yield new Dev[S](devSettings.nameProvider(i), devSettings.initialDeviceState, behavior)
     val devsWithPositions = devs zip positions
 
     val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
@@ -44,7 +45,7 @@ class SpatialSystem[S,I](val name: String,
     var k = 0
     val devsInfo =
       devsWithPositions.map { case (dev,pos) => {
-          val actorProp = Props(classOf[DevActor[S,I]], dev, pos)
+          val actorProp = Props(classOf[DevActor[S]], dev, pos)
           val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
           (dev.name, actorRef, pos)
         }
@@ -75,13 +76,15 @@ class SpatialSystem[S,I](val name: String,
 object TestHighLevel extends App {
 
   type State = Int
-  type Input = (Boolean, Map[ActorRef, State])
-  type Device = Dev[State, Input]
-  type DeviceActor = DevActor[State, Input]
+  type Input = Boolean
 
-  val behavior = DeviceBehaviors.GradientBehavior
+  //val behavior = GradientBehavior
+  //val behavior = DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>3) 3 else i } // bounded
+  //val behavior = new ConstantBehavior[Int](77)
 
-  val settings = Settings[State,Input](
+  val behavior = (i:Int, ctx: DevContext) => ctx.getNeighborsStates.size
+
+  val settings = Settings[State](
     SystemSettings(
       name = "MyActorSystem",
       executionStrategy = AsyncExecutionStrategy,
@@ -89,11 +92,11 @@ object TestHighLevel extends App {
       console = false),
     DeviceSettings(
       initialDeviceState = 0,
-      (k:Int, name:String, ref:ActorRef, pos:Point3D) => k==50, // input provider (only the 50th elem is source)
+      (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k==50), // input provider (only the 50th elem is source)
       (k:Int) => "d"+k // name provider
     ),
     SpatialSettings(
-      proximityThreshold = 100
+      proximityThreshold = 50
     ),
     DeviceDistributionSettings(
       n = 100,
@@ -103,6 +106,6 @@ object TestHighLevel extends App {
     DeploymentSettings()
   )
 
-  new SpatialSystem[State, Input]("example1", settings, behavior)
+  new SpatialSystem[State]("example1", settings, behavior)
 
 }
