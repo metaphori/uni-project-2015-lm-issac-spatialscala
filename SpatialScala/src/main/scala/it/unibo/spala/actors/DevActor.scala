@@ -8,9 +8,6 @@ import it.unibo.spala.{CyclicBehavior, Dev}
 import akka.actor.{Actor, ActorRef}
 
 // Utility imports
-import com.typesafe.scalalogging.Logger
-import org.slf4j.LoggerFactory
-
 import scala.concurrent.duration._
 import scala.util.Random
 
@@ -37,7 +34,7 @@ class DevActor[S, I](protected var device: Dev[S, (I, Map[ActorRef,S])], positio
 
   /* Utility members */
 
-  private val Log = Logger(LoggerFactory.getLogger(self.path.name))
+  private val Log = akka.event.Logging(context.system, this)
   private val rand = new Random()
 
   /* Implicits and variables */
