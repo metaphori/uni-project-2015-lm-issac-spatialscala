@@ -5,8 +5,8 @@ package it.unibo.spala.test
  * Created on date: 16/07/15.
  */
 
-import it.unibo.spala.math.{Point2D}
-import it.unibo.spala.{ConfigHelper, GridSettings}
+import it.unibo.spala.config.{ConfigHelper, GridSettings}
+import it.unibo.spala.math.Point2D
 import org.scalatest._
 
 class DeviceDistributionTests extends FlatSpec with Matchers {

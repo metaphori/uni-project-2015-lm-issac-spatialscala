@@ -10,6 +10,7 @@ import scala.util.Random
 object MainProgram extends App {
   org.apache.log4j.BasicConfigurator.configure()
   implicit val executionContext = ExecutionContexts.global()
+
   Log.info("Main program started")
 
   val sys = ActorSystem("MyActorSystem")

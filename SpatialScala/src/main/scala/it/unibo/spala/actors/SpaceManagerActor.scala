@@ -1,8 +1,8 @@
 package it.unibo.spala.actors
 
 import akka.actor.{Actor, ActorRef}
-import it.unibo.spala.BasicSpace
 import it.unibo.spala.math.Point3D
+import it.unibo.spala.space.BasicSpace
 
 /**
  * Created by: Roberto Casadei 

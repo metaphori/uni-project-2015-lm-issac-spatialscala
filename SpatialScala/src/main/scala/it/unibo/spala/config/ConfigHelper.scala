@@ -1,4 +1,4 @@
-package it.unibo.spala
+package it.unibo.spala.config
 
 import it.unibo.spala.math.Point2D
 

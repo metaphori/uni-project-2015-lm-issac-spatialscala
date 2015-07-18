@@ -1,6 +1,4 @@
-package it.unibo.spala
-
-import it.unibo.spala.math.Point3D
+package it.unibo.spala.iot
 
 /**
  * Created by: Roberto Casadei 
@@ -16,9 +14,3 @@ trait ThingsContext[R <: ThingRegistrationInfo,T <: ThingInfo] {
   def GetAll(): Iterable[T]
 
 }
-
-trait ThingRegistrationInfo { }
-
-trait ThingInfo { }
-
-case class BasicRegistrationInfo(id: String, location: Point3D)

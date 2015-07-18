@@ -1,7 +1,7 @@
-package it.unibo.spala
+package it.unibo.spala.config
 
 import akka.actor.ActorRef
-import com.typesafe.config.{ConfigFactory, Config}
+import com.typesafe.config.{Config, ConfigFactory}
 import it.unibo.spala.math.Point3D
 
 /**
@@ -9,22 +9,27 @@ import it.unibo.spala.math.Point3D
  * Created on date: 16/07/15.
  */
 
-case class Settings(systemSettings: SystemSettings[_,_],
-                    deploymentSettings: DeploymentSettings,
-                    devDistributionSettings: DeviceDistributionSettings){ }
+case class Settings(systemSettings: SystemSettings,
+                    deviceSettings: DeviceSettings[_,_],
+                    spatialSettings: SpatialSettings,
+                    devDistributionSettings: DeviceDistributionSettings,
+                    deploymentSettings: DeploymentSettings){ }
 
-case class SystemSettings[S, I](name: String = "MySpatialSystem",
-                          initialDeviceState: S,
-                          inputProvider: (Int, String, ActorRef, Point3D) => I,
+case class SystemSettings(name: String = "MySpatialSystem",
                           gui: Boolean = false,
-                          console: Boolean = true,
-                          proximityThreshold: Double = 100)
+                          console: Boolean = true)
 
-case class DeploymentSettings() { }
+case class DeviceSettings[S, I](initialDeviceState: S,
+                          inputProvider: (Int, String, ActorRef, Point3D) => I,
+                          nameProvider: (Int => String) = i => "Device"+i)
+
+case class SpatialSettings(proximityThreshold: Double = 100)
 
 case class DeviceDistributionSettings (n: Int = 100,
                                        shape: Symbol = 'grid,
                                        shapeSettings: ShapeSettings = GridSettings()) { }
+
+case class DeploymentSettings() { }
 
 abstract class ShapeSettings { }
 
