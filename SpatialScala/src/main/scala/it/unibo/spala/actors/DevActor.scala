@@ -42,6 +42,7 @@ class DevActor[S](protected var device: Dev[S],
   //implicit val timeout = Timeout(1 second) // for the "ask" pattern
   override val workInterval = SysKB.WorkInterval
   private val nbsDiscoveryInterval = SysKB.NbsDiscoveryInterval
+  private var round: Long = 0
 
   /* Reactive behaviors */
 
@@ -84,6 +85,8 @@ class DevActor[S](protected var device: Dev[S],
     val map = Map[ActorRef, S](neighbors.filter { case (ref, Some(s)) => true; case _ => false } mapValues (x => x.get) toList: _*)
     // Run the behavior of the device by providing its input and mappings, and store the device in the new state
     device = device.run(this)
+    // Increment round number
+    this.round += 1
   }
 
   protected def scheduleNextElaboration() = {
@@ -147,4 +150,6 @@ class DevActor[S](protected var device: Dev[S],
 
   override def getInput[T](name: String): Option[T] =
     inputs.get(name) match { case Some(t:T) => Some(t); case _ => None }
+
+  override def getComputationRound: Long = this.round
 }

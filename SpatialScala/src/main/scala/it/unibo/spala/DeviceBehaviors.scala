@@ -40,6 +40,8 @@ trait DevContext {
   def getInput[T](name: String): Option[T]
 
   def getNeighborsStates[S]: Map[String, Option[S]]
+
+  def getComputationRound: Long
 }
 
 object DeviceBehaviors {

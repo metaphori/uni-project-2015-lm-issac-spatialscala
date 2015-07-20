@@ -81,10 +81,11 @@ object TestHighLevel extends App {
   type State = Int
   type Input = Boolean
 
-  val behavior = DeviceBehaviors.GradientBehavior
+  //val behavior = DeviceBehaviors.GradientBehavior
   //val behavior = DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>3) 3 else i } // bounded
   //val behavior = new ConstantBehavior[Int](77)
-  //val behavior = (i:Int, ctx: DevContext) => ctx.getNeighborsStates.size
+  //val behavior = (i: Int, ctx: DevContext) => ctx.getNeighborsStates.size
+  val behavior = (s: Int, ctx: DevContext) => ctx.getComputationRound.toInt
 
   val settings = Settings[State](
     SystemSettings(
