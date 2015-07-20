@@ -69,6 +69,8 @@ package object actors {
 
   case class MsgStartWithInputAndRegisterTo[I](input: InputData[I], to: ActorRef)
 
+  case class MsgWithInput[I](input: InputData[I])
+
   case class MsgStartWithRecipient(recipient: ActorRef)
 
   object MsgGetAll extends Serializable

@@ -53,7 +53,12 @@ class DevActor[S](protected var device: Dev[S],
       setInput(i.name, i.value) // save initial input
       container = to // save reference to the space manager
       container ! MsgRegisterWithPosition(device.name, position)
-      context.system.scheduler.schedule(SysKB.MoveInterval, SysKB.MoveInterval)(MayMove())
+      Start()
+    }
+    case MsgWithInput(i) => setInput(i.name, i.value)
+    case MsgStartAndRegisterTo(to) => {
+      container = to // save reference to the space manager
+      container ! MsgRegisterWithPosition(device.name, position)
       Start()
     }
   }
@@ -76,6 +81,7 @@ class DevActor[S](protected var device: Dev[S],
     val physicalPath = akka.serialization.Serialization.serializedActorPath(self)
     Log.info(s"Starting (path=$physicalPath)")
     DiscoverNeighbors()
+    context.system.scheduler.schedule(SysKB.MoveInterval, SysKB.MoveInterval)(MayMove())
     context.become(workingBehavior)
     self ! GoOn
   }
