@@ -5,6 +5,8 @@ import com.typesafe.config.{Config, ConfigFactory}
 import it.unibo.spala.InputData
 import it.unibo.spala.math.Point3D
 
+import scala.concurrent.duration.FiniteDuration
+
 /**
  * Created by: Roberto Casadei 
  * Created on date: 16/07/15.
@@ -23,7 +25,8 @@ case class SystemSettings(name: String = "MySpatialSystem",
 
 case class DeviceSettings[S](initialDeviceState: S,
                           inputProvider: (Int, String, ActorRef, Point3D) => InputData[Any],
-                          nameProvider: (Int => String) = i => "Device"+i)
+                          nameProvider: (Int => String) = i => "Device"+i,
+                          workInterval: FiniteDuration)
 
 case class SpatialSettings(proximityThreshold: Double = 100)
 

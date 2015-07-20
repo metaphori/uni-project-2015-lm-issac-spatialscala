@@ -28,6 +28,9 @@ class SpatialSystem[S](val name: String,
     val shapeSettings = devdistributionSettings.shapeSettings
     val deploymentSettings = settings.deploymentSettings
 
+    // Setting system-wide parameters
+    SysKB.WorkInterval = devSettings.workInterval
+
     val sys = ActorSystem(systemSettings.name)
 
     val positions = devdistributionSettings.shape match {
@@ -78,11 +81,10 @@ object TestHighLevel extends App {
   type State = Int
   type Input = Boolean
 
-  //val behavior = GradientBehavior
+  val behavior = DeviceBehaviors.GradientBehavior
   //val behavior = DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>3) 3 else i } // bounded
   //val behavior = new ConstantBehavior[Int](77)
-
-  val behavior = (i:Int, ctx: DevContext) => ctx.getNeighborsStates.size
+  //val behavior = (i:Int, ctx: DevContext) => ctx.getNeighborsStates.size
 
   val settings = Settings[State](
     SystemSettings(
@@ -92,11 +94,12 @@ object TestHighLevel extends App {
       console = false),
     DeviceSettings(
       initialDeviceState = 0,
-      (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k==50), // input provider (only the 50th elem is source)
-      (k:Int) => "d"+k // name provider
+      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k==50), // only 50th elem is source
+      nameProvider = (k:Int) => "d"+k,
+      workInterval = 500 millis
     ),
     SpatialSettings(
-      proximityThreshold = 50
+      proximityThreshold = 200
     ),
     DeviceDistributionSettings(
       n = 100,

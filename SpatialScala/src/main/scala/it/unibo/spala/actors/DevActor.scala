@@ -3,13 +3,12 @@ package it.unibo.spala.actors
 // Key imports
 
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{DevContext, CyclicBehavior, Dev}
+import it.unibo.spala.{CyclicBehavior, Dev, DevContext}
 
 // Akka imports
 import akka.actor.{Actor, ActorRef}
 
 // Utility imports
-import scala.concurrent.duration._
 import scala.util.Random
 
 /**
@@ -23,7 +22,8 @@ import scala.util.Random
  * @param position The location of the device
  * @tparam S // The type of the state of the device
  */
-class DevActor[S](protected var device: Dev[S], position: Point3D)
+class DevActor[S](protected var device: Dev[S],
+                  position: Point3D)
   extends Actor with DevContext with CyclicBehavior {
 
   /* Key members */
@@ -40,8 +40,8 @@ class DevActor[S](protected var device: Dev[S], position: Point3D)
 
   import context.dispatcher // Provides the ExecutionContext
   //implicit val timeout = Timeout(1 second) // for the "ask" pattern
-  override val workInterval = 100 milliseconds
-  private val nbsDiscoveryInterval = 250 milliseconds
+  override val workInterval = SysKB.WorkInterval
+  private val nbsDiscoveryInterval = SysKB.NbsDiscoveryInterval
 
   /* Reactive behaviors */
 
@@ -52,6 +52,7 @@ class DevActor[S](protected var device: Dev[S], position: Point3D)
       setInput(i.name, i.value) // save initial input
       container = to // save reference to the space manager
       container ! MsgRegisterWithPosition(device.name, position)
+      context.system.scheduler.schedule(SysKB.MoveInterval, SysKB.MoveInterval)(MayMove())
       Start()
     }
   }
@@ -63,8 +64,8 @@ class DevActor[S](protected var device: Dev[S], position: Point3D)
     }
     case GoOn => {
       doJob()
+      propagateStateToNeighbors()
       scheduleNextElaboration()
-      MayMove() // simulate mobility
     }
     case MsgReturnNeighbors(t) => UpdateNeighbors(t)
     case MsgReturnState(nState: S) => SaveNeighborState(sender, nState)
@@ -87,7 +88,7 @@ class DevActor[S](protected var device: Dev[S], position: Point3D)
 
   protected def scheduleNextElaboration() = {
     context.system.scheduler.scheduleOnce(workInterval) {
-      SyncWithNeighborValue()
+      //SyncWithNeighborValue()
       self ! GoOn
     }
 
@@ -98,8 +99,15 @@ class DevActor[S](protected var device: Dev[S], position: Point3D)
   }
 
   // Ask each neighbor for their state
+  /*
   protected def SyncWithNeighborValue() = {
     neighbors.keys.foreach { n => n ! MsgGetState() }
+  }
+  */
+
+  // Propagate state to all the neighbors
+  def propagateStateToNeighbors() = {
+    neighbors.keys.foreach( n => n ! MsgReturnState(device.state) )
   }
 
   // Ask the space manager for the neighbors
@@ -124,10 +132,10 @@ class DevActor[S](protected var device: Dev[S], position: Point3D)
 
   // To simulate mobility
   protected def MayMove() = {
-    if (rand.nextInt(100) < 10) {
-      val rx, ry = rand.nextInt(20)
+    if (rand.nextDouble() < SysKB.MoveProbability) {
+      val rx, ry = rand.nextInt(SysKB.MoveStep)
       val isRelative = true
-      self ! MsgMove(self.path.name, new Point3D(rx - 10, ry - 10, 0), isRelative)
+      self ! MsgMove(self.path.name, new Point3D(rx - SysKB.MoveStep/2, ry - SysKB.MoveStep/2, 0), isRelative)
     }
   }
 
