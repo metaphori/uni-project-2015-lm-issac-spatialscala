@@ -13,6 +13,8 @@ import it.unibo.spala.space.BasicSpace
  * Class of actors responsible for managing a space (i.e., a container of devices)
  */
 abstract class SpaceManagerActor extends Actor {
+  protected val Log = akka.event.Logging(context.system, this)
+
   var actors: Map[String, DevInfo]
 
   protected def RegisterActor(id: String, actor: ActorRef, pos: Option[Point3D] = None): Unit
@@ -41,6 +43,7 @@ class SimpleSpaceManagerActor extends SpaceManagerActor with BasicSpace {
   override var actors: Map[String,DevInfo] = Map[String,DevInfo]()
 
   override protected def RegisterActor(id: String, ref: ActorRef, pos: Option[Point3D] = None) = {
+    Log.info(s"Registering actor $ref with id $id and position $pos")
     actors = actors + (id -> new DevInfo(id, ref, pos))
     pos.foreach(p => add(id, p)) // If a position is provided, let's add to the space
   }

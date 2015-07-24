@@ -9,9 +9,17 @@ package object config {
   def CmdLineParser[T] = new scopt.OptionParser[Settings[T]]("<spatial program>") {
     head("<spatial program>", "1.0")
 
+    opt[String]("prefix") valueName("<prefix>") action { (x, c) =>
+      c.copy(systemSettings = c.systemSettings.copy(prefix = x))
+    } text("Prefix for unique device names")
+
     opt[Int]("numNodes") valueName("<N>") required() action { (x, c) =>
       c.copy(devDistributionSettings = c.devDistributionSettings.copy(n = x))
     } text("Number of nodes")
+
+    opt[Double]("proximity") valueName("<N>") action { (x, c) =>
+      c.copy(spatialSettings = c.spatialSettings.copy(proximityThreshold = x))
+    } text("Proximity threshold")
 
     opt[Seq[Int]]("grid") required() valueName("<nrows>, <ncols>, <stepx>, <stepy>, <offsetx>, <offsety>") action { (x,c) =>
       c.copy(devDistributionSettings = c.devDistributionSettings.copy(shapeSettings =

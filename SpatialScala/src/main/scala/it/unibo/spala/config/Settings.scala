@@ -19,6 +19,7 @@ case class Settings[S](systemSettings: SystemSettings = SystemSettings(),
                     deploymentSettings: DeploymentSettings = DeploymentSettings())
 
 case class SystemSettings(name: String = "MySpatialSystem",
+                          prefix: String = "d",
                           start: Boolean = true,
                           executionStrategy: ExecutionStrategy = AsyncExecutionStrategy,
                           gui: Boolean = true,

@@ -1,6 +1,6 @@
 package it.unibo.spala.actors
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
 import it.unibo.spala.Behaviors.DevBehavior
@@ -71,8 +71,6 @@ class SpatialSystem[S](val settings: Settings[S],
         }
       }
 
-    val groupActor = sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter")
-
     // START THE SYSTEM
     k = 0
     devsInfo.foreach { case (name, a, p) => {
@@ -82,11 +80,17 @@ class SpatialSystem[S](val settings: Settings[S],
       }
     }
 
+    var groupActor: ActorRef = _
+    if(devdistributionSettings.n > 0)
+      groupActor = sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter")
+
     if(systemSettings.start) {
 
       val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
 
-      groupActor ! MsgStartAndRegisterTo(registry)
+      if(devdistributionSettings.n>0) {
+        groupActor ! MsgStartAndRegisterTo(registry)
+      }
 
       if(distrib){
         ddSettings.nodes.foreach(node => {

@@ -22,6 +22,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   import scala.collection._
   import context.dispatcher // Provides the ExecutionContext
   override val workInterval = 200 milliseconds
+  protected val Log = akka.event.Logging(context.system, this)
 
   /* Key members */
 
@@ -43,6 +44,8 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
       spaceManager ! MsgGetAllWithInfo
     }
     case MsgReturnAllAs(all: Map[String, DevInfo]) => {
+      Log.info(s"Received actors to be monitored: $all")
+
       refs = mutable.Map(all.values.map(info => (info.id, info.ref)).toList :_*)
       states = mutable.Map(all.values.map(info => (info.ref, None)).toList :_*)
       positions = mutable.Map(all.values.map(info => (info.ref, info.position.get)).toList :_*)
@@ -80,7 +83,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   def DrawAll() = {
     val g = canvas.getGraphics
     // Let's clear then canvas
-    g.clearRect(0, 0, 600, 600)
+    g.clearRect(0, 0, this.width, this.height)
     // Then we draw all the devices
     positions.foreach {  case (ref, pos) => { DrawSingle(g, ref, pos) } }
   }
@@ -106,7 +109,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
     panel.setLayout(new BorderLayout())
 
     canvas = new JPanel()
-    canvas.setBounds(0, 100, width, height-100)
+    canvas.setBounds(0, 0, width, height)
     panel.add(canvas, BorderLayout.CENTER)
     canvas.setBackground(Color.WHITE)
   }
