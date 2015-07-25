@@ -1,10 +1,11 @@
 package it.unibo.spala.actors.programs
 
 import akka.actor.ActorRef
-import it.unibo.spala.{InputData, DeviceBehaviors}
 import it.unibo.spala.actors.SpatialSystem
-import it.unibo.spala.config.{DeviceSettings, Settings, SystemSettings}
+import it.unibo.spala.config.{Settings, SystemSettings}
 import it.unibo.spala.math.Point3D
+import it.unibo.spala.{DeviceBehaviors, InputData}
+
 import scala.concurrent.duration._
 
 /**
@@ -21,18 +22,16 @@ object CmdLineProgram extends App {
 
   val parser = it.unibo.spala.config.CmdLineParser[State]
 
-  parser.parse(args, Settings(
-    deviceSettings = null,
+  parser.parse(args, Settings[State](
     systemSettings = SystemSettings(start = false))
   ) match {
     case Some(settings) =>
-      val deviceSettings = DeviceSettings(
+      var stgs: Settings[State] = settings.copy(deviceSettings = settings.deviceSettings.copy(
         initialDeviceState = 0,
-        inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k>0 && k%15==0),
+        inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k>0 && k%40==0),
         nameProvider = (k:Int) => settings.systemSettings.prefix+k,
         workInterval = 500 millis
-      )
-      var stgs = settings.copy(deviceSettings = deviceSettings)
+      ))
       new SpatialSystem[State](stgs, behavior)
     case None => parser.showUsage
   }

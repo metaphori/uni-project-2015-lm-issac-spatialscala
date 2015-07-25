@@ -83,7 +83,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
   def DrawAll() = {
     val g = canvas.getGraphics
     // Let's clear then canvas
-    g.clearRect(0, 0, this.width, this.height)
+    g.clearRect(0, 0, this.frame.getWidth, this.frame.getHeight)
     // Then we draw all the devices
     positions.foreach {  case (ref, pos) => { DrawSingle(g, ref, pos) } }
   }
@@ -109,7 +109,7 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
     panel.setLayout(new BorderLayout())
 
     canvas = new JPanel()
-    canvas.setBounds(0, 0, width, height)
+    canvas.setBounds(50, 50, width-50, height-50)
     panel.add(canvas, BorderLayout.CENTER)
     canvas.setBackground(Color.WHITE)
   }

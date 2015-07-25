@@ -81,7 +81,7 @@ class DevActor[S](protected var device: Dev[S],
     val physicalPath = akka.serialization.Serialization.serializedActorPath(self)
     Log.info(s"Starting (path=$physicalPath)")
     DiscoverNeighbors()
-    context.system.scheduler.schedule(SysKB.MoveInterval, SysKB.MoveInterval)(MayMove())
+    if(SysKB.MobileDevices) context.system.scheduler.schedule(SysKB.MoveInterval, SysKB.MoveInterval)(MayMove())
     context.become(workingBehavior)
     self ! GoOn
   }
@@ -142,9 +142,9 @@ class DevActor[S](protected var device: Dev[S],
   // To simulate mobility
   protected def MayMove() = {
     if (rand.nextDouble() < SysKB.MoveProbability) {
-      val rx, ry = rand.nextInt(SysKB.MoveStep)
+      val rx, ry = rand.nextDouble() * SysKB.MaxMoveStep
       val isRelative = true
-      self ! MsgMove(self.path.name, new Point3D(rx - SysKB.MoveStep/2, ry - SysKB.MoveStep/2, 0), isRelative)
+      self ! MsgMove(self.path.name, new Point3D(rx - SysKB.MaxMoveStep/2, ry - SysKB.MaxMoveStep/2, 0), isRelative)
     }
   }
 

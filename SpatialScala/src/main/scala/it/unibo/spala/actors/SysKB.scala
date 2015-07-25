@@ -21,6 +21,6 @@ object SysKB {
 
   var MoveInterval = 100 milliseconds
 
-  var MoveStep = 20
+  var MaxMoveStep = 20.0
 
 }
