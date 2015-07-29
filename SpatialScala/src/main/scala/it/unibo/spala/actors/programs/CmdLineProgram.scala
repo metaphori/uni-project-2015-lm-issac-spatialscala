@@ -28,7 +28,7 @@ object CmdLineProgram extends App {
     case Some(settings) =>
       var stgs: Settings[State] = settings.copy(deviceSettings = settings.deviceSettings.copy(
         initialDeviceState = 0,
-        inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k>0 && k%40==0),
+        inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k>0 && k%50==0),
         nameProvider = (k:Int) => settings.systemSettings.prefix+k,
         workInterval = 500 millis
       ))
