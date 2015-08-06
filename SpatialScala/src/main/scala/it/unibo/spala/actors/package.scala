@@ -3,6 +3,7 @@ package it.unibo.spala
 import java.util.TimerTask
 
 import akka.actor.ActorRef
+import it.unibo.spala.Behaviors.DBehavior
 import it.unibo.spala.math.Point3D
 import scala.concurrent.duration._
 
@@ -84,6 +85,14 @@ package object actors {
   case class MsgGetPositionOf[P](who: String)
 
   case class MsgReturnPositionOf[P](who: String, pos: P)
+
+  case class MsgAddObserver(o: ActorRef)
+
+  case class MsgRemoveObserver(o: ActorRef)
+
+  case class MsgReturnValue[T](value: T)
+
+  case class MsgWithBehavior[T](behavior: DBehavior[T])
 }
 
 trait CyclicBehavior {

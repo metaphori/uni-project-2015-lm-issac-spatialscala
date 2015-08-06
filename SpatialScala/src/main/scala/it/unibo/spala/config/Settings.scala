@@ -43,9 +43,9 @@ case class DeviceDistributionSettings (n: Int = 100,
                                        shape: Symbol = 'random,
                                        shapeSettings: ShapeSettings = SimpleRandomSettings())
 
-case class DeploymentSettings(val kind: DeploymentKind = LocalDeployment,
-                              val distrib: DistributedDeploymentSettings = DistributedDeploymentSettings(),
-                              val local: LocalDeploymentSettings = LocalDeploymentSettings())
+case class DeploymentSettings(kind: DeploymentKind = LocalDeployment,
+                              distrib: DistributedDeploymentSettings = DistributedDeploymentSettings(),
+                              local: LocalDeploymentSettings = LocalDeploymentSettings())
 
 case class DistributedDeploymentSettings(host: String = "127.0.0.1",
                                          port: Int = 0,
@@ -108,7 +108,7 @@ object SettingsBuilder {
 
   def buildFromConfig(config: Config) = {
     import scala.collection.JavaConversions._
-    implicit def configToRichConfig(c: Config) = new RichConfig(c)
+    implicit def configToRichConfig(c: Config): RichConfig = new RichConfig(c)
     //val actorSys = ActorSystem (name)
 
     var cfg = config.withFallback(ConfigFactory.load ("spatial_reference")).resolve()
