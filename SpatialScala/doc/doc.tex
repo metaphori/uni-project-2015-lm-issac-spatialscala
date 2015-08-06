@@ -348,13 +348,13 @@ To be solved
     due to inability to create additional native threads
     \begin{itemize}
     \item Such tasks are launched by device actors to schedule the next elaboration in the future
-    \item Notes for a solution: \texttt{ActorContext.setReceiveTimeout} may help; it can't be used directly 
+    \item Notes for a solution: \texttt{ActorContext.setReceiveTimeout} may help; it can't be used directly
       because the device actor needs to respond to other messages in the meantime.
      We would need a \texttt{ReceiveTimeout} for a specific message type
     \item Solution: Akka scheduler (\footnotesize{\url{http://doc.akka.io/docs/akka/snapshot/java/scheduler.html}}).
     Can it be used inside an actor? Yes (\footnotesize{\url{http://stackoverflow.com/questions/13896638/is-it-possible-to-use-the-akka-scheduler-inside-an-actor}})
     \end{itemize}
-    
+
 \end{itemize}
 \end{comment}
 
@@ -365,7 +365,12 @@ To be solved
  \item Open systems and system boundary porosity: devices entering/exiting the (sub-)system
 \end{itemize}
 
+\subsubsection{Remote class loading}
 
+\begin{itemize}
+\item \url{http://stackoverflow.com/questions/9573625/akka-remote-deploy-misunderstanding}
+\item \url{https://github.com/earldouglas/akka-remote-class-loading}
+\end{itemize}
 
 \section{Conclusion}
 
