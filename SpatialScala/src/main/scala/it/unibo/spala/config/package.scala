@@ -40,8 +40,9 @@ package object config {
     } text("Number of nodes")
 
     opt[Seq[Int]]("grid") valueName("<nrows>, <ncols>, <stepx>, <stepy>, <offsetx>, <offsety>") action { (x,c) =>
-      c.copy(devDistributionSettings = c.devDistributionSettings.copy(shapeSettings =
-        GridSettings(nrows = x(0), ncols = x(1), stepx = x(2), stepy = x(3), offsetx = x(4), offsety = x(5))))
+      c.copy(devDistributionSettings = c.devDistributionSettings.copy(
+        shape = 'grid,
+        shapeSettings = GridSettings(nrows = x(0), ncols = x(1), stepx = x(2), stepy = x(3), offsetx = x(4), offsety = x(5))))
     } text("Grid parameters")
 
     /* DEPLOYMENT SETTINGS */
