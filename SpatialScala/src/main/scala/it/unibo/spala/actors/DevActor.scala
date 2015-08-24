@@ -184,7 +184,7 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]])
   /* Implicits and variables */
 
   import context.dispatcher // Provides the ExecutionContext
-  override val workInterval = SysKB.WorkInterval
+  override var workInterval = SysKB.WorkInterval
   private val nbsDiscoveryInterval = SysKB.NbsDiscoveryInterval
   private var round: Long = 0
 
@@ -207,10 +207,14 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]])
         }
         else None
       override def getComputationRound: Long = round
+
       override def getNeighborsStates[S]: Map[String, Option[S]] =
-        neighbors.keys.map(k => (k.path.toString, neighbors(k))).toMap[String, Option[S]]
+        neighbors.map(elem => elem match { case (k,v: S) => (k.path.toString, v) }).asInstanceOf[Map[String,Option[S]]]
+
+//      override def getNeighborsStates[T]: Map[String, Option[T]] =
+  //      neighbors.map(elem => elem match { case (k,v: S) => (k.path.toString, v) }).asInstanceOf[Map[String,Option[T]]]
     }
-    computationActor = Some(this.context.actorOf(Props(classOf[DevComputationActor], devContext, this.workInterval, mostRecentState), "computation"))
+    computationActor = Some(this.context.actorOf(Props(classOf[DevComputationActor[S]], devContext, this.workInterval, mostRecentState), "computation"))
   }
 
   override def workingBehavior: Receive = receiveDataBehavior.orElse(setupBehavior)

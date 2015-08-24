@@ -93,6 +93,12 @@ package object actors {
   case class MsgReturnValue[T](value: T)
 
   case class MsgWithBehavior[T](behavior: DBehavior[T])
+
+  object MsgPause extends Serializable
+
+  object MsgResume extends Serializable
+
+  object MsgShutdown extends Serializable
 }
 
 trait CyclicBehavior {

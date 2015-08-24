@@ -35,7 +35,7 @@ object TestRemote extends App {
   /*
   println(akka.serialization.Serialization.serializedActorPath(aref))
   aref ! GoOn
-  val aref = sys.actorOf(Props[SimpleActor], "simpleActor")
+  val aref = sys.actorOf(Props[VerySimpleActor], "verySimpleActor")
   */
 
   val remote = ActorSystem()
@@ -88,7 +88,7 @@ object LoadClassBytes {
 }
 
 
-class SimpleActor extends Actor {
+class VerySimpleActor extends Actor {
   def receive: Receive = {
     case GoOn => println("Hi there")
   }

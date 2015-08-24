@@ -1,10 +1,11 @@
 package it.unibo.spala.actors.programs
 
 import akka.actor.ActorRef
+import it.unibo.spala.Behaviors.{DBehavior, DevBehavior}
 import it.unibo.spala.actors.SpatialSystem
 import it.unibo.spala.config._
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{DevContext, InputData}
+import it.unibo.spala.{DevBehaviorContext, InputData}
 
 import scala.concurrent.duration._
 
@@ -22,7 +23,7 @@ object TestHighLevel extends App {
   //val behavior = DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>3) 3 else i } // bounded
   //val behavior = new ConstantBehavior[Int](77)
   //val behavior = (i: Int, ctx: DevContext) => ctx.getNeighborsStates.size
-  val behavior = (s: Int, ctx: DevContext) => ctx.getComputationRound.toInt
+  val behavior: DevBehavior[Int] = (s: Int, ctx: DevBehaviorContext) => ctx.getComputationRound.toInt
 
   val settings = Settings[State](
     SystemSettings(
@@ -51,7 +52,7 @@ object TestHighLevel extends App {
     )
   )
 
-  new SpatialSystem[State](settings, behavior)
+  new SpatialSystem[State](settings, new DBehavior[State](behavior))
 
 }
 

@@ -14,6 +14,8 @@ trait ActorLifecycleBehavior {
 
   var workInterval: FiniteDuration
 
+  import context.dispatcher
+
   override def receive: Receive = initialBehavior
 
   def initialBehavior: Receive =
