@@ -31,10 +31,11 @@ object CustomSystemProgram extends App {
       initialDeviceState = 0,
       inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==50), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
-      workInterval = 500 millis
+      workInterval = 1000 millis,
+      mobility = DeviceMobilitySettings(moveProbability = 0.3)
     ),
     SpatialSettings(
-      proximityThreshold = 200
+      proximityThreshold = 100
     ),
     DeviceDistributionSettings(
       n = 100,
@@ -168,8 +169,8 @@ object CustomSystemProgram extends App {
 
     val rand = new Random()
     import sys.dispatcher
-    sys.scheduler.scheduleOnce(10 seconds, devsInfo(3)._2, MsgWithInput(InputData(InputNames.Source1, true)))
-    sys.scheduler.scheduleOnce(20 seconds, new Runnable(){
+    //sys.scheduler.scheduleOnce(10 seconds, devsInfo(3)._2, MsgWithInput(InputData(InputNames.Source1, true)))
+    sys.scheduler.scheduleOnce(5 seconds, new Runnable(){
       override def run(): Unit = {
         val b: DevBehavior[Int] = (old: Int, ctx: DevBehaviorContext) => {
           ctx.getComputationRound.toInt

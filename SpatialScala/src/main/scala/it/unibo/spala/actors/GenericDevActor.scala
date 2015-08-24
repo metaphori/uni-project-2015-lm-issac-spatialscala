@@ -1,9 +1,9 @@
 package it.unibo.spala.actors
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor._
 import it.unibo.spala.Behaviors._
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{DevBehaviorContext, DevContext, InputNames}
+import it.unibo.spala.{InputData, DevBehaviorContext, DevContext, InputNames}
 
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Random
@@ -29,7 +29,7 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
 
   /* Utility members */
 
-  private val Log = akka.event.Logging(context.system, this)
+  protected val Log = akka.event.Logging(context.system, this)
   private val rand = new Random()
 
   /* Implicits and variables */
@@ -46,6 +46,12 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
     case MsgWithInput(i) => {
       Log.debug(s"Received input '${i.name}' of value '${i.value}'")
       setInput(i.name, i.value)
+
+      // Handling of specific inputs
+      i match {
+        case InputData(InputNames.Position, pos: Point3D) => UpdatePosition(pos)
+        case _ => ()
+      }
     }
   }
 
@@ -71,6 +77,7 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
       //      override def getNeighborsStates[T]: Map[String, Option[T]] =
       //      neighbors.map(elem => elem match { case (k,v: S) => (k.path.toString, v) }).asInstanceOf[Map[String,Option[T]]]
     }
+    computationActor.foreach(ca => ca ! PoisonPill)
     computationActor = Some(this.context.actorOf(
       Props(classOf[DevComputationActor[S]], behavior, devContext, this.workInterval, initialS)
     ))
@@ -121,13 +128,14 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
     })
   }
 
-  // Ask the space manager for the neighbors
+  def UpdatePosition(pos: Point3D): Unit = { }
+
   protected def DiscoverNeighbors() = {
-    //container ! MsgGetNeighbors(device.name)
   }
 
   // Update current knowledge about neighbors
   protected def UpdateNeighbors(nbs: List[ActorRef]): Unit = {
+    Log.info(s"Updating nbs (they are ${nbs.size})")
     lazy val nones: Stream[Option[S]] = None #:: nones
     var newnbs = (nbs zip nones).toMap
     // Keep only the nbs that are included in the return msg
@@ -167,8 +175,15 @@ class GenericDevActorWithRegistry[S]() extends GenericDevActor[S] {
   }
 
   // Ask the space manager for the neighbors
-  override protected def DiscoverNeighbors() = {
+  override def DiscoverNeighbors() = {
     registry ! MsgGetNeighbors(this.name)
+  }
+
+  override def UpdatePosition(pos: Point3D): Unit = {
+    if(registry != null) {
+      Log.debug(s"Moving to new position $pos")
+      registry ! MsgMove(this.name, pos, false)
+    }
   }
 
 }
