@@ -11,7 +11,7 @@ package object Behaviors {
     def map[T](f: S => T): (S, DevContext) => T = (s:S, ctx:DevContext) => f(this.apply(s, ctx))
   }*/
 
-  type DevBehavior[S] = MealyFunType[S, DevContext]
+  type DevBehavior[S] = MealyFunType[S, DevBehaviorContext]
 
   type MooreFunType[S] = S => S
 
@@ -27,21 +27,23 @@ package object Behaviors {
   }
   */
 
-  class DBehavior[S](val f: MealyFunType[S, DevContext]) extends DevBehavior[S] with Serializable {
-    override def apply(s: S, i: DevContext): S = f(s, i)
-    def map(m: DevBehavior[S]) = (s: S, ctx: DevContext) => m.apply(f(s, ctx), ctx)
+  class DBehavior[S](val f: MealyFunType[S, DevBehaviorContext]) extends DevBehavior[S] with Serializable {
+    override def apply(s: S, i: DevBehaviorContext): S = f(s, i)
+    def map(m: DevBehavior[S]) = (s: S, ctx: DevBehaviorContext) => m.apply(f(s, ctx), ctx)
   }
 
 }
 
-trait DevContext {
-  def setInput[T](name: String, value: T): Unit
-
+trait DevBehaviorContext {
   def getInput[T](name: String): Option[T]
 
   def getNeighborsStates[S]: Map[String, Option[S]]
 
   def getComputationRound: Long
+}
+
+trait DevContext extends DevBehaviorContext {
+  def setInput[T](name: String, value: T): Unit
 }
 
 object DeviceBehaviors {
