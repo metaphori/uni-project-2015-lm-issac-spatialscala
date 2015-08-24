@@ -3,7 +3,7 @@ package it.unibo.spala.actors
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
-import it.unibo.spala.Behaviors.DevBehavior
+import it.unibo.spala.Behaviors.DBehavior
 import it.unibo.spala._
 import it.unibo.spala.config._
 
@@ -19,7 +19,7 @@ class MySpaceManager(threshold: Double) extends SimpleSpaceManagerActor {
 }
 
 class SpatialSystem[S](val settings: Settings[S],
-                       val behavior: DevBehavior[S]) {
+                       val behavior: DBehavior[S]) {
 
     val systemSettings = settings.systemSettings
     val devSettings = settings.deviceSettings

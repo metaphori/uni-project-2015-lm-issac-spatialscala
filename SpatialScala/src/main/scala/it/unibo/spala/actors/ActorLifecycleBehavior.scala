@@ -13,6 +13,7 @@ trait ActorLifecycleBehavior {
   this: Actor =>
 
   var workInterval: FiniteDuration
+  var lifecycleState: LifecycleState = LSInitial
 
   import context.dispatcher
 
@@ -51,21 +52,26 @@ trait ActorLifecycleBehavior {
   def Start() = {
     OnStart()
     context.become(fullWorkingBehavior)
+    self ! GoOn
+    this.lifecycleState = LSStarted
   }
 
   def Stop() = {
     OnStop()
     context.become(initialBehavior)
+    this.lifecycleState = LSStopped
   }
 
   def Pause() = {
     OnPause()
     context.become(pausedBehavior)
+    this.lifecycleState = LSPaused
   }
 
   def Resume() = {
     OnResume()
     context.become(fullWorkingBehavior)
+    this.lifecycleState = LSResumed
   }
 
   def DoJob() = {
@@ -75,6 +81,7 @@ trait ActorLifecycleBehavior {
   def Shutdown() = {
     OnShutdown()
     context.stop(self)
+    this.lifecycleState = LSFinalized
   }
 
   def OnStart() = { }
@@ -89,4 +96,16 @@ trait ActorLifecycleBehavior {
     }
   }
 
+  def IsWorking() = {
+    this.lifecycleState == LSStarted || this.lifecycleState == LSResumed
+  }
+
 }
+
+abstract trait LifecycleState
+case object LSInitial extends LifecycleState
+case object LSStarted extends LifecycleState
+case object LSPaused extends LifecycleState
+case object LSResumed extends LifecycleState
+case object LSStopped extends LifecycleState
+case object LSFinalized extends LifecycleState

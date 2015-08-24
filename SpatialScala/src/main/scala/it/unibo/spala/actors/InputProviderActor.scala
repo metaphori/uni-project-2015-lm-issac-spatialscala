@@ -37,7 +37,12 @@ abstract class InputProviderActor[T](val name: String) extends Actor {
   def receive = initialBehavior.orElse(observersManagementBehavior)
 
   protected def initialBehavior: Receive = {
-    case MsgStart => context.become(workingBehavior.orElse(observersManagementBehavior))
+    case MsgStart => Start()
+  }
+
+  def Start() = {
+    context.become(workingBehavior.orElse(observersManagementBehavior))
+    self ! GoOn
   }
 
   protected def workingBehavior: Receive = {

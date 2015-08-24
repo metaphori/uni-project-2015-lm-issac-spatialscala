@@ -1,0 +1,183 @@
+package it.unibo.spala.actors.programs
+
+import akka.actor.{ActorRef, Props, ActorSystem}
+import akka.routing.BroadcastGroup
+import com.typesafe.config.ConfigFactory
+import it.unibo.spala.Behaviors.{DevBehavior, DBehavior}
+import it.unibo.spala.math.Point3D
+import it.unibo.spala._
+import it.unibo.spala.actors._
+import it.unibo.spala.config._
+import scala.concurrent.duration._
+import scala.util.Random
+
+/**
+ * Created by: Roberto Casadei 
+ * Created on date: 24/08/15.
+ */
+object CustomSystemProgram extends App {
+
+  type State = Int
+
+  val settings = Settings[State](
+    SystemSettings(
+      name = "MyActorSystem",
+      executionStrategy = AsyncExecutionStrategy,
+      gui = true,
+      console = false,
+      logLevel = AkkaConfigLogLevel.Info
+    ),
+    DeviceSettings(
+      initialDeviceState = 0,
+      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==50), // only 50th elem is source
+      nameProvider = (k:Int) => "d"+k,
+      workInterval = 500 millis
+    ),
+    SpatialSettings(
+      proximityThreshold = 200
+    ),
+    DeviceDistributionSettings(
+      n = 100,
+      shape = 'grid,
+      shapeSettings = GridSettings(nrows = 10, ncols = 10, stepx = 50, stepy = 50, tolerance = 10, offsetx = 100, offsety = 50)
+    ),
+    DeploymentSettings(
+      kind = LocalDeployment
+    )
+  )
+
+  val systemSettings = settings.systemSettings
+  val devSettings = settings.deviceSettings
+  val spaceSettings = settings.spatialSettings
+  val devdistributionSettings = settings.devDistributionSettings
+  val shapeSettings = devdistributionSettings.shapeSettings
+
+  val distrib = settings.deploymentSettings.kind == DistributedDeployment
+  val ddSettings = settings.deploymentSettings.distrib
+  val ldSettings = settings.deploymentSettings.local
+
+  // System configuration: deployment, logging, ...
+  var config = if(!distrib) ConfigFactory.defaultApplication() else ConfigFactory.load("remote_application")
+  var deploymentSpecificConfig = ""
+  if(distrib){
+    deploymentSpecificConfig =
+      """
+          akka.remote.netty.tcp.hostname = %s
+          akka.remote.netty.tcp.port = %d
+      """.stripMargin.format(ddSettings.host, ddSettings.port)
+  }
+
+  config = ConfigFactory.parseString(
+    """
+        akka.loglevel= %s
+    """.stripMargin.format(systemSettings.logLevel) + "\n" + deploymentSpecificConfig).withFallback(config)
+
+  // Setting system-wide parameters
+  SysKB.WorkInterval = devSettings.workInterval
+  SysKB.MobileDevices = devSettings.mobility.canMove
+  SysKB.MaxMoveStep = devSettings.mobility.moveStep
+  SysKB.MoveProbability = devSettings.mobility.moveProbability
+
+  // Creation of the actor system
+  val sys = ActorSystem(systemSettings.name, config)
+
+  // Positions of the devices
+  val positions = devdistributionSettings.shape match {
+    case 'grid if shapeSettings.isInstanceOf[GridSettings] =>
+      ConfigHelper.GridLocations(
+        shapeSettings.asInstanceOf[GridSettings],
+        shapeSettings.seed.orElse(systemSettings.seed).getOrElse(System.currentTimeMillis()))
+    case 'random if shapeSettings.isInstanceOf[SimpleRandomSettings] =>
+      ConfigHelper.RandomLocations(
+        shapeSettings.asInstanceOf[SimpleRandomSettings],
+        devdistributionSettings.n,
+        shapeSettings.seed.orElse(systemSettings.seed).getOrElse(System.currentTimeMillis()))
+  }
+
+  val behavior = DeviceBehaviors.GradientBehavior
+
+  // Creation of devices
+  val devs = for(i <- 1 to devdistributionSettings.n)
+    yield new Dev[State](devSettings.nameProvider(i), devSettings.initialDeviceState, behavior)
+  val devsWithPositions = devs zip positions
+
+  // Creation of device actors
+  var k = 0
+  val devsInfo =
+    devsWithPositions.map { case (dev,pos) => {
+        val actorProp = Props(classOf[GenericDevActorWithRegistry[State]])
+        val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
+        (dev.name, actorRef, pos)
+      }
+    }
+
+  // Provide input to the devices
+  class PositionProvider(initial: Point3D) extends InputProviderActor[Point3D](InputNames.Position) {
+    val rand = new Random()
+
+    override var value = initial
+
+    override def provideNextValue(): Point3D = {
+      if (rand.nextDouble() < SysKB.MoveProbability) {
+        val rx, ry = rand.nextDouble() * SysKB.MaxMoveStep
+        val isRelative = true
+        new Point3D(initial.x + rx - SysKB.MaxMoveStep/2, initial.y + ry - SysKB.MaxMoveStep/2, 0)
+      }
+      else value
+    }
+
+    override val workInterval: FiniteDuration = 1 seconds
+  }
+
+  k = 0
+  devsInfo.foreach {
+    case (name, a, p) => {
+      k += 1;
+      val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
+      a ! MsgWithInput(input)
+      a ! MsgWithInput(InputData[State](InputNames.InitialState, 0))
+      a ! MsgWithBehavior(DeviceBehaviors.GradientBehavior)
+
+      val positionInputActor = sys.actorOf(Props(classOf[PositionProvider], p), "positionFor"+name)
+      positionInputActor ! MsgAddObserver(a)
+      positionInputActor ! MsgStart
+    }
+  }
+
+  // Broadcast router for this group of devices
+  var groupActor: ActorRef = _
+  if(devdistributionSettings.n > 0) {
+    groupActor = sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter")
+  }
+
+  // Starting the system
+  if(systemSettings.start) {
+
+    val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
+
+    // Starting this group of devices
+    if(devdistributionSettings.n>0) {
+      groupActor ! MsgStartAndRegisterTo(registry)
+    }
+
+    // Starting the GUI actor
+    if (systemSettings.gui) {
+      val gui = sys.actorOf(Props(classOf[BasicGUIActor], 800, 600), "gui")
+      gui ! MsgStart
+    }
+
+    val rand = new Random()
+    import sys.dispatcher
+    sys.scheduler.scheduleOnce(10 seconds, devsInfo(3)._2, MsgWithInput(InputData(InputNames.Source1, true)))
+    sys.scheduler.scheduleOnce(20 seconds, new Runnable(){
+      override def run(): Unit = {
+        val b: DevBehavior[Int] = (old: Int, ctx: DevBehaviorContext) => {
+          ctx.getComputationRound.toInt
+        }
+        devsInfo.take(20).foreach(d => d._2 ! MsgWithBehavior(new DBehavior[Int](b)))
+      }
+    })
+
+  }
+
+}

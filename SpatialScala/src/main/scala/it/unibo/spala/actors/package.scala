@@ -86,6 +86,8 @@ package object actors {
 
   case class MsgReturnPositionOf[P](who: String, pos: P)
 
+  case class MsgReturnDeviceInfo[S](name: String, state: S, pos: Option[Point3D])
+
   case class MsgAddObserver(o: ActorRef)
 
   case class MsgRemoveObserver(o: ActorRef)
@@ -99,6 +101,8 @@ package object actors {
   object MsgResume extends Serializable
 
   object MsgShutdown extends Serializable
+
+  case class MsgAttachInput(name: String, inputActor: ActorRef)
 }
 
 trait CyclicBehavior {
@@ -106,3 +110,12 @@ trait CyclicBehavior {
 }
 
 case class InputData[T](val name: String, val value: T)
+
+object InputNames {
+  val Position = "position"
+  val InitialState = "initialState"
+  val Source1 = "isSrc"
+  val Source2 = "isSrc2"
+  val Source3 = "isSrc3"
+  val Source4 = "isSrc4"
+}
