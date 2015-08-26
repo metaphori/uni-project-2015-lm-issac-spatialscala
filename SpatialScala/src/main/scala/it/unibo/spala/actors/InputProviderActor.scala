@@ -3,21 +3,19 @@ package it.unibo.spala.actors
 import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.InputData
 
-import scala.concurrent.duration.FiniteDuration
-
 /**
  * Created by: Roberto Casadei 
  * Created on date: 05/08/15.
  */
 
 
-abstract class InputProviderActor[T](val name: String) extends Actor {
+abstract class InputProviderActor[T](val name: String) extends Actor
+  with ActorLifecycleBehavior {
 
   /* Abstract members */
 
   var value: T
   def provideNextValue(): T
-  val workInterval: FiniteDuration
 
   /* Key structures */
 
@@ -28,41 +26,22 @@ abstract class InputProviderActor[T](val name: String) extends Actor {
   private val Log = akka.event.Logging(context.system, this)
 
   /* Implicits and variables */
-
-  import context.dispatcher // Provides the ExecutionContext
   private var round: Long = 0
 
   /* Reactive behaviors */
 
-  def receive = initialBehavior.orElse(observersManagementBehavior)
-
-  protected def initialBehavior: Receive = {
-    case MsgStart => Start()
-  }
-
-  def Start() = {
-    context.become(workingBehavior.orElse(observersManagementBehavior))
-    self ! GoOn
-  }
-
-  protected def workingBehavior: Receive = {
-    case GoOn => {
-      this.round += 1
-      this.value = provideNextValue()
-      notifyObservers()
-      scheduleNextElaboration()
-    }
-  }
+  override def setupBehavior = super.setupBehavior.orElse(observersManagementBehavior)
 
   def observersManagementBehavior: Receive = {
     case MsgAddObserver(o) => observers += o
     case MsgRemoveObserver(o) => observers -= o
   }
 
-  protected def scheduleNextElaboration() = {
-    context.system.scheduler.scheduleOnce(workInterval) {
-      self ! GoOn
-    }
+  override def DoJob() = {
+    this.round += 1
+    this.value = provideNextValue()
+    notifyObservers()
+    ScheduleNextWorkingCycle()
   }
 
   def notifyObservers() = {
