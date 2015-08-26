@@ -29,10 +29,10 @@ object CustomSystemProgram extends App {
     ),
     DeviceSettings(
       initialDeviceState = 0,
-      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==50), // only 50th elem is source
+      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==19), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
-      workInterval = 1000 millis,
-      mobility = DeviceMobilitySettings(moveProbability = 0.3)
+      workInterval = 2000 millis,
+      mobility = DeviceMobilitySettings(moveProbability = 0.2, moveStep = 4)
     ),
     SpatialSettings(
       proximityThreshold = 100
@@ -40,7 +40,7 @@ object CustomSystemProgram extends App {
     DeviceDistributionSettings(
       n = 100,
       shape = 'grid,
-      shapeSettings = GridSettings(nrows = 10, ncols = 10, stepx = 50, stepy = 50, tolerance = 10, offsetx = 100, offsety = 50)
+      shapeSettings = GridSettings(nrows = 1, ncols = 30, stepx = 30, stepy = 50, tolerance = 10, offsetx = 100, offsety = 50)
     ),
     DeploymentSettings(
       kind = LocalDeployment
@@ -127,7 +127,7 @@ object CustomSystemProgram extends App {
       else value
     }
 
-    override val workInterval: FiniteDuration = 1 seconds
+    override var workInterval: FiniteDuration = 1 seconds
   }
 
   k = 0
@@ -167,15 +167,16 @@ object CustomSystemProgram extends App {
       gui ! MsgStart
     }
 
+
     val rand = new Random()
     import sys.dispatcher
-    //sys.scheduler.scheduleOnce(10 seconds, devsInfo(3)._2, MsgWithInput(InputData(InputNames.Source1, true)))
+    sys.scheduler.scheduleOnce(10 seconds, devsInfo(29)._2, MsgWithInput(InputData(InputNames.Source1, true)))
     sys.scheduler.scheduleOnce(5 seconds, new Runnable(){
       override def run(): Unit = {
         val b: DevBehavior[Int] = (old: Int, ctx: DevBehaviorContext) => {
           ctx.getComputationRound.toInt
         }
-        devsInfo.take(20).foreach(d => d._2 ! MsgWithBehavior(new DBehavior[Int](b)))
+        devsInfo.take(2).foreach(d => d._2 ! MsgWithBehavior(new DBehavior[Int](b)))
       }
     })
 

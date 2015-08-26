@@ -2,8 +2,9 @@ package it.unibo.spala.actors
 
 import akka.actor._
 import it.unibo.spala.Behaviors._
+import it.unibo.spala.actors.patterns.ActorLifecycleBehavior
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{InputData, DevBehaviorContext, DevContext, InputNames}
+import it.unibo.spala.{DevBehaviorContext, DevContext, InputData, InputNames}
 
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Random
@@ -33,8 +34,6 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
   private val rand = new Random()
 
   /* Implicits and variables */
-
-  import context.dispatcher // Provides the ExecutionContext
   override var workInterval = SysKB.WorkInterval
   private val nbsDiscoveryInterval = SysKB.NbsDiscoveryInterval
   private var round: Long = 0
@@ -97,8 +96,10 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
 
   override def DoJob(): Unit = {
     // Build a map from actors to their state (and filters out those whose state is unknown, i.e., None)
-    val map = Map[ActorRef, S](neighbors.filter { case (ref, Some(s)) => true; case _ => false } mapValues (x => x.get) toList: _*)
-    // Run the behavior of the device by providing its input and mappings, and store the device in the new state
+    val map = Map[ActorRef, S](neighbors.filter {
+      case (ref, Some(s)) => true;
+      case _ => false
+    } mapValues (x => x.get) toList: _*)
 
     // Increment round number
     this.round += 1
@@ -107,9 +108,7 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
     ScheduleNextWorkingCycle()
 
     // Simulate locality changes by querying the space manager for neighbors
-    context.system.scheduler.scheduleOnce(nbsDiscoveryInterval) {
-      DiscoverNeighbors()
-    }
+    DiscoverNeighbors()
 
     val guiSelection = context.actorSelection(context.system / "gui")
     this.mostRecentState.foreach(s => guiSelection ! MsgReturnDeviceInfo(this.name, s, this.position))
@@ -135,7 +134,6 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
 
   // Update current knowledge about neighbors
   protected def UpdateNeighbors(nbs: List[ActorRef]): Unit = {
-    Log.info(s"Updating nbs (they are ${nbs.size})")
     lazy val nones: Stream[Option[S]] = None #:: nones
     var newnbs = (nbs zip nones).toMap
     // Keep only the nbs that are included in the return msg
