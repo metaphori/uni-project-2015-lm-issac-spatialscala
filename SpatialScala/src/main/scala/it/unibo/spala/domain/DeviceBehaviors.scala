@@ -29,9 +29,29 @@ package object Behaviors {
   }
   */
 
-  class DBehavior[S](val f: MealyFunType[S, DevBehaviorContext]) extends DevBehavior[S] with Serializable {
-    override def apply(s: S, i: DevBehaviorContext): S = f(s, i)
-    def map(m: DevBehavior[S]) = (s: S, ctx: DevBehaviorContext) => m.apply(f(s, ctx), ctx)
+  class DBehavior[S](b: DevBehavior[S] = (oldS: S, bctx: DevBehaviorContext) => oldS)
+    extends DevBehavior[S] with Serializable {
+    var behavior: DevBehavior[S] = b
+    var s: S = _
+    var ctx: DevBehaviorContext = _
+
+    def nbs[T] = ctx.getNeighborsStates[T].values
+
+    def input[T](name: String) = ctx.getInput[T](name)
+
+    override def apply(oldS: S, bctx: DevBehaviorContext): S =  {
+      behavior(oldS, bctx)
+    }
+
+    def does(f: => S) = {
+      behavior = (oldS: S, bCtx: DevBehaviorContext) => {
+        s = oldS
+        ctx = bCtx
+        f
+      }
+    }
+
+    def map(m: DevBehavior[S]) = (s: S, ctx: DevBehaviorContext) => m.apply(behavior(s, ctx), ctx)
   }
 
 }
@@ -60,15 +80,18 @@ object DeviceBehaviors {
   }
   */
 
-  val GradientBehavior = new DBehavior[Int](
-    (s, ctx) => {
-      val states = ctx.getNeighborsStates[Int].values.map(o => o.getOrElse(-1))
-      val isSrc = ctx.getInput[Boolean]("isSrc").getOrElse(false)
+  val GradientBehavior = new DBehavior[Int]{
+    does {
+      val states = nbs[Int].map(o => o.getOrElse(-1))
+      val isSrc = input[Boolean]("isSrc").getOrElse(false)
       if (isSrc) 0
       else if (!states.isEmpty) scala.math.abs(states.min) + 1
       else -1
-    })
+    }
+  }
 
-  class ConstantBehavior[T](value: => T) extends DBehavior[T]( (t,ctx) => value ) with Serializable
+  class ConstantBehavior[T](value: => T) extends DBehavior[T] with Serializable {
+    does { value }
+  }
 
 }

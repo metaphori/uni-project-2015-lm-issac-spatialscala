@@ -1,17 +1,18 @@
 package it.unibo.spala.actors.programs
 
-import akka.actor.{ActorRef, Props, ActorSystem}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
-import it.unibo.spala.actors.device.{InputProviderActor, GenericDevActorWithRegistry}
-import it.unibo.spala.actors.env.BasicGUIActor
-import it.unibo.spala.actors.system.{SysKB, MySpaceManager}
-import it.unibo.spala.domain.Behaviors.{DBehavior, DevBehavior}
-import it.unibo.spala.domain.{DeviceBehaviors, DevBehaviorContext, Dev}
-import it.unibo.spala.math.Point3D
 import it.unibo.spala._
 import it.unibo.spala.actors._
+import it.unibo.spala.actors.device.{GenericDevActorWithRegistry, InputProviderActor}
+import it.unibo.spala.actors.env.BasicGUIActor
+import it.unibo.spala.actors.system.{MySpaceManager, SysKB}
 import it.unibo.spala.config._
+import it.unibo.spala.domain.Behaviors.DBehavior
+import it.unibo.spala.domain.{Dev, DeviceBehaviors}
+import it.unibo.spala.math.Point3D
+
 import scala.concurrent.duration._
 import scala.util.Random
 
@@ -177,10 +178,11 @@ object CustomSystemProgram extends App {
     sys.scheduler.scheduleOnce(10 seconds, devsInfo(29)._2, MsgWithInput(InputData(InputNames.Source1, true)))
     sys.scheduler.scheduleOnce(5 seconds, new Runnable(){
       override def run(): Unit = {
-        val b: DevBehavior[Int] = (old: Int, ctx: DevBehaviorContext) => {
-          ctx.getComputationRound.toInt
-        }
-        devsInfo.take(2).foreach(d => d._2 ! MsgWithBehavior(new DBehavior[Int](b)))
+        devsInfo.take(2).foreach(d => d._2 ! MsgWithBehavior(new DBehavior[Int]{
+          does {
+            ctx.getComputationRound.toInt
+          }
+        }))
       }
     })
 
