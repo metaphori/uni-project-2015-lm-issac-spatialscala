@@ -1,7 +1,8 @@
-package it.unibo.spala.actors
+package it.unibo.spala.actors.env
 
 import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.CyclicBehavior
+import it.unibo.spala.actors._
 
 /**
  * Created by: Roberto Casadei 

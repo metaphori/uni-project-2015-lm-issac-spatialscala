@@ -1,10 +1,11 @@
-package it.unibo.spala.actors
+package it.unibo.spala.actors.env
 
-import java.awt.{Graphics, BorderLayout, Color}
+import java.awt.{BorderLayout, Color, Graphics}
 import javax.swing._
 
 import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.CyclicBehavior
+import it.unibo.spala.actors._
 import it.unibo.spala.math.Point3D
 
 import scala.concurrent.duration._
@@ -19,8 +20,9 @@ class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
 
   /* Local imports and variables */
 
-  import scala.collection._
-  import context.dispatcher // Provides the ExecutionContext
+  import context.dispatcher
+
+  import scala.collection._ // Provides the ExecutionContext
   override val workInterval = 200 milliseconds
   protected val Log = akka.event.Logging(context.system, this)
 
@@ -122,8 +124,9 @@ class BasicGUIActor(val width: Int, val height: Int)
 
   /* Local imports and variables */
 
-  import scala.collection._
-  import context.dispatcher // Provides the ExecutionContext
+  import context.dispatcher
+
+  import scala.collection._ // Provides the ExecutionContext
   override val workInterval = 200 milliseconds
   protected val Log = akka.event.Logging(context.system, this)
 

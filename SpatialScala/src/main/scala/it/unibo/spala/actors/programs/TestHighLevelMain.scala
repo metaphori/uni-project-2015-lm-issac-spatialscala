@@ -2,7 +2,7 @@ package it.unibo.spala.actors.programs
 
 import akka.actor.ActorRef
 import it.unibo.spala.Behaviors.{DBehavior, DevBehavior}
-import it.unibo.spala.actors.SpatialSystem
+import it.unibo.spala.actors.system.SpatialSystem
 import it.unibo.spala.config._
 import it.unibo.spala.math.Point3D
 import it.unibo.spala.{DevBehaviorContext, InputData}

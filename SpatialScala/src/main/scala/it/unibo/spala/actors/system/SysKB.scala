@@ -1,4 +1,4 @@
-package it.unibo.spala.actors
+package it.unibo.spala.actors.system
 
 import scala.concurrent.duration._
 

@@ -1,8 +1,10 @@
-package it.unibo.spala.actors
+package it.unibo.spala.actors.device
 
 // Key imports
 
 import it.unibo.spala._
+import it.unibo.spala.actors._
+import it.unibo.spala.actors.system.SysKB
 import it.unibo.spala.math.Point3D
 
 // Akka imports

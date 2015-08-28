@@ -1,8 +1,10 @@
-package it.unibo.spala.actors
+package it.unibo.spala.actors.device
 
 import akka.actor._
 import it.unibo.spala.Behaviors._
+import it.unibo.spala.actors._
 import it.unibo.spala.actors.patterns.ActorLifecycleBehavior
+import it.unibo.spala.actors.system.SysKB
 import it.unibo.spala.math.Point3D
 import it.unibo.spala.{DevBehaviorContext, DevContext, InputData, InputNames}
 
@@ -34,6 +36,7 @@ class GenericDevActor[S](var computation: Option[DevBehavior[S]] = None)
   private val rand = new Random()
 
   /* Implicits and variables */
+  
   override var workInterval = SysKB.WorkInterval
   private val nbsDiscoveryInterval = SysKB.NbsDiscoveryInterval
   private var round: Long = 0

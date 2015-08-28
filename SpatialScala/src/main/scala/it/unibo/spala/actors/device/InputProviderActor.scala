@@ -1,7 +1,8 @@
-package it.unibo.spala.actors
+package it.unibo.spala.actors.device
 
 import akka.actor.Actor
 import it.unibo.spala.InputData
+import it.unibo.spala.actors.MsgWithInput
 import it.unibo.spala.actors.patterns.{ActorLifecycleBehavior, ObservableActor}
 
 

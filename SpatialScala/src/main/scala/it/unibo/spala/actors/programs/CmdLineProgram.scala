@@ -1,7 +1,7 @@
 package it.unibo.spala.actors.programs
 
 import akka.actor.ActorRef
-import it.unibo.spala.actors.SpatialSystem
+import it.unibo.spala.actors.system.SpatialSystem
 import it.unibo.spala.config.{Settings, SystemSettings}
 import it.unibo.spala.math.Point3D
 import it.unibo.spala.{DeviceBehaviors, InputData}
