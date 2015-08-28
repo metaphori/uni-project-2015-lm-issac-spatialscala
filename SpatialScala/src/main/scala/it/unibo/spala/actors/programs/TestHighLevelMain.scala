@@ -1,11 +1,12 @@
 package it.unibo.spala.actors.programs
 
 import akka.actor.ActorRef
-import it.unibo.spala.Behaviors.{DBehavior, DevBehavior}
 import it.unibo.spala.actors.system.SpatialSystem
 import it.unibo.spala.config._
+import it.unibo.spala.domain.Behaviors.{DBehavior, DevBehavior}
+import it.unibo.spala.domain.DevBehaviorContext
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{DevBehaviorContext, InputData}
+import it.unibo.spala.InputData
 
 import scala.concurrent.duration._
 

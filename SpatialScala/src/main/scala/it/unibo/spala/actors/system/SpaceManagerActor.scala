@@ -3,7 +3,7 @@ package it.unibo.spala.actors.system
 import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.actors._
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.space.BasicSpace
+import it.unibo.spala.domain.space.BasicSpace
 
 /**
  * Created by: Roberto Casadei 

@@ -1,12 +1,13 @@
 package it.unibo.spala.actors.device
 
 import akka.actor._
-import it.unibo.spala.Behaviors._
 import it.unibo.spala.actors._
 import it.unibo.spala.actors.patterns.ActorLifecycleBehavior
 import it.unibo.spala.actors.system.SysKB
+import it.unibo.spala.domain.Behaviors.DevBehavior
+import it.unibo.spala.domain.{DevContext, DevBehaviorContext}
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{DevBehaviorContext, DevContext, InputData, InputNames}
+import it.unibo.spala.{InputData, InputNames}
 
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Random

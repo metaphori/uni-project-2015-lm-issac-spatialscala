@@ -3,12 +3,13 @@ package it.unibo.spala.actors.system
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
-import it.unibo.spala.Behaviors.DBehavior
 import it.unibo.spala._
 import it.unibo.spala.actors._
 import it.unibo.spala.actors.device.DevActor
 import it.unibo.spala.actors.env.{GUIActor, SamplerActor}
 import it.unibo.spala.config._
+import it.unibo.spala.domain.Behaviors.DBehavior
+import it.unibo.spala.domain.Dev
 
 import scala.concurrent.duration._
 

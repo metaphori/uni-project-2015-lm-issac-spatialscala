@@ -3,7 +3,7 @@ package it.unibo.spala
 import java.util.TimerTask
 
 import akka.actor.ActorRef
-import it.unibo.spala.Behaviors.DBehavior
+import it.unibo.spala.domain.Behaviors.DBehavior
 import it.unibo.spala.math.Point3D
 import scala.concurrent.duration._
 

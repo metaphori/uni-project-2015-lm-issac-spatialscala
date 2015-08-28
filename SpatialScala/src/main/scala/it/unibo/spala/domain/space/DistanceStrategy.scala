@@ -1,4 +1,4 @@
-package it.unibo.spala.space
+package it.unibo.spala.domain.space
 
 /**
  * Defines an abstract distance strategy for a space.

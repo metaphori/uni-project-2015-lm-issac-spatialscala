@@ -1,4 +1,4 @@
-package it.unibo.spala.space
+package it.unibo.spala.domain.space
 
 import it.unibo.spala.math.Point3D
 

@@ -1,4 +1,6 @@
-package it.unibo.spala
+package it.unibo.spala.domain
+
+import it.unibo.spala.domain.Behaviors.DBehavior
 
 /**
  * Created by: Roberto Casadei
@@ -47,7 +49,6 @@ trait DevContext extends DevBehaviorContext {
 }
 
 object DeviceBehaviors {
-  import it.unibo.spala.Behaviors._
 
   /*
   val GradientBehavior: DevBehavior[Int] = (s, ctx) => {

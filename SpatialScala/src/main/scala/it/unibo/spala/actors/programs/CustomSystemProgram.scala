@@ -3,10 +3,11 @@ package it.unibo.spala.actors.programs
 import akka.actor.{ActorRef, Props, ActorSystem}
 import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
-import it.unibo.spala.Behaviors.{DevBehavior, DBehavior}
 import it.unibo.spala.actors.device.{InputProviderActor, GenericDevActorWithRegistry}
 import it.unibo.spala.actors.env.BasicGUIActor
 import it.unibo.spala.actors.system.{SysKB, MySpaceManager}
+import it.unibo.spala.domain.Behaviors.{DBehavior, DevBehavior}
+import it.unibo.spala.domain.{DeviceBehaviors, DevBehaviorContext, Dev}
 import it.unibo.spala.math.Point3D
 import it.unibo.spala._
 import it.unibo.spala.actors._

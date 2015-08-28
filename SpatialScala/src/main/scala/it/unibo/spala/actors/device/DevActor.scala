@@ -5,6 +5,7 @@ package it.unibo.spala.actors.device
 import it.unibo.spala._
 import it.unibo.spala.actors._
 import it.unibo.spala.actors.system.SysKB
+import it.unibo.spala.domain.{DevContext, Dev}
 import it.unibo.spala.math.Point3D
 
 // Akka imports

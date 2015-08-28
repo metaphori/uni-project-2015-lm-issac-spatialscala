@@ -1,6 +1,6 @@
-package it.unibo.spala
+package it.unibo.spala.domain
 
-import it.unibo.spala.Behaviors.DevBehavior
+import it.unibo.spala.domain.Behaviors.DevBehavior
 
 /**
  * Created by: Roberto Casadei 

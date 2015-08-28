@@ -3,8 +3,9 @@ package it.unibo.spala.actors.programs
 import akka.actor.ActorRef
 import it.unibo.spala.actors.system.SpatialSystem
 import it.unibo.spala.config.{Settings, SystemSettings}
+import it.unibo.spala.domain.DeviceBehaviors
 import it.unibo.spala.math.Point3D
-import it.unibo.spala.{DeviceBehaviors, InputData}
+import it.unibo.spala.InputData
 
 import scala.concurrent.duration._
 
