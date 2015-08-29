@@ -1,7 +1,6 @@
 package it.unibo.spala.actors.patterns
 
-import akka.actor.Actor._
-import akka.actor.ActorRef
+import akka.actor.{Actor, ActorRef}
 import it.unibo.spala.actors.{MsgAddObserver, MsgRemoveObserver}
 
 /**
@@ -10,6 +9,8 @@ import it.unibo.spala.actors.{MsgAddObserver, MsgRemoveObserver}
  */
 
 trait ObservableActor {
+  actor: Actor =>
+
   /* Abstract members */
 
   def CurrentStateMessage: Any
@@ -26,6 +27,7 @@ trait ObservableActor {
   }
 
   def NotifyObservers() = {
-    observers.foreach(o => o ! CurrentStateMessage)
+    val currState = CurrentStateMessage
+    observers.foreach(o => o ! currState)
   }
 }

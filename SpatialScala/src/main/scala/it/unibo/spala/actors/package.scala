@@ -3,7 +3,7 @@ package it.unibo.spala
 import java.util.TimerTask
 
 import akka.actor.ActorRef
-import it.unibo.spala.domain.Behaviors.DBehavior
+import it.unibo.spala.domain.{DevBehavior, DBehavior}
 import it.unibo.spala.math.Point3D
 import scala.concurrent.duration._
 
@@ -94,7 +94,7 @@ package object actors {
 
   case class MsgReturnValue[T](value: T)
 
-  case class MsgWithBehavior[T](behavior: DBehavior[T])
+  case class MsgWithBehavior[T](behavior: DevBehavior[T])
 
   object MsgPause extends Serializable
 
@@ -103,6 +103,10 @@ package object actors {
   object MsgShutdown extends Serializable
 
   case class MsgAttachInput(name: String, inputActor: ActorRef)
+
+  case class MsgUpdateNeighbors[S](nbs: Map[String, Option[S]])
+
+  case class MsgUpdateInputs(inps: Map[String, Any])
 }
 
 trait CyclicBehavior {

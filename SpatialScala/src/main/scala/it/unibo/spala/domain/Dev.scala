@@ -1,7 +1,5 @@
 package it.unibo.spala.domain
 
-import it.unibo.spala.domain.Behaviors.DevBehavior
-
 /**
  * Created by: Roberto Casadei 
  * Created on date: 08/07/15.

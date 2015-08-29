@@ -19,7 +19,7 @@ case object LSStopped extends LifecycleState
 case object LSFinalized extends LifecycleState
 
 trait ActorLifecycleBehavior {
-  this: Actor =>
+  actor: Actor =>
 
   var workInterval: FiniteDuration
   var lifecycleState: LifecycleState = LSInitial

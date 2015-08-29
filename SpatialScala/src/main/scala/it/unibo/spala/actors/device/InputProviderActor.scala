@@ -7,7 +7,8 @@ import it.unibo.spala.actors.patterns.{ActorLifecycleBehavior, ObservableActor}
 
 
 abstract class InputProviderActor[T](val name: String) extends Actor
-  with ActorLifecycleBehavior with ObservableActor {
+  with ActorLifecycleBehavior
+  with ObservableActor {
 
   /* Abstract members */
 

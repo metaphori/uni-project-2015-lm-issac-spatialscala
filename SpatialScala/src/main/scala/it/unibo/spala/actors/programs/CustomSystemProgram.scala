@@ -5,12 +5,11 @@ import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
 import it.unibo.spala._
 import it.unibo.spala.actors._
-import it.unibo.spala.actors.device.{GenericDevActorWithRegistry, InputProviderActor}
+import it.unibo.spala.actors.device.{DevActorWithRegistry, PositionProviderActor}
 import it.unibo.spala.actors.env.BasicGUIActor
 import it.unibo.spala.actors.system.{MySpaceManager, SysKB}
 import it.unibo.spala.config._
-import it.unibo.spala.domain.Behaviors.DBehavior
-import it.unibo.spala.domain.{Dev, DeviceBehaviors}
+import it.unibo.spala.domain.{DBehavior, Dev, DeviceBehaviors}
 import it.unibo.spala.math.Point3D
 
 import scala.concurrent.duration._
@@ -111,29 +110,11 @@ object CustomSystemProgram extends App {
   var k = 0
   val devsInfo =
     devsWithPositions.map { case (dev,pos) => {
-        val actorProp = Props(classOf[GenericDevActorWithRegistry[State]])
+        val actorProp = Props(classOf[DevActorWithRegistry[State]])
         val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
         (dev.name, actorRef, pos)
       }
     }
-
-  // Provide input to the devices
-  class PositionProvider(initial: Point3D) extends InputProviderActor[Point3D](InputNames.Position) {
-    val rand = new Random()
-
-    override var value = initial
-
-    override def provideNextValue(): Point3D = {
-      if (rand.nextDouble() < SysKB.MoveProbability) {
-        val rx, ry = rand.nextDouble() * SysKB.MaxMoveStep
-        val isRelative = true
-        new Point3D(initial.x + rx - SysKB.MaxMoveStep/2, initial.y + ry - SysKB.MaxMoveStep/2, 0)
-      }
-      else value
-    }
-
-    override var workInterval: FiniteDuration = 1 seconds
-  }
 
   k = 0
   devsInfo.foreach {
@@ -142,9 +123,9 @@ object CustomSystemProgram extends App {
       val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
       a ! MsgWithInput(input)
       a ! MsgWithInput(InputData[State](InputNames.InitialState, 0))
-      a ! MsgWithBehavior(DeviceBehaviors.GradientBehavior)
+      a ! MsgWithBehavior(behavior)
 
-      val positionInputActor = sys.actorOf(Props(classOf[PositionProvider], p), "positionFor"+name)
+      val positionInputActor = sys.actorOf(Props(classOf[PositionProviderActor], p), "positionFor"+name)
       positionInputActor ! MsgAddObserver(a)
       positionInputActor ! MsgStart
     }
@@ -172,17 +153,22 @@ object CustomSystemProgram extends App {
       gui ! MsgStart
     }
 
+    /*
+    val behavior = new DBehavior[Int]{
+      does {
+        ctx.getComputationRound.toInt
+      }
+    }
+    */
+    val behavior = DeviceBehaviors.GradientBehavior
+
 
     val rand = new Random()
     import sys.dispatcher
     sys.scheduler.scheduleOnce(10 seconds, devsInfo(29)._2, MsgWithInput(InputData(InputNames.Source1, true)))
     sys.scheduler.scheduleOnce(5 seconds, new Runnable(){
       override def run(): Unit = {
-        devsInfo.take(2).foreach(d => d._2 ! MsgWithBehavior(new DBehavior[Int]{
-          does {
-            ctx.getComputationRound.toInt
-          }
-        }))
+        devsInfo.take(2).foreach(d => d._2 ! MsgWithBehavior(behavior))
       }
     })
 

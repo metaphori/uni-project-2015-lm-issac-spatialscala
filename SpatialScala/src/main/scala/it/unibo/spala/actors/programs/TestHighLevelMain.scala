@@ -1,12 +1,11 @@
 package it.unibo.spala.actors.programs
 
 import akka.actor.ActorRef
-import it.unibo.spala.InputData
-import it.unibo.spala.actors.system.SpatialSystem
+import it.unibo.spala.actors.system.{OldSpatialSystem, SpatialSystem}
 import it.unibo.spala.config._
-import it.unibo.spala.domain.Behaviors.DBehavior
-import it.unibo.spala.domain.DeviceBehaviors
+import it.unibo.spala.domain.{DBehavior, DeviceBehaviors}
 import it.unibo.spala.math.Point3D
+import it.unibo.spala.{InputData, InputNames}
 
 import scala.concurrent.duration._
 
@@ -21,7 +20,7 @@ object TestHighLevel extends App {
   type Input = Boolean
 
   //val behavior = DeviceBehaviors.GradientBehavior
-  val behavior = DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>4) 4 else i } // bounded
+  val behavior = DeviceBehaviors.GradientBehavior //map { (i, ctx) => if(i>99) 99 else i } // bounded
   //val behavior = new ConstantBehavior[Int](77)
   //val behavior = (i: Int, ctx: DevContext) => ctx.getNeighborsStates.size
   //val behavior: DevBehavior[Int] = (s: Int, ctx: DevBehaviorContext) => ctx.getComputationRound.toInt
@@ -32,22 +31,23 @@ object TestHighLevel extends App {
       executionStrategy = AsyncExecutionStrategy,
       gui = true,
       console = false,
-      logLevel = AkkaConfigLogLevel.Debug
+      logLevel = AkkaConfigLogLevel.Info
     ),
     DeviceSettings(
-      initialDeviceState = 0,
-      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData("isSrc", k==50), // only 50th elem is source
+      initialDeviceState = Int.MaxValue,
+      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==2), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
       workInterval = 500 millis,
-      mobility = DeviceMobilitySettings(canMove = false)
+      mobility = DeviceMobilitySettings(canMove = true, moveStep = 1)
     ),
-    SpatialSettings(
+      SpatialSettings(
       proximityThreshold = 80
     ),
     DeviceDistributionSettings(
       n = 100,
       shape = 'grid,
       shapeSettings = GridSettings(nrows = 10, ncols = 10, stepx = 50, stepy = 50, tolerance = 10, offsetx = 100, offsety = 50)
+      //shapeSettings = GridSettings(nrows = 1, ncols = 30, stepx = 30, stepy = 50, tolerance = 10, offsetx = 100, offsety = 50)
     ),
     DeploymentSettings(
       kind = LocalDeployment

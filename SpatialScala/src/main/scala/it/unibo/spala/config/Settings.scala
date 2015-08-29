@@ -25,7 +25,7 @@ case class SystemSettings(name: String = "MySpatialSystem",
                           executionStrategy: ExecutionStrategy = AsyncExecutionStrategy,
                           gui: Boolean = true,
                           console: Boolean = false,
-                          logLevel: String = AkkaConfigLogLevel.Debug)
+                          logLevel: String = AkkaConfigLogLevel.Info)
 
 case class DeviceSettings[S](initialDeviceState: S = null.asInstanceOf[S],
                           inputProvider: (Int, String, ActorRef, Point3D) => InputData[Any] = (i,s,a,p) => null,

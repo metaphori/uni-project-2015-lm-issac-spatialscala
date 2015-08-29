@@ -5,13 +5,10 @@ import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
 import it.unibo.spala._
 import it.unibo.spala.actors._
-import it.unibo.spala.actors.device.DevActor
-import it.unibo.spala.actors.env.{GUIActor, SamplerActor}
+import it.unibo.spala.actors.device.{DevActorWithRegistry, PositionProviderActor}
+import it.unibo.spala.actors.env.{BasicGUIActor, SamplerActor}
 import it.unibo.spala.config._
-import it.unibo.spala.domain.Behaviors.DBehavior
-import it.unibo.spala.domain.Dev
-
-import scala.concurrent.duration._
+import it.unibo.spala.domain.{DevBehavior, DBehavior, Dev}
 
 /**
  * Created by: Roberto Casadei 
@@ -23,7 +20,7 @@ class MySpaceManager(threshold: Double) extends SimpleSpaceManagerActor {
 }
 
 class SpatialSystem[S](val settings: Settings[S],
-                       val behavior: DBehavior[S]) {
+                       val behavior: DevBehavior[S]) {
 
     val systemSettings = settings.systemSettings
     val devSettings = settings.deviceSettings
@@ -82,7 +79,7 @@ class SpatialSystem[S](val settings: Settings[S],
     var k = 0
     val devsInfo =
       devsWithPositions.map { case (dev,pos) => {
-          val actorProp = Props(classOf[DevActor[S]], dev, pos)
+          val actorProp = Props(classOf[DevActorWithRegistry[S]])
           val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
           (dev.name, actorRef, pos)
         }
@@ -92,15 +89,21 @@ class SpatialSystem[S](val settings: Settings[S],
     k = 0
     devsInfo.foreach { case (name, a, p) => {
         k += 1;
-        val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
-        a ! MsgWithInput(input)
+      val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
+      a ! MsgWithInput(input)
+      a ! MsgWithInput(InputData[S](InputNames.InitialState, devSettings.initialDeviceState))
+      a ! MsgWithBehavior(behavior)
+
+      val positionInputActor = sys.actorOf(Props(classOf[PositionProviderActor], p), "positionFor"+name)
+      positionInputActor ! MsgAddObserver(a)
+      positionInputActor ! MsgStart
       }
     }
 
     // Broadcast router for this group of devices
-    var groupActor: ActorRef = _
+    var groupActor: Option[ActorRef] = None
     if(devdistributionSettings.n > 0) {
-      groupActor = sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter")
+      groupActor = Some(sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter"))
     }
 
     // Starting the system
@@ -109,9 +112,7 @@ class SpatialSystem[S](val settings: Settings[S],
       val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
 
       // Starting this group of devices
-      if(devdistributionSettings.n>0) {
-        groupActor ! MsgStartAndRegisterTo(registry)
-      }
+      groupActor.foreach( _ ! MsgStartAndRegisterTo(registry) )
 
       // Starting remote groups of devices on the provided nodes
       if(distrib){
@@ -128,11 +129,12 @@ class SpatialSystem[S](val settings: Settings[S],
 
       // Starting the GUI actor
       if (systemSettings.gui) {
-        val gui = sys.actorOf(Props(classOf[GUIActor], 800, 600, registry))
-        import sys.dispatcher
-        sys.scheduler.scheduleOnce(1 second) {
-          gui ! MsgStart
-        } // give some time to devices to register, TODO: look for better approach
+        val gui = sys.actorOf(Props(classOf[BasicGUIActor], 800, 600), "gui")
+        gui ! MsgStart
+        ddSettings.nodes.foreach(node => {
+          sys.actorSelection(s"akka.tcp://${systemSettings.name}@${node}/user/groupRouter") ! MsgAddObserver(gui)
+        })
+        groupActor.foreach( _ ! MsgAddObserver(gui) )
       }
 
     }
