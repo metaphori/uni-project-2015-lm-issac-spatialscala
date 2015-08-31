@@ -99,20 +99,18 @@ object CustomSystemProgram extends App {
         shapeSettings.seed.orElse(systemSettings.seed).getOrElse(System.currentTimeMillis()))
   }
 
-  val behavior = DeviceBehaviors.GradientBehavior
-
   // Creation of devices
-  val devs = for(i <- 1 to devdistributionSettings.n)
-    yield new Dev[State](devSettings.nameProvider(i), devSettings.initialDeviceState, behavior)
-  val devsWithPositions = devs zip positions
+  val devNames = for(i <- 1 to devdistributionSettings.n)
+    yield devSettings.nameProvider(i)
+  val devsWithPositions = devNames zip positions
 
   // Creation of device actors
   var k = 0
   val devsInfo =
-    devsWithPositions.map { case (dev,pos) => {
+    devsWithPositions.map { case (name,pos) => {
         val actorProp = Props(classOf[DevActorWithRegistry[State]])
-        val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
-        (dev.name, actorRef, pos)
+        val actorRef = sys.actorOf(actorProp, "Actor" + name)
+        (name, actorRef, pos)
       }
     }
 
@@ -123,7 +121,7 @@ object CustomSystemProgram extends App {
       val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
       a ! MsgWithInput(input)
       a ! MsgWithInput(InputData[State](InputNames.InitialState, 0))
-      a ! MsgWithBehavior(behavior)
+      a ! MsgWithBehavior(new DeviceBehaviors.GradientBehavior)
 
       val positionInputActor = sys.actorOf(Props(classOf[PositionProviderActor], p), "positionFor"+name)
       positionInputActor ! MsgAddObserver(a)
@@ -158,7 +156,7 @@ object CustomSystemProgram extends App {
     }
     */
 
-    val behavior = DeviceBehaviors.GradientBehavior
+    val behavior = new DeviceBehaviors.GradientBehavior
 
     val rand = new Random()
     import sys.dispatcher

@@ -14,7 +14,7 @@ import org.scalatest.{Matchers, FlatSpec}
 class DeviceBehaviorTests extends FlatSpec with Matchers {
 
   "GradientBehavior" should "calculate the gradient" in {
-    val gradient = DeviceBehaviors.GradientBehavior
+    val gradient = new DeviceBehaviors.GradientBehavior
 
     val ctx1 = new DevBehaviorContext(){
       override def getInput[T](name: String): Option[T] = None

@@ -19,8 +19,6 @@ object CmdLineProgram extends App {
   type State = Int
   type Input = Boolean
 
-  val behavior = DeviceBehaviors.GradientBehavior
-
   val parser = it.unibo.spala.config.CmdLineParser[State]
 
   parser.parse(args, Settings[State](
@@ -33,7 +31,7 @@ object CmdLineProgram extends App {
         nameProvider = (k:Int) => settings.systemSettings.prefix+k,
         workInterval = 500 millis
       ))
-      new SpatialSystem[State](stgs, behavior)
+      new SpatialSystem[State](stgs, () => new DeviceBehaviors.GradientBehavior)
     case None => parser.showUsage
   }
 

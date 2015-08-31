@@ -20,7 +20,7 @@ class MySpaceManager(threshold: Double) extends SimpleSpaceManagerActor {
 }
 
 class SpatialSystem[S](val settings: Settings[S],
-                       val behavior: DevBehavior[S]) {
+                       val behaviorGen: () => DevBehavior[S]) {
 
     val systemSettings = settings.systemSettings
     val devSettings = settings.deviceSettings
@@ -71,17 +71,17 @@ class SpatialSystem[S](val settings: Settings[S],
     }
 
     // Creation of devices
-    val devs = for(i <- 1 to devdistributionSettings.n)
-      yield new Dev[S](devSettings.nameProvider(i), devSettings.initialDeviceState, behavior)
-    val devsWithPositions = devs zip positions
+    val devnames = for(i <- 1 to devdistributionSettings.n)
+      yield devSettings.nameProvider(i)
+    val devsWithPositions = devnames zip positions
 
     // Creation of device actors
     var k = 0
     val devsInfo =
-      devsWithPositions.map { case (dev,pos) => {
+      devsWithPositions.map { case (devname,pos) => {
           val actorProp = Props(classOf[DevActorWithRegistry[S]])
-          val actorRef = sys.actorOf(actorProp, "Actor" + dev.name)
-          (dev.name, actorRef, pos)
+          val actorRef = sys.actorOf(actorProp, "Actor" + devname)
+          (devname, actorRef, pos)
         }
       }
 
@@ -92,7 +92,7 @@ class SpatialSystem[S](val settings: Settings[S],
       val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
       a ! MsgWithInput(input)
       a ! MsgWithInput(InputData[S](InputNames.InitialState, devSettings.initialDeviceState))
-      a ! MsgWithBehavior(behavior)
+      a ! MsgWithBehavior(behaviorGen())
 
       val positionInputActor = sys.actorOf(Props(classOf[PositionProviderActor], p), "positionFor"+name)
       positionInputActor ! MsgAddObserver(a)
