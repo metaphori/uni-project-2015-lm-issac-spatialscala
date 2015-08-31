@@ -15,7 +15,7 @@ import scala.concurrent.duration._
  * Created on date: 11/07/15.
  */
 
-class GUIActor(val width: Int, val height: Int, val spaceManager: ActorRef)
+class GUIActorBasedOnRegistry(val width: Int, val height: Int, val spaceManager: ActorRef)
   extends Actor with CyclicBehavior {
 
   /* Local imports and variables */

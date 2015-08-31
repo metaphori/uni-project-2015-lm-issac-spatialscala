@@ -10,7 +10,7 @@ import akka.routing.BroadcastGroup
 import com.typesafe.config.ConfigFactory
 import it.unibo.spala._
 import it.unibo.spala.actors.device.OldDevActor
-import it.unibo.spala.actors.env.{GUIActor, SamplerActor}
+import it.unibo.spala.actors.env.{GUIActorBasedOnRegistry, SamplerActor}
 import it.unibo.spala.domain._
 import it.unibo.spala.actors._
 import it.unibo.spala.config._
@@ -127,7 +127,7 @@ class OldSpatialSystem[S](val settings: Settings[S],
 
     // Starting the GUI actor
     if (systemSettings.gui) {
-      val gui = sys.actorOf(Props(classOf[GUIActor], 800, 600, registry))
+      val gui = sys.actorOf(Props(classOf[GUIActorBasedOnRegistry], 800, 600, registry))
       import sys.dispatcher
       sys.scheduler.scheduleOnce(1 second) {
         gui ! MsgStart

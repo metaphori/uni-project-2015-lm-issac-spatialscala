@@ -50,9 +50,14 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
   override def setupBehavior: Receive = basicSetupBehavior.orElse(observersManagementBehavior)
 
   def basicSetupBehavior: Receive = {
-    case MsgWithBehavior(b: DevBehavior[S]) => setDeviceBehavior(b)
+    case MsgWithBehavior(b: DevBehavior[S]) => {
+      Log.debug(s"Received new behavior ${b}")
+
+      setDeviceBehavior(b)
+    }
     case MsgWithInput(i) => {
       Log.debug(s"Received input '${i.name}' of value '${i.value}'")
+
       setInput(i.name, i.value)
 
       // Handling of specific inputs
@@ -69,9 +74,7 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
     val initialS = mostRecentState.orElse(this.initialState)
 
     computationActor.foreach(ca => ca ! PoisonPill)
-    computationActor = Some(this.context.actorOf(
-      Props(classOf[DevComputationActor[S]], behavior, this.workInterval, initialS), self.path.name+"computation"
-    ))
+    computationActor = Some(this.context.actorOf(Props(classOf[DevComputationActor[S]], behavior, this.workInterval, initialS)))
     if(IsWorking())
       computationActor.foreach( _ ! MsgStart )
   }
@@ -79,11 +82,20 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
   override def workingBehavior: Receive = receiveDataBehavior.orElse(setupBehavior)
 
   def receiveDataBehavior: Receive = {
-    case MsgReturnNeighbors(t) => UpdateNeighbors(t)
+    case MsgReturnNeighbors(t) => {
+      Log.debug("Got my new list of neighbors")
+      UpdateNeighbors(t)
+    }
     // A neighbor is propagating its state
-    case MsgReturnState(nState: S) => SaveNeighborState(sender, nState)
+    case MsgReturnState(nState: S) => {
+      Log.debug(s"Neighbor ${sender} is propagating its state ${nState} to me")
+      SaveNeighborState(sender, nState)
+    }
     // The computation actor is returning its value
-    case MsgReturnValue(state: S) => mostRecentState = Some(state)
+    case MsgReturnValue(state: S) => {
+      Log.debug(s"Computation actor is updating me with a new value: ${state}")
+      mostRecentState = Some(state)
+    }
   }
 
   override def OnStart(): Unit = {
@@ -110,7 +122,7 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
     
     ScheduleNextWorkingCycle()
 
-    // Simulate locality changes by querying the space manager for neighbors
+    // Simulate locality changes
     DiscoverNeighbors()
   }
 
@@ -121,8 +133,7 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
 
   def UpdatePosition(pos: Point3D): Unit = { }
 
-  protected def DiscoverNeighbors() = {
-  }
+  protected def DiscoverNeighbors() = { }
 
   // Update current knowledge about neighbors
   protected def UpdateNeighbors(nbs: List[ActorRef]): Unit = {
@@ -138,12 +149,15 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
 
   // Update current knowledge about the state of a neighbor
   def SaveNeighborState(ref: ActorRef, nState: S): Unit = {
+    // This also adds the neighbor reference if it wasn't stored
     neighbors += (ref -> Some(nState))
+
     computationActor.foreach(_ ! MsgUpdateNeighbors(neighbors.map(elem => elem match { case (k,v: S) => (k.path.toString, v) })))
   }
 
   override def setInput[T](name: String, value: T): Unit = {
     inputs += (name -> value)
+
     computationActor.foreach(_ ! MsgUpdateInputs(inputs))
   }
 

@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 import it.unibo.spala._
 import it.unibo.spala.actors._
 import it.unibo.spala.actors.device.{DevActorWithRegistry, PositionProviderActor}
-import it.unibo.spala.actors.env.BasicGUIActor
+import it.unibo.spala.actors.env.{GUIActorBasedOnRegistry, BasicGUIActor}
 import it.unibo.spala.actors.system.{MySpaceManager, SysKB}
 import it.unibo.spala.config._
 import it.unibo.spala.domain.{DBehavior, Dev, DeviceBehaviors}
@@ -35,8 +35,8 @@ object CustomSystemProgram extends App {
       initialDeviceState = 0,
       inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==19), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
-      workInterval = 2000 millis,
-      mobility = DeviceMobilitySettings(moveProbability = 0.2, moveStep = 4)
+      workInterval = 200 millis,
+      mobility = DeviceMobilitySettings(moveProbability = 0.5, moveStep = 40)
     ),
     SpatialSettings(
       proximityThreshold = 100
@@ -133,9 +133,7 @@ object CustomSystemProgram extends App {
 
   // Broadcast router for this group of devices
   var groupActor: ActorRef = _
-  if(devdistributionSettings.n > 0) {
-    groupActor = sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter")
-  }
+  groupActor = sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter")
 
   // Starting the system
   if(systemSettings.start) {
@@ -143,14 +141,13 @@ object CustomSystemProgram extends App {
     val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
 
     // Starting this group of devices
-    if(devdistributionSettings.n>0) {
-      groupActor ! MsgStartAndRegisterTo(registry)
-    }
+    groupActor ! MsgStartAndRegisterTo(registry)
 
     // Starting the GUI actor
     if (systemSettings.gui) {
-      val gui = sys.actorOf(Props(classOf[BasicGUIActor], 800, 600), "gui")
+      val gui = sys.actorOf(Props(classOf[BasicGUIActor], 1000, 600), "gui")
       gui ! MsgStart
+      groupActor ! MsgAddObserver(gui)
     }
 
     /*
@@ -160,8 +157,8 @@ object CustomSystemProgram extends App {
       }
     }
     */
-    val behavior = DeviceBehaviors.GradientBehavior
 
+    val behavior = DeviceBehaviors.GradientBehavior
 
     val rand = new Random()
     import sys.dispatcher

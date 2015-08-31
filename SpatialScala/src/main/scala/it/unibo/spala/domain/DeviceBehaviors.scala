@@ -34,7 +34,7 @@ class DBehavior[S](b: DevBehavior[S] = (oldS: S, bctx: DevBehaviorContext) => ol
 }
 */
 
-class DBehavior[S](val f: MealyFunType[S, DevBehaviorContext]) extends DevBehavior[S] with Serializable {
+class DBehavior[S](val f: DevBehavior[S]) extends DevBehavior[S] with Serializable {
   override def apply(s: S, i: DevBehaviorContext): S = f(s, i)
   def map(m: DevBehavior[S]) = (s: S, ctx: DevBehaviorContext) => m.apply(f(s, ctx), ctx)
 }
@@ -59,7 +59,7 @@ object DeviceBehaviors {
     val isSrc = ctx.getInput[Boolean]("isSrc").getOrElse(false)
     if (isSrc) 0
     else if (!states.isEmpty) {
-      val min = abs(states.min)
+      val min = states.min
       if(min<Int.MaxValue) min+1 else Int.MaxValue
     }
     else Int.MaxValue
@@ -73,7 +73,7 @@ object DeviceBehaviors {
 
       if (isSrc) 0
       else if (!states.isEmpty) {
-        val min = abs(states.min)
+        val min = states.min
         if(min<Int.MaxValue) min+1 else Int.MaxValue
       }
       else Int.MaxValue

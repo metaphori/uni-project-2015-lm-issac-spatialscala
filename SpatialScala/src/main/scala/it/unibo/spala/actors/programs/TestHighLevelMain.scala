@@ -38,7 +38,7 @@ object TestHighLevel extends App {
       inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==2), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
       workInterval = 500 millis,
-      mobility = DeviceMobilitySettings(canMove = true, moveStep = 1)
+      mobility = DeviceMobilitySettings(canMove = true, moveStep = 10, moveProbability = 0.6)
     ),
       SpatialSettings(
       proximityThreshold = 80
@@ -55,6 +55,5 @@ object TestHighLevel extends App {
   )
 
   new SpatialSystem[State](settings, new DBehavior[State](behavior))
-
 }
 

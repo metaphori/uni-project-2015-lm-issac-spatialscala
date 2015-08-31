@@ -100,6 +100,7 @@ trait ActorLifecycleBehavior {
   def OnShutdown() = { }
 
   def ScheduleNextWorkingCycle(delay: FiniteDuration = workInterval) = {
+    // "self" is safe to close over
     context.system.scheduler.scheduleOnce(delay) {
       self ! GoOn
     }

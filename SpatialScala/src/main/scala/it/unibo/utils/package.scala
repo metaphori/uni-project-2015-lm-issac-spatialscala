@@ -19,7 +19,7 @@ package object Utils {
    * }}}
    *
    * @param s The input sequence
-   * @param center The element for which
+   * @param center
    * @param distance
    * @tparam T
    * @return
