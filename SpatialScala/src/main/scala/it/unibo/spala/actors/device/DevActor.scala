@@ -202,37 +202,4 @@ class DevActorWithRegistry[S]() extends DevActor[S] {
 }
 
 
-class DevComputationActor[S](computation: DevBehavior[S],
-                             override var workInterval: FiniteDuration,
-                             initialState: Option[S])
-  extends Actor
-  with ActorLifecycleBehavior
-  with DevBehaviorContext {
 
-  protected val Log = akka.event.Logging(context.system, self.path.toString)
-  var neighbors = Map[String, Option[S]]()
-  var inputs: Map[String, Any] = Map()
-
-  var state: Option[S] = initialState
-
-  override def workingBehavior: Receive = {
-    case MsgUpdateNeighbors(nbs: Map[String,Option[S]]) => neighbors = nbs
-    case MsgUpdateInputs(inps: Map[String,Any]) => inputs = inps
-    case MsgGetState => sender() ! MsgReturnState(this.state)
-  }
-
-  override def DoJob() = {
-    this.state = this.state.map(olds => computation(olds, this))
-    this.state.foreach(s => {
-      context.parent ! MsgReturnValue(s)
-    })
-    ScheduleNextWorkingCycle()
-  }
-
-  override def getNeighborsStates[S]: Map[String, Option[S]] = neighbors.asInstanceOf[Map[String, Option[S]]]
-
-  override def getInput[T](name: String): Option[T] =
-    inputs.get(name) match { case Some(t:T) => Some(t); case _ => None }
-
-  override def getComputationRound: Long = 1
-}
