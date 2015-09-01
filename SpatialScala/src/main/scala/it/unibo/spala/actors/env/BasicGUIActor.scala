@@ -1,0 +1,95 @@
+package it.unibo.spala.actors.env
+
+import java.awt._
+import javax.swing._
+import it.unibo.spala.actors._
+import scala.concurrent.duration._
+import akka.actor.{ActorRef, Actor}
+import it.unibo.spala.CyclicBehavior
+import it.unibo.spala.math.Point3D
+
+/**
+ * Created by roby on 01/09/15.
+ */
+class BasicGUIActor(val width: Int, val height: Int)
+  extends Actor with CyclicBehavior {
+
+  /* Local imports and variables */
+
+  import scala.collection._ // Provides the ExecutionContext
+  override val workInterval = 200 milliseconds
+  protected val Log = akka.event.Logging(context.system, this)
+
+  /* Key members */
+
+  var refs = mutable.Map[String, ActorRef]()
+  var states = mutable.Map[ActorRef, Option[Any]]()
+  var positions = mutable.Map[ActorRef, Point3D]()
+
+  /* GUI-related members */
+  var frame: JFrame = _
+  var canvas: JPanel = _
+
+  /* Behavior */
+
+  def receive: Receive = initialBehavior
+
+  def initialBehavior: Receive = {
+    case MsgStart => {
+      BuildFrame()
+      context.become(drawingBehavior)
+      self ! GoOn
+    }
+  }
+
+  def drawingBehavior: Receive = {
+    case GoOn => {
+      // 1) Paint according to current info
+      DrawAll()
+      scheduleNextElaboration()
+    }
+    case MsgStop => ()
+    case MsgReturnDeviceInfo(who: String, s: Any, pos: Option[Point3D]) => {
+      states(sender) = Some(s)
+      refs(who) = sender
+      positions(sender) = pos.getOrElse(Point3D(0,0,0))
+    }
+  }
+
+  protected def scheduleNextElaboration() = context.system.scheduler.scheduleOnce(workInterval) { self ! GoOn }
+
+  def DrawAll() = {
+    val g = canvas.getGraphics
+    // Let's clear then canvas
+    g.clearRect(0, 0, this.frame.getWidth, this.frame.getHeight)
+    // Then we draw all the devices
+    positions.foreach {  case (ref, pos) => { DrawSingle(g, ref, pos) } }
+  }
+
+  def DrawSingle(g: Graphics, ref: ActorRef, pos: Point3D) = {
+    g.setColor(if(states(ref).getOrElse(None)==0) Color.RED else Color.BLUE)
+    g.fillOval(pos.x.toInt-10, pos.y.toInt-10, 5, 5)
+    g.setColor(Color.BLACK)
+    //g.drawString(ref.path.name + s" (${pos.x.toInt},${pos.y.toInt})", pos.x.toInt, pos.y.toInt-2)
+    g.drawString(""+states(ref).getOrElse(None), pos.x.toInt-2, pos.y.toInt+2)
+  }
+
+  def BuildFrame(): Unit = {
+    frame = new javax.swing.JFrame("GUI: " + self.path.name)
+    frame.setSize(width, height)
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+
+    frame.setVisible(true)
+
+    val panel = new JPanel()
+    frame.setContentPane(panel)
+
+    panel.setLayout(new BorderLayout())
+
+    canvas = new JPanel()
+    canvas.setBounds(50, 50, width-50, height-50)
+    panel.add(canvas, BorderLayout.CENTER)
+    canvas.setBackground(Color.WHITE)
+  }
+
+}
