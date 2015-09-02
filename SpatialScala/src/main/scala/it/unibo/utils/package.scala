@@ -4,7 +4,7 @@ package it.unibo
  * Created by: Roberto Casadei 
  * Created on date: 08/07/15.
  */
-package object Utils {
+package object utils {
 
   /**
    * Returns the neighbors up at distance of a given elem.

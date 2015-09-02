@@ -16,7 +16,8 @@ class BasicGUIActor(val width: Int, val height: Int)
 
   /* Local imports and variables */
 
-  import scala.collection._ // Provides the ExecutionContext
+  import scala.collection._ 
+  import context.dispatcher // Provides the ExecutionContext
   override val workInterval = 200 milliseconds
   protected val Log = akka.event.Logging(context.system, this)
 
