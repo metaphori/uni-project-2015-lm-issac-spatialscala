@@ -1,10 +1,10 @@
-package it.unibo.spala.actors.programs
+package it.unibo.spala.programs
 
 import akka.actor.ActorRef
 import it.unibo.spala.actors.system.{OldSpatialSystem, SpatialSystem}
 import it.unibo.spala.config._
 import it.unibo.spala.domain.DeviceBehaviors.GradientBehavior
-import it.unibo.spala.domain.{DBehavior, DeviceBehaviors}
+import it.unibo.spala.domain.{DevBehavior, DBehavior, DeviceBehaviors}
 import it.unibo.spala.math.Point3D
 import it.unibo.spala.{InputData, InputNames}
 
@@ -18,13 +18,14 @@ import scala.concurrent.duration._
 object TestHighLevel extends App {
 
   type State = Int
-  type Input = Boolean
 
   //val behavior = DeviceBehaviors.GradientBehavior
   //val behavior = new DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>99) 99 else i } // bounded
   //val behavior = new ConstantBehavior[Int](77)
   //val behavior = (i: Int, ctx: DevContext) => ctx.getNeighborsStates.size
   //val behavior: DevBehavior[Int] = (s: Int, ctx: DevBehaviorContext) => ctx.getComputationRound.toInt
+
+  val behaviorGen: () => DevBehavior[State]  = () => DeviceBehaviors.GradientBehaviorFunction
 
   val settings = Settings[State](
     SystemSettings(
@@ -55,6 +56,6 @@ object TestHighLevel extends App {
     )
   )
 
-  new SpatialSystem[State](settings, () => DeviceBehaviors.GradientBehaviorFunction /*new GradientBehavior*/)
+  new SpatialSystem[State](settings, behaviorGen)
 }
 

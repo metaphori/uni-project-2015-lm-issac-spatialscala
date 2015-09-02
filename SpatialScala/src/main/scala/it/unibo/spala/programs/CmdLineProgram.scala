@@ -1,4 +1,4 @@
-package it.unibo.spala.actors.programs
+package it.unibo.spala.programs
 
 import akka.actor.ActorRef
 import it.unibo.spala.actors.system.SpatialSystem

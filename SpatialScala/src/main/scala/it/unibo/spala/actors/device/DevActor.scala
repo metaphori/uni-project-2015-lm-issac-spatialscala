@@ -69,6 +69,8 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
   }
 
   def setDeviceBehavior(behavior: DevBehavior[S]) = {
+    Log.debug("Setting new behavior")
+
     computation = Some(behavior)
 
     val initialS = mostRecentState.orElse(this.initialState)
@@ -113,7 +115,6 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
 
     // Increment round number
     this.round += 1
-
     // If there is a state, let's notify the interested parties (neighbors and observers)
     mostRecentState.foreach(s => {
       PropagateStateToNeighbors(s)

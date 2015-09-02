@@ -108,34 +108,38 @@ class SpatialSystem[S](val settings: Settings[S],
 
     // Starting the system
     if(systemSettings.start) {
-      // Creation of Space Manager, which keeps track of devices and their spatial positions
-      val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
-
-      // Starting this group of devices
-      groupActor.foreach( _ ! MsgStartAndRegisterTo(registry) )
-
-      // Starting remote groups of devices on the provided nodes
-      if(distrib){
-        ddSettings.nodes.foreach(node => {
-          sys.actorSelection(s"akka.tcp://${systemSettings.name}@${node}/user/groupRouter") ! MsgStartAndRegisterTo(registry)
-        })
-      }
-
-      // Starting a console actor which periodically prints out the states of the devices
-      if (systemSettings.console) {
-        val sampler = sys.actorOf(Props[SamplerActor])
-        sampler ! MsgStartWithRecipient(registry)
-      }
-
-      // Starting the GUI actor
-      if (systemSettings.gui) {
-        val gui = sys.actorOf(Props(classOf[BasicGUIActor], 800, 600), "gui")
-        gui ! MsgStart
-        ddSettings.nodes.foreach(node => {
-          sys.actorSelection(s"akka.tcp://${systemSettings.name}@${node}/user/groupRouter") ! MsgAddObserver(gui)
-        })
-        groupActor.foreach( _ ! MsgAddObserver(gui) )
-      }
-
+      StartSystem()
     }
+
+  def StartSystem() = {
+    // Creation of Space Manager, which keeps track of devices and their spatial positions
+    val registry = sys.actorOf(Props(classOf[MySpaceManager], spaceSettings.proximityThreshold), "registry")
+
+    // Starting this group of devices
+    groupActor.foreach( _ ! MsgStartAndRegisterTo(registry) )
+
+    // Starting remote groups of devices on the provided nodes
+    if(distrib){
+      ddSettings.nodes.foreach(node => {
+        sys.actorSelection(s"akka.tcp://${systemSettings.name}@${node}/user/groupRouter") ! MsgStartAndRegisterTo(registry)
+      })
+    }
+
+    // Starting a console actor which periodically prints out the states of the devices
+    if (systemSettings.console) {
+      val sampler = sys.actorOf(Props[SamplerActor])
+      sampler ! MsgStartWithRecipient(registry)
+    }
+
+    // Starting the GUI actor
+    if (systemSettings.gui) {
+      val gui = sys.actorOf(Props(classOf[BasicGUIActor], 800, 600), "gui")
+      gui ! MsgStart
+      ddSettings.nodes.foreach(node => {
+        sys.actorSelection(s"akka.tcp://${systemSettings.name}@${node}/user/groupRouter") ! MsgAddObserver(gui)
+      })
+      groupActor.foreach( _ ! MsgAddObserver(gui) )
+    }
+  }
+
 }

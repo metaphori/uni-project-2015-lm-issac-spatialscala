@@ -1,4 +1,4 @@
-package it.unibo.spala.actors.programs
+package it.unibo.spala.programs
 
 import java.net.{URL, URLClassLoader}
 
