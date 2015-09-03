@@ -28,7 +28,7 @@ case class SystemSettings(name: String = "MySpatialSystem",
                           logLevel: String = AkkaConfigLogLevel.Info)
 
 case class DeviceSettings[S](initialDeviceState: S = null.asInstanceOf[S],
-                          inputProvider: (Int, String, ActorRef, Point3D) => InputData[Any] = (i,s,a,p) => null,
+                          inputProvider: (Int, String, ActorRef, Point3D) => Seq[InputData[Any]] = (i,s,a,p) => List(),
                           nameProvider: (Int => String) = i => "Device"+i,
                           workInterval: FiniteDuration = 100 millis,
                           mobility: DeviceMobilitySettings = DeviceMobilitySettings())

@@ -33,7 +33,7 @@ object CustomSystemProgram extends App {
     ),
     DeviceSettings(
       initialDeviceState = 0,
-      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==19), // only 50th elem is source
+      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => List(InputData(InputNames.Source1, k==19)), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
       workInterval = 200 millis,
       mobility = DeviceMobilitySettings(moveProbability = 0.5, moveStep = 40)
@@ -117,9 +117,8 @@ object CustomSystemProgram extends App {
   k = 0
   devsInfo.foreach {
     case (name, a, p) => {
-      k += 1;
-      val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
-      a ! MsgWithInput(input)
+      k += 1
+      devSettings.inputProvider(k, name, a, p).foreach(input => a ! MsgWithInput(input))
       a ! MsgWithInput(InputData[State](InputNames.InitialState, 0))
       a ! MsgWithBehavior(new DeviceBehaviors.GradientBehavior)
 

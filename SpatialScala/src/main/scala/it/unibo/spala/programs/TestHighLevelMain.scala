@@ -37,7 +37,7 @@ object TestHighLevel extends App {
     ),
     DeviceSettings(
       initialDeviceState = Int.MaxValue,
-      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => InputData(InputNames.Source1, k==2), // only 50th elem is source
+      inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => List(InputData(InputNames.Source1, k==2)), // only 50th elem is source
       nameProvider = (k:Int) => "d"+k,
       workInterval = 500 millis,
       mobility = DeviceMobilitySettings(canMove = true, moveStep = 10, moveProbability = 0.6)

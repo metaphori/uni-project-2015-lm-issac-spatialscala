@@ -89,11 +89,9 @@ class OldSpatialSystem[S](val settings: Settings[S],
 
   // Provide input to the devices
   k = 0
-  devsInfo.foreach { case (name, a, p) => {
-    k += 1;
-    val input: InputData[_] = devSettings.inputProvider(k, name, a, p)
-    a ! MsgWithInput(input)
-  }
+  devsInfo.foreach { case (name, a, p) =>
+    k += 1
+    devSettings.inputProvider(k, name, a, p).foreach(input => a ! MsgWithInput(input))
   }
 
   // Broadcast router for this group of devices
