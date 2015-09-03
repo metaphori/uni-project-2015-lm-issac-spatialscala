@@ -11,14 +11,12 @@ import it.unibo.spala.actors.system.SimpleSpaceManagerActor
 import it.unibo.spala.domain._
 import it.unibo.spala.math.Point2D
 
-/**
- * Created by roby on 02/09/15.
- */
 object SimpleProgram extends App {
 
   // We may need some randomness
   val rand = new scala.util.Random()
 
+  // Type alias for the type of the devices' state
   type S = Int
 
   // Creation of the actor system
@@ -34,7 +32,7 @@ object SimpleProgram extends App {
 
   // Then, for each device actor...
   devs.foreach { ref =>
-    // Provide its initial state (BEFORE setting the before)
+    // Provide its initial state (BEFORE setting the behavior)
     ref ! MsgWithInput(InputData[S](InputNames.InitialState, rand.nextInt(9999)))
     // Provide its behavior
     ref ! MsgWithBehavior((s: S, c: DevBehaviorContext) => { s+1 })

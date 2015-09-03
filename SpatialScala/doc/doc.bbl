@@ -15,4 +15,9 @@ J.~Suereth.
 \newblock {\em Scala In Depth}.
 \newblock Manning, 2012.
 
+\bibitem{AkkaGuide}
+Typesafe.
+\newblock Akka documentation (scala).
+\newblock \\http://doc.akka.io/docs/akka/2.3.12/scala.html.
+
 \end{thebibliography}

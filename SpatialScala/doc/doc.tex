@@ -13,16 +13,48 @@
 
 \usepackage{listings}
 
-\lstdefinelanguage{contact}{
-  morekeywords={ContactSystem, Context, BehaviorOf, support=, TCP,
-  state, initial, endstate, transitToEnd, goToState, onMessage, showMsg, action, var, val,
-  transitTo, code., const., set, exec, call,
-  doOut, doIn, doInOut, doOutIn,
-  Dispatch, serve, accept,   Request, demand, grant,    Signal, emit, sense,
-  Invitation, forward, to, ask,
-  Subject, class, inherits, context,
-  if, null, String, Object, double, Double, Int, int, inheritedhavior},
-    alsoletter={-},
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\small,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  otherkeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+  title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+  columns=fullflexible,
+  lineskip={-1.5pt},
+  xleftmargin=10px,
+  belowskip={-7px},
+  aboveskip={4px},
+}
+ 
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,lazy,%
+    type,val,var,while,with,yield},
   otherkeywords={=>,<-,<\%,<:,>:,\#,@},
   sensitive=true,
   morecomment=[l]{//},
@@ -30,7 +62,9 @@
   morestring=[b]",
   morestring=[b]',
   morestring=[b]"""
-}
+} 
+ 
+
 \usepackage{courier}
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -215,7 +249,7 @@
 \institute{%
 %%%  \xunibo\\\xaddrCE, \xcityCE\\\email{\{nameA.studentA, nameB.studentB\}@studio.unibo.it}
   Complex Adaptive Software Systems Engineering course \\
-  Academic year 2014-2015, II semester \\
+  Academic year 2014-2015, semester II\\
   \xunibo
 }
 
@@ -237,17 +271,52 @@
 \end{abstract}
 
 
+\lstset{language=scala}
 
 \section{Introduction}
 
+Computers and software are important to us because of their ability to unburden us from the intricacies, the complication, and the complexity of our world. However, as we push forward our problems and our needs, the (software) systems themselves become more and more difficult to conceive, design, and develop. Our knowledge and tools should evolve to face the challenge of this increasing complexity. The question is: how can we effectively engineer complex, adaptive software systems?
 
-\section{First prototype}
+One of the current trends in computing is represented by the field(s) of pervasive computing or Internet of Things. We may imagine a present/future where computation happens in the environment, driven by a dense network of (relatively simple) devices that intensively interact within certain physical constraints. How can we program such a multitude of devices in order to make interesting global behaviors predictably emerge out of local interactions and, at the same time, guarantee certain macro-level properties? 
+
+As computer scientists deal with such problems, we see ideas, abstractions, and paradigms arise. As these concepts effectively capture the essential complexity of the problems they address, we are left with the accidental complexity that may result from practical concerns or the lack of documentation or tools. It is not only a matter of productivity; support activities may also boost new insights by creating a suitable environment for scientific investigation.
+
+\newpage
+
+\section{Requirements}
+
+Briefly, our goal is to develop, in Scala/Akka, a framework to support \emph{aggregate programming}, that is, the kind of programming paradigm promoted by MIT Proto\footnote{url{http://proto.bbn.com/commons/}} and often referred to as \emph{spatial computing}. 
+
+We would like to be able to simulate systems that consist in a (possibly huge) number of elements (that we may simply call \textbf{devices} as often this model fits Internet of Things and pervasive computing applications) that interact with one another based on some notion of locality.
+
+\newpage
+
+\section{Software Project Description}
+
+
 
 \subsection{Design forces}
 
+\quote{``The notion of force generalizes the kinds of criteria that software engineers use to justify designs and implementations.''} \footnote{\url{www.cs.unc.edu/~stotts/723/patterns/forces.html}}
+
+\begin{itemize}
+ \item Distribution
+ \item Asynchronicity
+ \item Decentralization and local interactions
+ \item Locality and spatial assumptions
+ \item Interaction-based computation
+ \item Dynamicity axes
+ 		\begin{itemize}
+ 		\item Behavior of a single device
+ 		\item System membership (devices leaving/entering the logical system boundaries)
+ 		\item Logical mobility (devices changing their spatial position)
+ 		\item Physical mobility (devices moving across computational nodes)
+ 		\end{itemize}
+\end{itemize}
+
 % The notion of force generalizes the kinds of criteria that software engineers use to justify designs and implementations
 % www.cs.unc.edu/~stotts/723/patterns/forces.html
-
+\begin{comment}
 \begin{itemize}
  \item Distribution
  \item Asynchronicity
@@ -258,7 +327,7 @@
  \item Self-organization
 \end{itemize}
 
-\subsection{Design choices}
+%\subsection{Design choices}
 
 \begin{itemize}
  \item Eventual consistency
@@ -272,26 +341,52 @@
  %to that item will return the last updated value
 \end{itemize}
 
+\end{comment}
 
-\subsection{Description}
+\subsection{An informal, conceptual overview}
+$\\$
+\begin{center}
+\includegraphics[scale=0.5]{imgs/InformalSpatialSystem.png}
+\end{center}
 
-Basic concepts
+\subsection{High-level organization}
+
+The top-level package is \ttb{it.unibo.spala}. Then, the code is organized into 4 key subpackages:
 
 \begin{itemize}
- \item A device \hlb{Dev[S,I]} has a name, a state, and a behavior
+\item \texttt{it.unibo.spala.\textbf{domain}}: it includes the basic, reusable abstractions that pertains to spatial computing
+\item \texttt{it.unibo.spala.\textbf{actors}}: it includes the ingredients to build and simulate actor-based systems of interacting devices
+\item \texttt{it.unibo.spala.\textbf{config}}: it collects utilities and classes to support the configuration of Spala systems
+\item \texttt{it.unibo.spala.\textbf{test}}: it is intended to contain unit and integration tests
+\end{itemize}
+
+\subsection{Basic concepts}
+
+The following elements can be found under the \ttb{it.unibo.spala.domain} package.
+
+\begin{itemize}
+ \item A device \hlb{Dev[S]} has a name, a state, and a behavior
  
- \item The behavior of a device can be seen as a function of its state \ttb{S => S} (\hlb{DevMooreBehavior})
- or a function of its state and inputs 
- \ttb{(S,I) => S} (\hlb{DevMealyBehavior}), producing the next device's state
+ \item The behavior of a device \hlb{DevBehavior[S]} can be seen as a function of its state and context, where the context gives access to the inputs and the neighbor map of the device
  
- \item A \hlb{Space[E,P]} is an abstraction for a spatial container of elements: 
-   elements can added to a certain location, elements can be retrieved, and the space can be queried for the location of an element
+\begin{lstlisting}
+type MealyFunType[S, I] = (S, I) => S
+type DevBehavior[S] = MealyFunType[S, DevBehaviorContext]
+
+trait DevBehaviorContext {
+  def getInput[T](name: String): Option[T]
+  def getNeighborsStates[S]: Map[String, Option[S]]
+}
+\end{lstlisting}
+ 
+ \item A \texttt{space.}\hlb{Space[E,P]} is an abstraction for a spatial container of elements: 
+   elements can be retrieved and the space can be queried for the location of an element
  \begin{itemize}
-    \item A \hlb{MutableSpace[E,P]} allows for the move and removal of elements
+    \item A \hlb{MutableSpace[E,P]} allows for the insertion, move and removal of elements
     \item A \ttb{Basic3DSpace[E]} is a mutable space of elements of type E which are located by means of 3D points (x,y,z)
  \end{itemize}
  
- \item A \hlb{DistanceStrategy[E,P,D]} defines how distances and locality (neighborhoods) 
+ \item A \texttt{space.}\hlb{DistanceStrategy[E,P,D]} defines how distance and locality (neighborhood) 
    are calculated for a given \texttt{Space[E,P]}
  \begin{itemize}
     \item \ttb{EuclideanStrategy[E]} defines the euclidean distance (Double) on a 3D space
@@ -299,18 +394,25 @@ Basic concepts
  
 \end{itemize}
 
-Actor system structure
+\subsection{Key elements of a Spala actor system}
+
+The following elements can be found under the \ttb{it.unibo.spala.actors} package.
 
 \begin{itemize}
- \item \hlb{DevActor[S,I]} is an actor that wraps a \ttb{Dev[S,I]}
- \item \hlb{SpaceManagerActor} is an abstract actor that represents a spatial container for actors.
- \ttb{SimpleSpaceManagerActor} is a 3D space manager actor with an euclidean distance strategy
- \item \ttb{SamplerActor} and \ttb{GUIActor} sample the states of the device actors to provide a 
-   representation of the evolution of the system along time
+ \item \texttt{device.}\hlb{DevActor[S,I]} is the actor that represents a device. 
+ It internally dispatches a \texttt{device.}\ttb{DevComputationActor} for executing the device behavior and may observe a number of \texttt{device.}\ttb{InputProviderActor}s which effectively work as sensors 
+ \item \texttt{system.}\hlb{SpaceManagerActor} is an abstract actor that represents a spatial container for actors. It is specialized by \texttt{system.}\ttb{SimpleSpaceManagerActor} which is a 3D space manager actor with an euclidean distance strategy
+ \item \texttt{env.}\ttb{BasicGUIActor} observes the states of the device actors and provides a 
+   graphical representation of the evolution of the system along time
 \end{itemize}
 
-Actor system dynamics
 
+
+
+
+
+\begin{comment}
+Actor system dynamics
 \begin{itemize}
  \item A device actor
     \begin{itemize}
@@ -320,8 +422,7 @@ Actor system dynamics
     \end{itemize}
 \end{itemize}
 
-
-\subsection{Issues}
+%\subsection{Issues}
 
 Issues and challenges
 
@@ -338,8 +439,7 @@ Issues and challenges
 \item Multiple consistency requirements and synchronization patterns between devices
 \end{itemize}
 
-\begin{comment}
-\subsection{Known bugs}
+%\subsection{Known bugs}
 
 To be solved
 
@@ -356,24 +456,280 @@ To be solved
     \end{itemize}
 
 \end{itemize}
-\end{comment}
 
 
-\subsection{Further issues to investigate}
+
+%\subsection{Further issues to investigate}
 
 \begin{itemize}
  \item Open systems and system boundary porosity: devices entering/exiting the (sub-)system
 \end{itemize}
 
-\subsubsection{Remote class loading}
+%\subsubsection{Remote class loading}
 
 \begin{itemize}
 \item \url{http://stackoverflow.com/questions/9573625/akka-remote-deploy-misunderstanding}
 \item \url{https://github.com/earldouglas/akka-remote-class-loading}
 \end{itemize}
 
+\begin{lstlisting}
+
+Errors by passing a lambda:
+
+[WARN] [09/01/2015 16:13:27.577] [MySpatialSystem-akka.remote.default-remote-dispatcher-5] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40127.0.0.1%3A56300-1] Association with remote system [akka.tcp://MySpatialSystem@127.0.0.1:56300] has failed, address is now gated for [5000] ms. Reason: [cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior] 
+[ERROR] [09/01/2015 16:14:57.317] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-2/endpointWriter] AssociationError [akka.tcp://MySpatialSystem@192.168.1.7:7001] <- [akka.tcp://MySpatialSystem@192.168.1.10:7777]: Error [cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior] [
+java.lang.ClassCastException: cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior
+	at java.io.ObjectStreamClass$FieldReflector.setObjFieldValues(ObjectStreamClass.java:2089)
+	at java.io.ObjectStreamClass.setObjFieldValues(ObjectStreamClass.java:1261)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2006)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
+	at akka.serialization.JavaSerializer$$anonfun$1.apply(Serializer.scala:241)
+	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
+	at akka.serialization.JavaSerializer.fromBinary(Serializer.scala:241)
+	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
+	at scala.util.Try$.apply(Try.scala:191)
+	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
+	at akka.remote.serialization.MessageContainerSerializer.fromBinary(MessageContainerSerializer.scala:80)
+	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
+	at scala.util.Try$.apply(Try.scala:191)
+	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
+	at akka.remote.MessageSerializer$.deserialize(MessageSerializer.scala:24)
+	at akka.remote.DefaultMessageDispatcher.payload$lzycompute$1(Endpoint.scala:58)
+	at akka.remote.DefaultMessageDispatcher.payload$1(Endpoint.scala:58)
+	at akka.remote.DefaultMessageDispatcher.dispatch(Endpoint.scala:76)
+	at akka.remote.EndpointReader$$anonfun$receive$2.applyOrElse(Endpoint.scala:929)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:475)
+	at akka.remote.EndpointActor.aroundReceive(Endpoint.scala:405)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:516)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:487)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:256)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:223)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:233)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+]
+[WARN] [09/01/2015 16:14:57.317] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-2] Association with remote system [akka.tcp://MySpatialSystem@192.168.1.10:7777] has failed, address is now gated for [5000] ms. Reason: [cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior] 
+[ERROR] [09/01/2015 16:17:18.122] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-3/endpointWriter] AssociationError [akka.tcp://MySpatialSystem@192.168.1.7:7001] <- [akka.tcp://MySpatialSystem@192.168.1.10:7777]: Error [it.unibo.spala.domain.DeviceBehaviors$$anonfun$1] [
+java.lang.ClassNotFoundException: it.unibo.spala.domain.DeviceBehaviors$$anonfun$1
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at java.io.ObjectInputStream.resolveClass(ObjectInputStream.java:626)
+	at akka.util.ClassLoaderObjectInputStream.resolveClass(ClassLoaderObjectInputStream.scala:19)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1613)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1774)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
+	at akka.serialization.JavaSerializer$$anonfun$1.apply(Serializer.scala:241)
+	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
+	at akka.serialization.JavaSerializer.fromBinary(Serializer.scala:241)
+	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
+	at scala.util.Try$.apply(Try.scala:191)
+	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
+	at akka.remote.serialization.MessageContainerSerializer.fromBinary(MessageContainerSerializer.scala:80)
+	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
+	at scala.util.Try$.apply(Try.scala:191)
+	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
+	at akka.remote.MessageSerializer$.deserialize(MessageSerializer.scala:24)
+	at akka.remote.DefaultMessageDispatcher.payload$lzycompute$1(Endpoint.scala:58)
+	at akka.remote.DefaultMessageDispatcher.payload$1(Endpoint.scala:58)
+	at akka.remote.DefaultMessageDispatcher.dispatch(Endpoint.scala:76)
+	at akka.remote.EndpointReader$$anonfun$receive$2.applyOrElse(Endpoint.scala:929)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:475)
+	at akka.remote.EndpointActor.aroundReceive(Endpoint.scala:405)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:516)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:487)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:256)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:223)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:233)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+]
+
+Here by passing MsgWithBehavior(instance of DBehavior):
+
+[WARN] [09/01/2015 16:17:18.122] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-3] Association with remote system [akka.tcp://MySpatialSystem@192.168.1.10:7777] has failed, address is now gated for [5000] ms. Reason: [it.unibo.spala.domain.DeviceBehaviors$$anonfun$1] 
+[ERROR] [09/01/2015 16:18:22.820] [MySpatialSystem-akka.remote.default-remote-dispatcher-5] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-4/endpointWriter] AssociationError [akka.tcp://MySpatialSystem@192.168.1.7:7001] <- [akka.tcp://MySpatialSystem@192.168.1.10:7777]: Error [it.unibo.spala.domain.DBehavior; local class incompatible: stream classdesc serialVersionUID = 8458645825735445816, local class serialVersionUID = 5940560850776885210] [
+java.io.InvalidClassException: it.unibo.spala.domain.DBehavior; local class incompatible: stream classdesc serialVersionUID = 8458645825735445816, local class serialVersionUID = 5940560850776885210
+	at java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:621)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1623)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1623)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1774)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
+	at akka.serialization.JavaSerializer$$anonfun$1.apply(Serializer.scala:241)
+	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
+	at akka.serialization.JavaSerializer.fromBinary(Serializer.scala:241)
+	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
+	at scala.util.Try$.apply(Try.scala:191)
+	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
+	at akka.remote.serialization.MessageContainerSerializer.fromBinary(MessageContainerSerializer.scala:80)
+	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
+	at scala.util.Try$.apply(Try.scala:191)
+	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
+	at akka.remote.MessageSerializer$.deserialize(MessageSerializer.scala:24)
+	at akka.remote.DefaultMessageDispatcher.payload$lzycompute$1(Endpoint.scala:58)
+	at akka.remote.DefaultMessageDispatcher.payload$1(Endpoint.scala:58)
+	at akka.remote.DefaultMessageDispatcher.dispatch(Endpoint.scala:76)
+	at akka.remote.EndpointReader$$anonfun$receive$2.applyOrElse(Endpoint.scala:929)
+	at akka.actor.Actor$class.aroundReceive(Actor.scala:475)
+	at akka.remote.EndpointActor.aroundReceive(Endpoint.scala:405)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:516)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:487)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:256)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:223)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:233)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+]
+[WARN] [09/01/2015 16:18:22.820] [MySpatialSystem-akka.remote.default-remote-dispatcher-5] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-4] Association with remote system [akka.tcp://MySpatialSystem@192.168.1.10:7777] has failed, address is now gated for [5000] ms. Reason: [it.unibo.spala.domain.DBehavior; local class incompatible: stream classdesc serialVersionUID = 8458645825735445816, local class serialVersionUID = 5940560850776885210] 
+
+\end{lstlisting}
+
+\end{comment}
+
+\newpage
+
+\section{Usage Guide}
+
+\subsection{Source code}
+
+The source code can be downloaded from BitBucket. The repository URL
+ is \url{https://metaphori@bitbucket.org/metaphori/spatialscala.git}.
+ 
+ Download or clone the repository
+ 
+\begin{lstlisting}[language={},emph={clone,\$},emphstyle=\textbf]
+~ $ git clone https://metaphori@bitbucket.org/metaphori/spatialscala.git
+
+\end{lstlisting}
+
+
+
+\subsection{Environment setup}
+
+\subsubsection{Eclipse (Scala IDE)}$\\$
+
+First, generate the Eclipse project files out of the SBT\footnote{SBT (Scala Build Tool) is the most widely used build tool in the Scala community.} project.
+
+\begin{lstlisting}[language=bash,emph={sbt,\$},emphstyle=\textbf]
+~ $ cd spatialScala/SpatialScala
+SpatialScala/ $ sbt
+sbt> eclipse
+\end{lstlisting}
+
+Then, import the project with Eclipse via \texttt{File | Import.. | General/Existing project into workspace}.
+
+\subsubsection{IntelliJ IDEA} $\\$
+
+From the Welcome window, select \texttt{Import Project}, navigate up the path \texttt{./spatialScala/SpatialScala} and then choose \texttt{Import project from external model $\Rightarrow$ SBT}
+
+\subsection{Running}
+
+Once your programming environment is ready, you may want to launch a program under \texttt{it.unibo.spala.programs} (such as \texttt{TestHighLevel}) or the tests under \texttt{it.unibo.spala.test} to verify that the framework is working.
+
+The project is also shipped with a command-line main program that could be invoked from a shell:
+
+%basicstyle=\ttfamily\footnotesize,
+\begin{lstlisting}[language={},emph={sbt,runMain,\$},emphstyle=\textbf]
+$ sbt
+sbt> runMain it.unibo.spala.programs.CmdLineProgram --help
+<spatial program> 1.0
+Usage: <spatial program> [start] [options]
+
+  --prefix <prefix>
+        Prefix for unique device names
+  -g <value> | --gui <value>
+        To launch a GUI
+  -m <value> | --mobile <value>
+        Dis/enables mobility for devices
+  -d <N> | --proximity <N>
+        Proximity (distance) threshold
+  -n <N> | --numNodes <N>
+        Number of nodes
+  --grid <nrows>, <ncols>, <stepx>, <stepy>, <offsetx>, <offsety>
+        Grid parameters
+  -h <HOST> | --host <HOST>
+        Host of deployment of the actor system
+  -p <PORT> | --port <PORT>
+        Port of deployment of the actor system
+  --nodes <ADDR1>, ..., <ADDRN>
+        Nodes that should be contacted on start
+Command: start
+start the system
+  --help
+        prints this usage text
+        
+sbt> runMain it.unibo.spala.programs.CmdLineProgram start -n 50
+\end{lstlisting}
+
+\subsection{Creating a system: the easy way}
+
+When anything is working, you can use the framework to simulate various sorts of systems of interacting devices.
+
+To easily configure and start a system, you can leverage the \texttt{SpatialSystem} class.
+
+\begin{lstlisting}
+// Define the type of the state of the devices
+type TState = Int
+
+// Create the settings (using defaults)
+val settings = Settings[TState]()
+
+// Define a function to generates the behavior for each device
+// Note that it must have type () => DevBehavior[TState]
+val behaviorGen = () => DeviceBehaviors.GradientBehaviorFunction
+
+// Instantiate a SpatialSystem to setup and run the system
+new SpatialSystem[State](settings, behaviorGen)
+\end{lstlisting}
+
+\subsection{Creating a system: the long way}
+
+You can take a look at the definition of \texttt{SpatialSystem} to see how a Spala actor system is built from scratch.
+
+Abstracting from configuration and setup details, the essential recipe is reported in the following listing.
+
+\lstinputlisting{../src/main/scala/it/unibo/spala/programs/SimpleProgram.scala}
+
+\section{Further developments}
+
+A first important extension is the support of \textbf{code mobility}. In particular we would like to send, to a remote device actor, the code to be executed as its behavior.
+
+Then, there are a number of project-related activities:
+
+\begin{itemize}
+\item Write unit and integration tests (see Akka TestKit)
+\item Refactoring (this project started with an exploratory inclination)
+\end{itemize}
+
 \section{Conclusion}
 
+
+\nocite{AkkaGuide}
 \nocite{FPinScala}
 \nocite{ScalaForTheImpatient}
 \nocite{ScalaInDepth}
