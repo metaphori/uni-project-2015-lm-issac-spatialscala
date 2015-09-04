@@ -7,6 +7,7 @@ import akka.actor.{Actor, ActorRef, ActorSystem}
 import com.typesafe.config.ConfigFactory
 import it.unibo.spala.actors.GoOn
 import akka.pattern.ask
+import it.unibo.spala.actors.support.LoadClassBytes
 
 import scala.concurrent.duration.Duration
 
@@ -57,35 +58,6 @@ object TestRemote extends App {
 }
 
 case class MyMsg(x: Int)
-
-object LoadClassBytes {
-  def apply(clazz: Class[_]) : Map[String, Array[Byte]] = {
-    val basePath : Path = Paths.get(clazz.getProtectionDomain.getCodeSource.getLocation.toURI)
-    val relName = clazz.getName().replace('.', '/')
-    val fullPath = basePath.resolve(relName)
-    val fileName = fullPath.getFileName()
-    val fileNameHead = (fileName.toString()).split("\\.")(0)
-    val parentDir = fullPath.getParent()
-
-    var res : Map[String, Array[Byte]] = Map()
-    // find class file and class files of inner classes
-    val ds = Files.newDirectoryStream(
-      parentDir,
-      new DirectoryStream.Filter[Path]{
-        def accept(file: Path) : Boolean = file.getFileName().toString().matches(fileNameHead+"(\\$.+)?\\.class")
-      })
-    try {
-      val iter = ds.iterator()
-      while (iter.hasNext()) {
-        val p = iter.next()
-        res += (((basePath.relativize(p)).toString().split("\\.")(0).replace('/', '.')) -> Files.readAllBytes(p))
-      }
-    } finally {
-      ds.close
-    }
-    res
-  }
-}
 
 
 class VerySimpleActor extends Actor {

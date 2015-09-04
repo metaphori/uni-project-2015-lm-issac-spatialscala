@@ -7,6 +7,7 @@ import it.unibo.spala._
 import it.unibo.spala.actors._
 import it.unibo.spala.actors.device.{DevActorWithRegistry, PositionProviderActor}
 import it.unibo.spala.actors.env.{BasicGUIActor, SamplerActor}
+import it.unibo.spala.actors.support.{ClassLoaderActor, ByteArrayClassLoader}
 import it.unibo.spala.config._
 import it.unibo.spala.domain.{DevBehavior, DBehavior, Dev}
 
@@ -55,7 +56,7 @@ class SpatialSystem[S](val settings: Settings[S],
     SysKB.MoveProbability = devSettings.mobility.moveProbability
 
     // Creation of the actor system
-    val sys = ActorSystem(systemSettings.name, config)
+    val sys = ActorSystem(systemSettings.name, config, new ByteArrayClassLoader(Thread.currentThread().getContextClassLoader))
 
     // Positions of the devices
     val positions = devdistributionSettings.shape match {
@@ -80,7 +81,7 @@ class SpatialSystem[S](val settings: Settings[S],
     val devsInfo =
       devsWithPositions.map { case (devname,pos) => {
           val actorProp = Props(classOf[DevActorWithRegistry[S]])
-          val actorRef = sys.actorOf(actorProp, "Actor" + devname)
+          val actorRef = sys.actorOf(actorProp, systemSettings.prefix + devname)
           (devname, actorRef, pos)
         }
       }
@@ -104,6 +105,9 @@ class SpatialSystem[S](val settings: Settings[S],
     if(devdistributionSettings.n > 0) {
       groupActor = Some(sys.actorOf(BroadcastGroup(devsInfo.map(_._2.path.toString)).props(), "groupRouter"))
     }
+
+    // Create a class loader actor to support code mobility
+    sys.actorOf(Props[ClassLoaderActor], "classloader")
 
     // Starting the system
     if(systemSettings.start) {

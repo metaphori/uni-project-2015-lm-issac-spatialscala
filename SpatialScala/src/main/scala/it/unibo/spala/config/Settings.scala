@@ -19,7 +19,7 @@ case class Settings[S](systemSettings: SystemSettings = SystemSettings(),
                     deploymentSettings: DeploymentSettings = DeploymentSettings())
 
 case class SystemSettings(name: String = "MySpatialSystem",
-                          prefix: String = s"d${System.currentTimeMillis()}_",
+                          prefix: String = "_",
                           seed: Option[Long] = None,
                           start: Boolean = true,
                           executionStrategy: ExecutionStrategy = AsyncExecutionStrategy,

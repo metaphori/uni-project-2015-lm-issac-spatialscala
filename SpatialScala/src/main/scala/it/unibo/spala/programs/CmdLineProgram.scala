@@ -28,7 +28,7 @@ object CmdLineProgram extends App {
       var stgs: Settings[State] = settings.copy(deviceSettings = settings.deviceSettings.copy(
         initialDeviceState = 0,
         inputProvider = (k:Int, name:String, ref:ActorRef, pos:Point3D) => List(InputData("isSrc", k>0 && k%50==0)),
-        nameProvider = (k:Int) => settings.systemSettings.prefix+k,
+        nameProvider = (k:Int) => "d"+k,
         workInterval = 500 millis
       ))
       new SpatialSystem[State](stgs, () => new DeviceBehaviors.GradientBehavior)
