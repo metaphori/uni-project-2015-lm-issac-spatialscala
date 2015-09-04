@@ -3,7 +3,7 @@ package it.unibo.spala.programs
 import akka.actor.ActorRef
 import it.unibo.spala.actors.system.{OldSpatialSystem, SpatialSystem}
 import it.unibo.spala.config._
-import it.unibo.spala.domain.DeviceBehaviors.GradientBehavior
+import it.unibo.spala.domain.DeviceBehaviors.{ConstantBehavior, GradientBehavior}
 import it.unibo.spala.domain.{DevBehavior, DBehavior, DeviceBehaviors}
 import it.unibo.spala.math.Point3D
 import it.unibo.spala.{InputData, InputNames}
@@ -25,7 +25,10 @@ object TestHighLevel extends App {
   //val behavior = (i: Int, ctx: DevContext) => ctx.getNeighborsStates.size
   //val behavior: DevBehavior[Int] = (s: Int, ctx: DevBehaviorContext) => ctx.getComputationRound.toInt
 
-  val behaviorGen: () => DevBehavior[State]  = () => DeviceBehaviors.GradientBehaviorFunction
+  var k = 0
+  val behaviorGen: () => DevBehavior[State]  =
+    () => { k=k+1; new ConstantBehavior[State](k) map { (x,c) => if(x%2==0) x else -x }}
+    //() => new DeviceBehaviors.GradientBehavior map { (i, ctx) => if(i>99) 99 else i }
 
   val settings = Settings[State](
     SystemSettings(

@@ -285,7 +285,7 @@ As computer scientists deal with such problems, we see ideas, abstractions, and 
 
 \section{Requirements}
 
-Briefly, our goal is to develop, in Scala/Akka, a framework to support \emph{aggregate programming}, that is, the kind of programming paradigm promoted by MIT Proto\footnote{url{http://proto.bbn.com/commons/}} and often referred to as \emph{spatial computing}. 
+Briefly, our goal is to develop, in Scala/Akka, a framework to support \emph{aggregate programming}, that is, the kind of programming paradigm promoted by MIT Proto\footnote{\url{http://proto.bbn.com/commons/}} and often referred to as \emph{spatial computing}. 
 
 We would like to be able to simulate systems that consist in a (possibly huge) number of elements (that we may simply call \textbf{devices} as often this model fits Internet of Things and pervasive computing applications) that interact with one another based on some notion of locality.
 
@@ -362,12 +362,14 @@ Some of the forces that impact on the framework architecture and the tools we us
 \end{comment}
 
 \subsection{An informal, conceptual overview}
-$\\$
-%$
 
+
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{imgs/InformalSpatialSystem.png}
+\includegraphics[scale=0.6]{imgs/InformalSpatialSystem.png}
 \end{center}
+\caption{Informal model of the system.}
+\end{figure}
 
 Notes
 
@@ -383,10 +385,12 @@ We use \ttb{sbt}\footnote{SBT (Scala Build Tool) is the most widely used build t
 
 The directory structure is shown below	:
 
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{imgs/ProjectFiles.png}
-\label{Project files}
+\includegraphics[scale=0.7]{imgs/ProjectFiles.png}
 \end{center}
+\caption{Project files and directory hierarchy.}
+\end{figure}
 
 \begin{itemize}
 \item Project source code and artifacts go under \texttt{src/main}
@@ -469,12 +473,13 @@ The following elements can be found under the \ttb{it.unibo.spala.actors} packag
 
 \subsection{Informal system architecture}
 
-$\\$
-%$
 
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{imgs/InformalActorSpatialSystem.png}
+\includegraphics[scale=0.6]{imgs/InformalActorSpatialSystem.png}
 \end{center}
+\caption{Informal model of the actor system.}
+\end{figure}
 
 Notes
 
@@ -489,6 +494,24 @@ Notes
 \item The \textbf{GUI actor} observes the device actors: this means that, whenever a device updates its state, the GUI is notified
 \item \ttb{Akka Remote} is the Akka module that allows for \emph{location transparency} -- all you need to send a message to a remote actor is its \texttt{ActorRef}
 \end{itemize}
+
+
+\subsection{Design models: dimension of interaction}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.56]{imgs/SpalaCommunicationDiagram_Setup.png}
+\end{center}
+\caption{Communication diagram of the setup phase of the system.
+The rectangles represent actors. The lines express association. The arrows represent messages. The numbers express the order in which messages are \emph{sent}. Letters such as in $1.1a$ and $1.1b$ are used to express concurrent messages (here, within activation $1.1$). Notation \texttt{\_k} means that a message is dispatched to $k$ recipients.}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.56]{imgs/SpalaCommunicationDiagram_Running.png}
+\end{center}
+\caption{Communication diagram showing an excerpt of the interactions for a single device actor. Note that, due to asynchronicity, several alternative message orderings are possible.}
+\end{figure}
 
 
 
@@ -520,175 +543,6 @@ Issues and challenges
 \item Multiple consistency requirements and synchronization patterns between devices
 \end{itemize}
 
-%\subsection{Known bugs}
-
-To be solved
-
-\begin{itemize}
- \item Scheduling many \texttt{TimerTask}s using \texttt{java.util.Timer} may result in \texttt{OutOfMemoryError}
-    due to inability to create additional native threads
-    \begin{itemize}
-    \item Such tasks are launched by device actors to schedule the next elaboration in the future
-    \item Notes for a solution: \texttt{ActorContext.setReceiveTimeout} may help; it can't be used directly
-      because the device actor needs to respond to other messages in the meantime.
-     We would need a \texttt{ReceiveTimeout} for a specific message type
-    \item Solution: Akka scheduler (\footnotesize{\url{http://doc.akka.io/docs/akka/snapshot/java/scheduler.html}}).
-    Can it be used inside an actor? Yes (\footnotesize{\url{http://stackoverflow.com/questions/13896638/is-it-possible-to-use-the-akka-scheduler-inside-an-actor}})
-    \end{itemize}
-
-\end{itemize}
-
-
-
-%\subsection{Further issues to investigate}
-
-\begin{itemize}
- \item Open systems and system boundary porosity: devices entering/exiting the (sub-)system
-\end{itemize}
-
-%\subsubsection{Remote class loading}
-
-\begin{itemize}
-\item \url{http://stackoverflow.com/questions/9573625/akka-remote-deploy-misunderstanding}
-\item \url{https://github.com/earldouglas/akka-remote-class-loading}
-\end{itemize}
-
-\begin{lstlisting}
-
-Errors by passing a lambda:
-
-[WARN] [09/01/2015 16:13:27.577] [MySpatialSystem-akka.remote.default-remote-dispatcher-5] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40127.0.0.1%3A56300-1] Association with remote system [akka.tcp://MySpatialSystem@127.0.0.1:56300] has failed, address is now gated for [5000] ms. Reason: [cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior] 
-[ERROR] [09/01/2015 16:14:57.317] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-2/endpointWriter] AssociationError [akka.tcp://MySpatialSystem@192.168.1.7:7001] <- [akka.tcp://MySpatialSystem@192.168.1.10:7777]: Error [cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior] [
-java.lang.ClassCastException: cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior
-	at java.io.ObjectStreamClass$FieldReflector.setObjFieldValues(ObjectStreamClass.java:2089)
-	at java.io.ObjectStreamClass.setObjFieldValues(ObjectStreamClass.java:1261)
-	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2006)
-	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
-	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
-	at akka.serialization.JavaSerializer$$anonfun$1.apply(Serializer.scala:241)
-	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
-	at akka.serialization.JavaSerializer.fromBinary(Serializer.scala:241)
-	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
-	at scala.util.Try$.apply(Try.scala:191)
-	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
-	at akka.remote.serialization.MessageContainerSerializer.fromBinary(MessageContainerSerializer.scala:80)
-	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
-	at scala.util.Try$.apply(Try.scala:191)
-	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
-	at akka.remote.MessageSerializer$.deserialize(MessageSerializer.scala:24)
-	at akka.remote.DefaultMessageDispatcher.payload$lzycompute$1(Endpoint.scala:58)
-	at akka.remote.DefaultMessageDispatcher.payload$1(Endpoint.scala:58)
-	at akka.remote.DefaultMessageDispatcher.dispatch(Endpoint.scala:76)
-	at akka.remote.EndpointReader$$anonfun$receive$2.applyOrElse(Endpoint.scala:929)
-	at akka.actor.Actor$class.aroundReceive(Actor.scala:475)
-	at akka.remote.EndpointActor.aroundReceive(Endpoint.scala:405)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:516)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:487)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:256)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:223)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:233)
-	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-]
-[WARN] [09/01/2015 16:14:57.317] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-2] Association with remote system [akka.tcp://MySpatialSystem@192.168.1.10:7777] has failed, address is now gated for [5000] ms. Reason: [cannot assign instance of it.unibo.spala.actors.programs.CustomSystemProgram$$anonfun$3 to field it.unibo.spala.actors.package$MsgWithBehavior.behavior of type scala.Function2 in instance of it.unibo.spala.actors.package$MsgWithBehavior] 
-[ERROR] [09/01/2015 16:17:18.122] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-3/endpointWriter] AssociationError [akka.tcp://MySpatialSystem@192.168.1.7:7001] <- [akka.tcp://MySpatialSystem@192.168.1.10:7777]: Error [it.unibo.spala.domain.DeviceBehaviors$$anonfun$1] [
-java.lang.ClassNotFoundException: it.unibo.spala.domain.DeviceBehaviors$$anonfun$1
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:348)
-	at java.io.ObjectInputStream.resolveClass(ObjectInputStream.java:626)
-	at akka.util.ClassLoaderObjectInputStream.resolveClass(ClassLoaderObjectInputStream.scala:19)
-	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1613)
-	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1774)
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
-	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
-	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
-	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
-	at akka.serialization.JavaSerializer$$anonfun$1.apply(Serializer.scala:241)
-	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
-	at akka.serialization.JavaSerializer.fromBinary(Serializer.scala:241)
-	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
-	at scala.util.Try$.apply(Try.scala:191)
-	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
-	at akka.remote.serialization.MessageContainerSerializer.fromBinary(MessageContainerSerializer.scala:80)
-	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
-	at scala.util.Try$.apply(Try.scala:191)
-	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
-	at akka.remote.MessageSerializer$.deserialize(MessageSerializer.scala:24)
-	at akka.remote.DefaultMessageDispatcher.payload$lzycompute$1(Endpoint.scala:58)
-	at akka.remote.DefaultMessageDispatcher.payload$1(Endpoint.scala:58)
-	at akka.remote.DefaultMessageDispatcher.dispatch(Endpoint.scala:76)
-	at akka.remote.EndpointReader$$anonfun$receive$2.applyOrElse(Endpoint.scala:929)
-	at akka.actor.Actor$class.aroundReceive(Actor.scala:475)
-	at akka.remote.EndpointActor.aroundReceive(Endpoint.scala:405)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:516)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:487)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:256)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:223)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:233)
-	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-]
-
-Here by passing MsgWithBehavior(instance of DBehavior):
-
-[WARN] [09/01/2015 16:17:18.122] [MySpatialSystem-akka.remote.default-remote-dispatcher-6] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-3] Association with remote system [akka.tcp://MySpatialSystem@192.168.1.10:7777] has failed, address is now gated for [5000] ms. Reason: [it.unibo.spala.domain.DeviceBehaviors$$anonfun$1] 
-[ERROR] [09/01/2015 16:18:22.820] [MySpatialSystem-akka.remote.default-remote-dispatcher-5] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-4/endpointWriter] AssociationError [akka.tcp://MySpatialSystem@192.168.1.7:7001] <- [akka.tcp://MySpatialSystem@192.168.1.10:7777]: Error [it.unibo.spala.domain.DBehavior; local class incompatible: stream classdesc serialVersionUID = 8458645825735445816, local class serialVersionUID = 5940560850776885210] [
-java.io.InvalidClassException: it.unibo.spala.domain.DBehavior; local class incompatible: stream classdesc serialVersionUID = 8458645825735445816, local class serialVersionUID = 5940560850776885210
-	at java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:621)
-	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1623)
-	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
-	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1623)
-	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1774)
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
-	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
-	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
-	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
-	at akka.serialization.JavaSerializer$$anonfun$1.apply(Serializer.scala:241)
-	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
-	at akka.serialization.JavaSerializer.fromBinary(Serializer.scala:241)
-	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
-	at scala.util.Try$.apply(Try.scala:191)
-	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
-	at akka.remote.serialization.MessageContainerSerializer.fromBinary(MessageContainerSerializer.scala:80)
-	at akka.serialization.Serialization$$anonfun$deserialize$2.apply(Serialization.scala:124)
-	at scala.util.Try$.apply(Try.scala:191)
-	at akka.serialization.Serialization.deserialize(Serialization.scala:114)
-	at akka.remote.MessageSerializer$.deserialize(MessageSerializer.scala:24)
-	at akka.remote.DefaultMessageDispatcher.payload$lzycompute$1(Endpoint.scala:58)
-	at akka.remote.DefaultMessageDispatcher.payload$1(Endpoint.scala:58)
-	at akka.remote.DefaultMessageDispatcher.dispatch(Endpoint.scala:76)
-	at akka.remote.EndpointReader$$anonfun$receive$2.applyOrElse(Endpoint.scala:929)
-	at akka.actor.Actor$class.aroundReceive(Actor.scala:475)
-	at akka.remote.EndpointActor.aroundReceive(Endpoint.scala:405)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:516)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:487)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:256)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:223)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:233)
-	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-]
-[WARN] [09/01/2015 16:18:22.820] [MySpatialSystem-akka.remote.default-remote-dispatcher-5] [akka.tcp://MySpatialSystem@192.168.1.7:7001/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2FMySpatialSystem%40192.168.1.10%3A7777-4] Association with remote system [akka.tcp://MySpatialSystem@192.168.1.10:7777] has failed, address is now gated for [5000] ms. Reason: [it.unibo.spala.domain.DBehavior; local class incompatible: stream classdesc serialVersionUID = 8458645825735445816, local class serialVersionUID = 5940560850776885210] 
-
-\end{lstlisting}
 
 \end{comment}
 
@@ -789,8 +643,15 @@ To easily configure and start a system, you can leverage the \texttt{SpatialSyst
 // Define the type of the state of the devices
 type TState = Int
 
-// Create the settings (using defaults)
-val settings = Settings[TState]()
+// Create the settings
+val settings = Settings[TState](
+    deviceSettings = DeviceSettings(
+        initialDeviceState = Int.MaxValue,
+        inputProvider = (k, name, ref, pos) =>
+            List(InputData(InputNames.Source1, k==1))
+    ),
+    spatialSettings = SpatialSettings(proximityThreshold = 200)
+)
 
 // Define the behavior for the devices
 // The following is actually already defined under DeviceBehaviors.GradientBehaviorFunction
@@ -810,20 +671,39 @@ val gradientFun: DevBehavior[Int] = (s: Int, ctx: DevBehaviorContext) => {
 val behaviorGen = () => gradientFun
 
 // Instantiate a SpatialSystem to setup and run the system
-new SpatialSystem[State](settings, behaviorGen)
+new SpatialSystem[TState](settings, behaviorGen)
 \end{lstlisting}
+
+Notes
+
+\begin{itemize}
+\item The settings field \texttt{inputProvider} is a function that generates, for each $k$-th device with name \texttt{name}, actor reference \texttt{ref} and position \texttt{pos}, a list of input values. In this example, the 1st device is given an input \texttt{InputData("isSrc", true)}, while the other devices are given \texttt{InputData("isSrc", false)}
+\end{itemize}
+
+Running this program will produce something similar as represented below.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{imgs/Example1Gui.png}
+\caption{Example: implementation of the gradient. The source device is the red point at the bottom-left corner.}
+\end{center}
+\end{figure}
 
 \subsubsection{Device behaviors}
 $\\\\$
 %$
-When it comes to define the behavior of the devices, you have three choices:
+When it comes to define the behavior of the devices, you have at least three choices:
 
 \begin{enumerate}
-\item Reuse a behavior already defined as a member of the \texttt{it.unibo.spala.domain}\ttb{DeviceBehaviors} object
+\item Reuse a behavior already defined as a member of the \texttt{it.unibo.spala.domain.}\ttb{DeviceBehaviors} object
 \item Define your function of type \ttb{DevBehavior[S]} which is actually a type alias for \texttt{(s: S, ctx: DevBehaviorContext) => S}
-\item Define a subclass of \ttb{DBehavior[S]} using the following syntax:
+\item Define a subclass of \ttb{DBehavior[S]} using one the following two approaches:
 
 \begin{lstlisting}
+  class ConstantBehavior(val value: Int) extends DBehavior[T] {
+      def apply(s: Int, ctx: DevBehaviorContext) = value
+  }
+
   class GradientBehavior extends DBehavior[Int] {
       does {
           val states = nbsValuesOr[Int](Int.MaxValue)
@@ -839,7 +719,7 @@ When it comes to define the behavior of the devices, you have three choices:
   }
 \end{lstlisting}
 
-This approach has the advantage to allow for coding the behavior from within an implicit context. However, \texttt{DBehavior} and subclasses are \textbf{NOT thread-safe}, thus every device should run its own instance. This means that
+The latter approach has the advantage to allow for coding the behavior from within an implicit context. However, such \texttt{DBehavior} instances are \textbf{NOT thread-safe}, thus every device should run its own behavior object. This means that
 
 \begin{lstlisting}
 val gradient = new GradientBehavior
@@ -944,5 +824,10 @@ Then, one important extension is the support of \textbf{code mobility}. In parti
 %\appendix
 \bibliographystyle{abbrv}
 \bibliography{biblio}
+
+%\newpage
+%\section{Attachment: on code mobility}
+
+
 
 \end{document}

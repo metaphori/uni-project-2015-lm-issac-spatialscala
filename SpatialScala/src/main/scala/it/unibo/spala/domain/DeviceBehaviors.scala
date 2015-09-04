@@ -93,7 +93,7 @@ object DeviceBehaviors {
     else Int.MaxValue
   }
 
-  class ConstantBehavior[T](value: => T) extends DBehavior[T] with Serializable {
+  class ConstantBehavior[T](value: T) extends DBehavior[T] with Serializable {
     does { value }
   }
 }

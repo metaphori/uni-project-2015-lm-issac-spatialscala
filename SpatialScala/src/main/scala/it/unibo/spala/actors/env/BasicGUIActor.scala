@@ -36,11 +36,14 @@ class BasicGUIActor(val width: Int, val height: Int)
   def receive: Receive = initialBehavior
 
   def initialBehavior: Receive = {
-    case MsgStart => {
-      BuildFrame()
-      context.become(drawingBehavior)
-      self ! GoOn
-    }
+    case MsgStart => OnStart()
+  }
+
+  def OnStart() = {
+    Log.info("GUI started")
+    BuildFrame()
+    context.become(drawingBehavior)
+    self ! GoOn
   }
 
   def drawingBehavior: Receive = {
