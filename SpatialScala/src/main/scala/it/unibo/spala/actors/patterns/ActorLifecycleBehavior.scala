@@ -41,7 +41,13 @@ trait ActorLifecycleBehavior {
 
   def workingBehavior: Receive = Map.empty
 
-  def fullWorkingBehavior = workingBehavior.orElse(lifecycleBehavior)
+  def fullWorkingBehavior = workingBehavior.orElse(lifecycleBehavior).orElse(fallbackBehavior)
+
+  def Unhandled(x: Any): Unit = { Console.println("Unhandled " + x); throw new Exception("Unhandled msg " + x) }
+
+  def fallbackBehavior: Receive = {
+    case x => Unhandled(x)
+  }
 
   def lifecycleBehavior: Receive = {
     case GoOn => {
