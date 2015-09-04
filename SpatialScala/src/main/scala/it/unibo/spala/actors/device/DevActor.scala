@@ -69,8 +69,6 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
   }
 
   def setDeviceBehavior(behavior: DevBehavior[S]) = {
-    Log.debug("Setting new behavior")
-
     computation = Some(behavior)
 
     val initialS = mostRecentState.orElse(this.initialState)
@@ -99,6 +97,8 @@ class DevActor[S](var computation: Option[DevBehavior[S]] = None)
       mostRecentState = Some(state)
     }
   }
+
+  override val supervisorStrategy = SupervisorStrategy.stoppingStrategy
 
   override def OnStart(): Unit = {
     Log.info(s"Starting (path=${akka.serialization.Serialization.serializedActorPath(self)})")
