@@ -193,9 +193,9 @@
   title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
   columns=fullflexible,
   lineskip={-1.5pt},
-  xleftmargin=10px,
+  xleftmargin=0px,
   belowskip={-7px},
-  aboveskip={4px},
+  aboveskip={10px},
 }
  
  
@@ -289,6 +289,22 @@ Briefly, our goal is to develop, in Scala/Akka, a framework to support \emph{agg
 
 We would like to be able to simulate systems that consist in a (possibly huge) number of elements (that we may simply call \textbf{devices} as often this model fits Internet of Things and pervasive computing applications) that interact with one another based on some notion of locality.
 
+\subsection*{Step 1: rapid prototyping of a system for calculating the gradient}
+
+Here, the subgoal is to answer the following question: does Scala/Akka represent a suitable platform for building this kind of applications?
+
+\subsection*{Step 2: extend the system to support distribution}
+
+Now the question is: does Scala/Akka adequately support the development of distributed systems?
+
+\subsection*{Step 3: turn the project to a (possibly, easy-to-use) framework}
+
+The primary goal remains the same: building a framework to facilitate the development and the simulation of spatial computing systems.
+
+\subsection*{Step 4: investigate on the issue of code mobility}
+
+At this point, we ask: does Akka provide support for the shipping of code to remote components/actors?
+
 \newpage
 
 \section{Software Project Description}
@@ -299,13 +315,15 @@ We would like to be able to simulate systems that consist in a (possibly huge) n
 
 \quote{``The notion of force generalizes the kinds of criteria that software engineers use to justify designs and implementations.''} \footnote{\url{www.cs.unc.edu/~stotts/723/patterns/forces.html}}
 
+Some of the forces that impact on the framework architecture and the tools we use include:
+
 \begin{itemize}
- \item Distribution
- \item Asynchronicity
- \item Decentralization and local interactions
- \item Locality and spatial assumptions
- \item Interaction-based computation
- \item Dynamicity axes
+ \item \emph{Distribution} -- this implies that many assumptions regarding latency, topology, or security are essentially false\footnote{\url{https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing}}
+ \item \emph{Asynchronicity}
+ \item \emph{Decentralization and local interactions}
+ \item \emph{Locality and spatial assumptions}
+ \item \emph{Interaction-based computation}
+ \item \emph{Dynamicity} axes
  		\begin{itemize}
  		\item Behavior of a single device
  		\item System membership (devices leaving/entering the logical system boundaries)
@@ -345,9 +363,47 @@ We would like to be able to simulate systems that consist in a (possibly huge) n
 
 \subsection{An informal, conceptual overview}
 $\\$
+%$
+
 \begin{center}
 \includegraphics[scale=0.5]{imgs/InformalSpatialSystem.png}
 \end{center}
+
+Notes
+
+\begin{itemize}
+\item The system may be \emph{distributed}, i.e., it may run on multiple physical machines (or nodes)
+\item The boundaries of the system are ``porous'' in the sense that they allow for devices to join or leave the system
+\item The notion of \emph{locality} (that in turn defines the notion of \emph{neighborhood} for a device) is logical and independent from the physical structure or the deployment of the system
+\end{itemize}
+
+\subsection{Scala project organization and dependencies}
+
+We use \ttb{sbt}\footnote{SBT (Scala Build Tool) is the most widely used build tool in the Scala community.} as our build automation tool.
+
+The directory structure is shown below	:
+
+\begin{center}
+\includegraphics[scale=0.5]{imgs/ProjectFiles.png}
+\label{Project files}
+\end{center}
+
+\begin{itemize}
+\item Project source code and artifacts go under \texttt{src/main}
+\item Test source code and artifacts go under \texttt{src/test}
+\item The directory \texttt{.idea} is specific for the IntelliJ Idea IDE whereas \texttt{.classpath, .project} are relative to an Eclipse project.
+\item \texttt{.gitignore} includes the file patterns to be excluded from version control and suggests that the version control system is  \ttb{Git}
+\end{itemize}
+
+\ttb{build.sbt} provides the build definition for this project and declares the project dependencies:
+
+\begin{itemize}
+\item \ttb{akka-actor}: basic Akka
+\item \ttb{akka-remote}: Akka Remote module
+\item \ttb{scalatest}: versatile testing framework supporting multiple testing styles
+\item \texttt{slf4j} and \texttt{scala-logging}: for logging purposes (outside Akka which comes with its logging facilities)
+\item \texttt{scopt}: for parsing command-line options
+\end{itemize}
 
 \subsection{High-level organization}
 
@@ -359,6 +415,7 @@ The top-level package is \ttb{it.unibo.spala}. Then, the code is organized into 
 \item \texttt{it.unibo.spala.\textbf{config}}: it collects utilities and classes to support the configuration of Spala systems
 \item \texttt{it.unibo.spala.\textbf{test}}: it is intended to contain unit and integration tests
 \end{itemize}
+
 
 \subsection{Basic concepts}
 
@@ -404,10 +461,34 @@ The following elements can be found under the \ttb{it.unibo.spala.actors} packag
  \item \texttt{system.}\hlb{SpaceManagerActor} is an abstract actor that represents a spatial container for actors. It is specialized by \texttt{system.}\ttb{SimpleSpaceManagerActor} which is a 3D space manager actor with an euclidean distance strategy
  \item \texttt{env.}\ttb{BasicGUIActor} observes the states of the device actors and provides a 
    graphical representation of the evolution of the system along time
+ \item \texttt{DevActor} and \texttt{InputProviderActor} are both \ttb{ObservableActor}s. Devices are observed by the GUI, whereas input providers (i.e., sensors) are observed by the devices themselves.
+ \item Many actors (such as \texttt{DevActor}, \texttt{DevComputationActor}, \texttt{InputProviderActor}) implement the \ttb{ActorLifecycleBehavior} trait which factors out common features related to the lifecycle of components and the periodic execution of some task (according to a working interval)
 \end{itemize}
 
 
 
+\subsection{Informal system architecture}
+
+$\\$
+%$
+
+\begin{center}
+\includegraphics[scale=0.5]{imgs/InformalActorSpatialSystem.png}
+\end{center}
+
+Notes
+
+\begin{itemize}
+\item A \textbf{device} is actually a mini-actor system that consists of  three parts: 
+\begin{enumerate}
+\item the \textbf{device manager actor} -- it interacts with the world external to the device, handles the sensors/inputs, keep tracks of its neighbors, and put the device behavior into execution by activating a computation actor
+\item the \textbf{computation actor} -- it executes the device behavior and interacts with the device manager actor, e.g., to notify him with the newly computed state
+\item the collection of \textbf{input provider (sensor) actors}
+\end{enumerate}
+\item Device actors may register themselves to the \textbf{space manager actor} (which can be seen as their spatial container)
+\item The \textbf{GUI actor} observes the device actors: this means that, whenever a device updates its state, the GUI is notified
+\item \ttb{Akka Remote} is the Akka module that allows for \emph{location transparency} -- all you need to send a message to a remote actor is its \texttt{ActorRef}
+\end{itemize}
 
 
 
@@ -618,12 +699,16 @@ java.io.InvalidClassException: it.unibo.spala.domain.DBehavior; local class inco
 \subsection{Source code}
 
 The source code can be downloaded from BitBucket. The repository URL
- is \url{https://metaphori@bitbucket.org/metaphori/spatialscala.git}.
+ is 
  
- Download or clone the repository
+\begin{center}
+\url{https://bitbucket.org/metaphori/spatialscala.git}
+\end{center}
+ 
+ Download or clone the repository from your IDE or via \texttt{git clone}
  
 \begin{lstlisting}[language={},emph={clone,\$},emphstyle=\textbf]
-~ $ git clone https://metaphori@bitbucket.org/metaphori/spatialscala.git
+~ $ git clone https://bitbucket.org/metaphori/spatialscala.git
 
 \end{lstlisting}
 
@@ -631,9 +716,10 @@ The source code can be downloaded from BitBucket. The repository URL
 
 \subsection{Environment setup}
 
-\subsubsection{Eclipse (Scala IDE)}$\\$
+\subsubsection{Eclipse + Scala plugin (Scala IDE)} $\\$
+%$
 
-First, generate the Eclipse project files out of the SBT\footnote{SBT (Scala Build Tool) is the most widely used build tool in the Scala community.} project.
+First, generate the Eclipse project files out of the SBT project.
 
 \begin{lstlisting}[language=bash,emph={sbt,\$},emphstyle=\textbf]
 ~ $ cd spatialScala/SpatialScala
@@ -641,15 +727,22 @@ SpatialScala/ $ sbt
 sbt> eclipse
 \end{lstlisting}
 
-Then, import the project with Eclipse via \texttt{File | Import.. | General/Existing project into workspace}.
+Then, import the project with Eclipse via 
 
-\subsubsection{IntelliJ IDEA} $\\$
+\begin{center}
+\texttt{File | Import.. | General/Existing project into workspace}
+\end{center}
+
+\subsubsection{IntelliJ IDEA + Scala plugin} $\\$
+
+%$
 
 From the Welcome window, select \texttt{Import Project}, navigate up the path \texttt{./spatialScala/SpatialScala} and then choose \texttt{Import project from external model $\Rightarrow$ SBT}
 
 \subsection{Running}
 
 Once your programming environment is ready, you may want to launch a program under \texttt{it.unibo.spala.programs} (such as \texttt{TestHighLevel}) or the tests under \texttt{it.unibo.spala.test} to verify that the framework is working.
+
 
 The project is also shipped with a command-line main program that could be invoked from a shell:
 
@@ -692,20 +785,130 @@ When anything is working, you can use the framework to simulate various sorts of
 
 To easily configure and start a system, you can leverage the \texttt{SpatialSystem} class.
 
-\begin{lstlisting}
+\begin{lstlisting}[emph={DevBehavior, DevBehaviorContext,getNeighborsStates,getInput,InputNames,Source1,SpatialSystem,Settings},emphstyle=\textbf]
 // Define the type of the state of the devices
 type TState = Int
 
 // Create the settings (using defaults)
 val settings = Settings[TState]()
 
+// Define the behavior for the devices
+// The following is actually already defined under DeviceBehaviors.GradientBehaviorFunction
+val gradientFun: DevBehavior[Int] = (s: Int, ctx: DevBehaviorContext) => {
+    val states = ctx.getNeighborsStates[Int].values.map(_.getOrElse(Int.MaxValue))
+    val isSrc = ctx.getInput[Boolean](InputNames.Source1).getOrElse(false)
+
+    if (isSrc) 0
+    else if (!states.isEmpty) {
+        val min = states.min
+        if(min<Int.MaxValue) min+1 else Int.MaxValue
+    }
+    else Int.MaxValue
+}
 // Define a function to generates the behavior for each device
-// Note that it must have type () => DevBehavior[TState]
-val behaviorGen = () => DeviceBehaviors.GradientBehaviorFunction
+// Note that it must have type () => DevBehavior[TState]  
+val behaviorGen = () => gradientFun
 
 // Instantiate a SpatialSystem to setup and run the system
 new SpatialSystem[State](settings, behaviorGen)
 \end{lstlisting}
+
+\subsubsection{Device behaviors}
+$\\\\$
+%$
+When it comes to define the behavior of the devices, you have three choices:
+
+\begin{enumerate}
+\item Reuse a behavior already defined as a member of the \texttt{it.unibo.spala.domain}\ttb{DeviceBehaviors} object
+\item Define your function of type \ttb{DevBehavior[S]} which is actually a type alias for \texttt{(s: S, ctx: DevBehaviorContext) => S}
+\item Define a subclass of \ttb{DBehavior[S]} using the following syntax:
+
+\begin{lstlisting}
+  class GradientBehavior extends DBehavior[Int] {
+      does {
+          val states = nbsValuesOr[Int](Int.MaxValue)
+          val isSrc = inputOr[Boolean](InputNames.Source1, false)
+
+          if (isSrc) 0
+          else if (!states.isEmpty) {
+              val min = states.min
+              if(min<Int.MaxValue) min+1 else Int.MaxValue
+          }
+          else Int.MaxValue
+      }
+  }
+\end{lstlisting}
+
+This approach has the advantage to allow for coding the behavior from within an implicit context. However, \texttt{DBehavior} and subclasses are \textbf{NOT thread-safe}, thus every device should run its own instance. This means that
+
+\begin{lstlisting}
+val gradient = new GradientBehavior
+val behaviorGenerator1 = () => gradient             // BAD!!
+val behaviorGenerator2 = () => new GradientBehavior // GOOD
+\end{lstlisting}
+
+\end{enumerate}
+
+\subsubsection{Settings for a spatial system}
+$\\\\$
+%$
+Please consult the definition of \texttt{Settings[T]} and related case classes to be acquainted with the configuration parameters and their defaults.
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,emph={Settings,DeviceDistributionSettings,DeviceMobilitySettings,DeviceSettings,SpatialSettings,SystemSettings,DeploymentSettings},emphstyle=\textbf]
+case class Settings[S](systemSettings: SystemSettings = SystemSettings(),
+    deviceSettings: DeviceSettings[S] = DeviceSettings[S](),
+    spatialSettings: SpatialSettings = SpatialSettings(),
+    devDistributionSettings: DeviceDistributionSettings = DeviceDistributionSettings(),
+    deploymentSettings: DeploymentSettings = DeploymentSettings())
+
+case class SystemSettings(name: String = "MySpatialSystem",
+    prefix: String = s"d${System.currentTimeMillis()}_",
+    seed: Option[Long] = None,
+    start: Boolean = true,
+    executionStrategy: ExecutionStrategy = AsyncExecutionStrategy,
+    gui: Boolean = true,
+    console: Boolean = false,
+    logLevel: String = AkkaConfigLogLevel.Info)
+
+case class DeviceSettings[S](initialDeviceState: S = null.asInstanceOf[S],
+    inputProvider: (Int, String, ActorRef, Point3D) => Seq[InputData[Any]] = (i,s,a,p) => List(),
+    nameProvider: (Int => String) = i => "Device"+i,
+    workInterval: FiniteDuration = 100 millis,
+    mobility: DeviceMobilitySettings = DeviceMobilitySettings())
+
+case class DeviceMobilitySettings(canMove: Boolean = true,
+    moveStep: Double = 20,
+    moveProbability: Double = 0.1)
+
+case class SpatialSettings(proximityThreshold: Double = 100)
+
+case class DeviceDistributionSettings (n: Int = 100,
+    shape: Symbol = `random,
+    shapeSettings: ShapeSettings = SimpleRandomSettings())
+
+case class DeploymentSettings(kind: DeploymentKind = LocalDeployment,
+    distrib: DistributedDeploymentSettings = DistributedDeploymentSettings(),
+    local: LocalDeploymentSettings = LocalDeploymentSettings())
+
+case class DistributedDeploymentSettings(host: String = "127.0.0.1",
+    port: Int = 0,
+    nodes: Seq[String] = List())
+
+case class LocalDeploymentSettings()
+\end{lstlisting}
+
+Note that \texttt{DeviceDistributionSettings} is about the logical distribution of device in a space whereas \texttt{DistributedDeploymentSettings} concerns the physical, deployment-related system distribution.
+
+\subsubsection{Creating spatial configurations of devices}
+
+$\\\\$
+%$
+The \ttb{ConfigHelper} object contains a set of utility methods for the distribution of devices in space. Typically, these methods accepts a parameter to customize the procedure and a seed for randoms that could be used to enforce reproducibility.
+
+\begin{itemize}
+\item \ttb{RandomLocations(SimpleRandomSettings)}: randomly generates a list of 2D positions within a rectangle
+\item \ttb{GridLocations(GridSettings)}: generates a list of positions along a grid, possibly with random deviations within a tolerance
+\end{itemize}
 
 \subsection{Creating a system: the long way}
 
@@ -713,18 +916,22 @@ You can take a look at the definition of \texttt{SpatialSystem} to see how a Spa
 
 Abstracting from configuration and setup details, the essential recipe is reported in the following listing.
 
-\lstinputlisting{../src/main/scala/it/unibo/spala/programs/SimpleProgram.scala}
+\lstinputlisting[emph={ActorSystem,SimpleSpaceManagerActor,BasicGUIActor,MsgAddObserver,DevActorWithRegistry,PositionProviderActor,DevBehavior,MsgWithBehavior,MsgWithInput,MsgStart,MsgStartAndRegisterTo, DevBehaviorContext,getNeighborsStates,getInput,InputNames,Source1,SpatialSystem,Settings},emphstyle=\textbf]{../src/main/scala/it/unibo/spala/programs/SimpleProgram.scala}
+
+
+\newpage
 
 \section{Further developments}
 
-A first important extension is the support of \textbf{code mobility}. In particular we would like to send, to a remote device actor, the code to be executed as its behavior.
-
-Then, there are a number of project-related activities:
+First of all, there are a number of project-related activities to be done:
 
 \begin{itemize}
-\item Write unit and integration tests (see Akka TestKit)
+\item Write unit and integration tests (see about Akka testing and TestKit\footnote{\url{http://doc.akka.io/docs/akka/snapshot/scala/testing.html}})
 \item Refactoring (this project started with an exploratory inclination)
+\item Error handling and fault-tolerance (see about Akka supervision strategies\footnote{\url{http://doc.akka.io/docs/akka/snapshot/scala/fault-tolerance.html}})
 \end{itemize}
+
+Then, one important extension is the support of \textbf{code mobility}. In particular we would like to send, to a remote device actor, the code to be executed as its behavior.
 
 \section{Conclusion}
 

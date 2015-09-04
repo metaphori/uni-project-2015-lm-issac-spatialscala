@@ -74,7 +74,7 @@ object DeviceBehaviors {
 
       if (isSrc) 0
       else if (!states.isEmpty) {
-          val min = states.min
+        val min = states.min
         if(min<Int.MaxValue) min+1 else Int.MaxValue
       }
       else Int.MaxValue
