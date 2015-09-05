@@ -498,6 +498,8 @@ Notes
 
 \subsection{Design models: dimension of interaction}
 
+\emph{``Communication Diagram is a kind of UML interaction diagram which shows interactions between objects and/or parts (represented as lifelines) using sequenced messages in a free-form arrangement''} \footnote{\url{http://www.uml-diagrams.org/communication-diagrams.html}}.
+
 \begin{figure}
 \begin{center}
 \includegraphics[scale=0.56]{imgs/SpalaCommunicationDiagram_Setup.png}
@@ -803,18 +805,38 @@ Abstracting from configuration and setup details, the essential recipe is report
 
 \section{Further developments}
 
-First of all, there are a number of project-related activities to be done:
+
+First of all, there are a number of \textbf{project-related activities} to be done:
 
 \begin{itemize}
 \item Write unit and integration tests (see about Akka testing and TestKit\footnote{\url{http://doc.akka.io/docs/akka/snapshot/scala/testing.html}})
-\item Refactoring (this project started with an exploratory inclination)
+\item Refactoring (this project started with an exploratory inclination and well-defined time constraints)
 \item Error handling and fault-tolerance (see about Akka supervision strategies\footnote{\url{http://doc.akka.io/docs/akka/snapshot/scala/fault-tolerance.html}})
 \end{itemize}
 
-Then, one important extension is the support of \textbf{code mobility}. In particular we would like to send, to a remote device actor, the code to be executed as its behavior.
+ We also recognize the need for load and \textbf{performance testing}. Is the framework scalable? The current solution has an obvious centralization point, the \texttt{SpaceManager} actor which works as a registry and a space container. At the present time, many algorithms are a bit naive and could be largely improved.
+
+ Then, one important extension is the support of \textbf{code mobility}. In particular we would like to send, to a remote device actor, the code to be executed as its behavior.
+
+ Last but not least, the framework should evolve to provide the expressivity, in terms of style of programming and features, of \textbf{MIT Proto}. This style of programming (from global to local) is currently missing and is paramount.
+
+\newpage
 
 \section{Conclusion}
 
+ The Scala/Akka platform seems to represent a good starting point for the development of a spatial computing framework, due to the presence of many traits able to contribute to the lowering of the abstraction gap, such as:
+ 
+\begin{itemize}
+\item Scala's integration of object-oriented and functional programming pardigms
+\item Akka's actor model of concurrency and infrastructure
+\item Java platform's richness in terms of libraries and documentation
+\end{itemize}
+
+In particular, the Actor model is promising since the systems we address are composed of a high number of distributed, autonomous, concurrent elements that interact asynchronously.
+
+In this project, we have tested the fitness of the model and the easiness with which our systems can be brought to a distributed setting. To make a system distributed, it suffices to clear local system assumptions out, add a project dependency to \texttt{akka-remote} and deal with some configuration and deployment issues; application code does not have to change.
+
+\newpage
 
 \nocite{AkkaGuide}
 \nocite{FPinScala}
@@ -825,9 +847,168 @@ Then, one important extension is the support of \textbf{code mobility}. In parti
 \bibliographystyle{abbrv}
 \bibliography{biblio}
 
-%\newpage
-%\section{Attachment: on code mobility}
+\newpage
+\section{Attachment: on code mobility}
+
+One of the features we would like to support is code shipping to remote devices. In a simple scenario, a device could be started with no behavior, in a idle state; later on, some components or another device may determine the behavior that should be executed by the former device, and send it to him.
+
+Supposing the behavior is defined as a lambda function (i.e., as an object of an anonymous inner class with a single method), the issue that we encounter in the Java platform is that the recipient actor must have access to the class definition in order to access the behavior object.
+
+Given that Akka does not provide, at the infrastructure level, the way to send messages along with their class definition, we propose a solution based on custom class loaders.
+
+\emph{Disclaimer: a major part of the solution has been found on the Internet.}
+
+\subsection{A solution: shipping class byted + custom class loader}
+
+First of all, Akka allows to instantiate an \texttt{ActorSystem} with a custom classloader.
+
+\begin{lstlisting}
+val ctxClassloader = Thread.currentThread().getContextClassLoader
+val sys = ActorSystem(name, 
+                      config, 
+                      new CustomClassLoader(ctxClassloader))
+\end{lstlisting}
+
+Then, we prearrange an actor with the goal of receiving class definitions from remote systems.
+
+\begin{lstlisting}
+class ClassLoaderActor extends Actor {
+  override def receive: Actor.Receive = {
+    case m: Map[String, Array[Byte]] => {
+      m.foreach { case (clazz, classBytes) =>
+        CustomClassLoaderRegistry.register(clazz, classBytes)
+      }
+    }
+    case x => println("Ops, I got msg " + x + " but I dont know how to deal with it")
+  }
+}
+
+sys.actorOf(Props[ClassLoaderActor], "classloader")
+\end{lstlisting}
+
+Where \texttt{CustomClassLoaderRegistry} just needs to keep track of the associations between class names and their definition byte arrays.
+
+\begin{lstlisting}
+object CustomClassLoaderRegistry {
+  var classesToRegister: Map[String, Array[Byte]] = Map()
+  var registeredClasses: Map[String, Array[Byte]] = Map()
+
+  def register(name: String, classBytes: Array[Byte]) {
+    classesToRegister += (name -> classBytes)
+  }
+
+  def save(name: String): Unit ={
+    registeredClasses += (name -> classesToRegister(name))
+    classesToRegister -= name
+  }
+}
+\end{lstlisting}
+
+At this point, the two key missing pieces are the custom classloader itself and the utility method to get a class' bytecode.
+
+\subsubsection{Class serialization}
+
+For a given class, the method should return a map of the class itself and its related classes to their definition codes.
+
+\begin{lstlisting}
+object LoadClassBytes {
+  def apply(clazz: Class[_]) : Map[String, Array[Byte]] = {
+    val basePath : Path = Paths.get(clazz.getProtectionDomain.getCodeSource.getLocation.toURI)
+    val relName = clazz.getName().replace('.', '/')
+    val fullPath = basePath.resolve(relName)
+    val fileName = fullPath.getFileName()
+    val fileNameHead = (fileName.toString()).split("\\.")(0)
+    val parentDir = fullPath.getParent()
+
+    var res : Map[String, Array[Byte]] = Map()
+    // find class file and class files of inner classes
+    val ds = Files.newDirectoryStream(
+      parentDir,
+      new DirectoryStream.Filter[Path]{
+        def accept(file: Path) : Boolean = {
+          // Examples of a filename head: SomeClass, SomeClass$, SomeClass$$anonFun$3
+          // Thus, base filename may include $ chars
+          val fnameRegex = fileNameHead.replace("$","\\$")
+          file.getFileName().toString().matches(fnameRegex+".*\\.class")
+        }
+      })
+    try {
+      val iter = ds.iterator()
+      while (iter.hasNext()) {
+        val p = iter.next()
+        val classQualifiedName = ((basePath.relativize(p)).toString().split("\\.")(0).replace('/', '.'))
+        res += (classQualifiedName -> Files.readAllBytes(p))
+      }
+    } finally {
+      ds.close
+    }
+    res
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Custom class loader}
+
+The custom class loader should work as by default and failback
+  to the custom registry when classes are not found.
+  By first looking at the registry we can accomplish a sort of class definition overriding.
+
+\begin{lstlisting}
+class CustomClassLoader(parent: ClassLoader) extends URLClassLoader(Array[URL](), parent) {
+  import CustomClassLoaderRegistry._
+  
+  override protected def findClass(name: String) : Class[_] = {
+    var result = findLoadedClass(name);
+    var toreg = classesToRegister.contains(name)
+    if (result == null && !toreg) {
+      try {
+        result = findSystemClass(name);
+      } catch {
+        case e => () /* ignore */
+      }
+    }
+    if (result == null && toreg) {
+      try {
+        val classBytes = classesToRegister(name)
+        result = defineClass(name, classBytes, 0, classBytes.length);
+        save(name)
+      } catch {
+        case e: Exception => {
+          throw new ClassNotFoundException(name);
+        }
+      }
+    }
+    result;
+  }
+}
+\end{lstlisting}
 
 
+\subsubsection{Testing the solution}
+
+The receiver-side of the system just needs to create a \texttt{SpatialSystem}. When instantiating the \texttt{ActorSystem}, it will provide a \texttt{CustomClassLoader} instance); moreover, it will dispatch an \texttt{"/user/classloader"} actor for receiving class definitions.
+
+The sender-side of the system will, first, send the class definition to its target system and then provide the behavior the a target actor:
+
+\begin{lstlisting}
+val remoteBehavior = (s: Int, ctx: DevBehaviorContext) => {
+    Console.println("This behavior will be executed on a remote actor")
+    77 // just return a constant
+}
+
+val classRegistrationMsg = LoadClassBytes(remoteBehavior.getClass)
+
+sys.actorSelection(remoteSystemPath + "/user/classloader") 
+    ! classRegistrationMsg
+
+sys.actorSelection(remoteSystemPath + "/user/Device1") 
+    ! MsgWithBehavior(remoteBehavior)
+\end{lstlisting}
+
+
+
+\subsubsection{Known issues}
+
+As it is, the solution doesn't work with closures.
 
 \end{document}

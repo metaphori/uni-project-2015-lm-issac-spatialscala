@@ -30,12 +30,17 @@ object SimpleProgram extends App {
       "dev"+n)
   }
 
+  // Definition of the behavior function
+  val behaviorFun = (s: S, c: DevBehaviorContext) => {
+    s+1 // Simply count forward..
+  }
+
   // Then, for each device actor...
   devs.foreach { ref =>
     // Provide its initial state (BEFORE setting the behavior)
     ref ! MsgWithInput(InputData[S](InputNames.InitialState, rand.nextInt(9999)))
     // Provide its behavior
-    ref ! MsgWithBehavior((s: S, c: DevBehaviorContext) => { s+1 })
+    ref ! MsgWithBehavior(behaviorFun)
     // Create a "GPS sensor" for its simulated position
     val positionInputActor = sys.actorOf(
       Props(classOf[PositionProviderActor],
