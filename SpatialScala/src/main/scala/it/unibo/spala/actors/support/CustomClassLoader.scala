@@ -14,15 +14,15 @@ class ClassLoaderActor extends Actor {
     case m: Map[String, Array[Byte]] => {
       m.foreach { case (clazz, classBytes) =>
         println("Received class to load: " + clazz)
-        ByteClassLoader.register(clazz, classBytes)
+        CustomClassLoaderRegistry.register(clazz, classBytes)
       }
     }
     case x => println("Ops, I got " + x + " but I dont know it")
   }
 }
 
-class ByteArrayClassLoader(parent: ClassLoader) extends URLClassLoader(Array[URL](), parent) {
-  import ByteClassLoader._
+class CustomClassLoader(parent: ClassLoader) extends URLClassLoader(Array[URL](), parent) {
+  import CustomClassLoaderRegistry._
   override
   protected def findClass(name: String) : Class[_] = {
     Console.println(s"Looking for class ${name}")
@@ -52,7 +52,7 @@ class ByteArrayClassLoader(parent: ClassLoader) extends URLClassLoader(Array[URL
   }
 }
 
-object ByteClassLoader {
+object CustomClassLoaderRegistry {
   var classesToRegister: Map[String, Array[Byte]] = Map()
   var registeredClasses: Map[String, Array[Byte]] = Map()
 

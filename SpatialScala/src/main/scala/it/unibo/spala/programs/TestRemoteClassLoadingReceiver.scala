@@ -5,7 +5,7 @@ import java.net.{URL, URLClassLoader}
 import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
-import it.unibo.spala.actors.support.{ClassLoaderActor, ByteArrayClassLoader}
+import it.unibo.spala.actors.support.{ClassLoaderActor, CustomClassLoader}
 
 /**
  * Created by: Roberto Casadei 
@@ -26,7 +26,7 @@ object TestRemoteClassLoadingReceiver extends App {
             }
           }
        }
-      """.stripMargin), new ByteArrayClassLoader(Thread.currentThread().getContextClassLoader))
+      """.stripMargin), new CustomClassLoader(Thread.currentThread().getContextClassLoader))
   sys.actorOf(Props[ClassLoaderActor], "classLoader")
   sys.actorOf(Props[SimpleActor], "xxx")
 }

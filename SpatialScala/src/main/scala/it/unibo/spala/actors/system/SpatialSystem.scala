@@ -7,7 +7,7 @@ import it.unibo.spala._
 import it.unibo.spala.actors._
 import it.unibo.spala.actors.device.{DevActorWithRegistry, PositionProviderActor}
 import it.unibo.spala.actors.env.{BasicGUIActor, SamplerActor}
-import it.unibo.spala.actors.support.{ClassLoaderActor, ByteArrayClassLoader}
+import it.unibo.spala.actors.support.{ClassLoaderActor, CustomClassLoader}
 import it.unibo.spala.config._
 import it.unibo.spala.domain.{DevBehavior, DBehavior, Dev}
 
@@ -56,7 +56,7 @@ class SpatialSystem[S](val settings: Settings[S],
     SysKB.MoveProbability = devSettings.mobility.moveProbability
 
     // Creation of the actor system
-    val sys = ActorSystem(systemSettings.name, config, new ByteArrayClassLoader(Thread.currentThread().getContextClassLoader))
+    val sys = ActorSystem(systemSettings.name, config, new CustomClassLoader(Thread.currentThread().getContextClassLoader))
 
     // Positions of the devices
     val positions = devdistributionSettings.shape match {
