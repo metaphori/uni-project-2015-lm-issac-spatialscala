@@ -11,9 +11,11 @@ import akka.actor.Actor
 
 class ClassLoaderActor extends Actor {
   override def receive: Actor.Receive = {
-    case (clazz: String, classBytes: Array[Byte]) => {
-      println("Received class to load: " + clazz)
-      ByteClassLoader.register(clazz, classBytes)
+    case m: Map[String, Array[Byte]] => {
+      m.foreach { case (clazz, classBytes) =>
+        println("Received class to load: " + clazz)
+        ByteClassLoader.register(clazz, classBytes)
+      }
     }
     case x => println("Ops, I got " + x + " but I dont know it")
   }
@@ -25,17 +27,21 @@ class ByteArrayClassLoader(parent: ClassLoader) extends URLClassLoader(Array[URL
   protected def findClass(name: String) : Class[_] = {
     Console.println(s"Looking for class ${name}")
     var result = findLoadedClass(name);
-    if (result == null) {
+    var toreg = classesToRegister.contains(name)
+    if (result == null && !toreg) {
       try {
         result = findSystemClass(name);
       } catch {
         case e => () /* ignore */
       }
     }
-    if (result == null) {
+    if (result == null && toreg) {
       try {
-        val classBytes = registeredClasses(name)
+        val classBytes = classesToRegister(name)
+        Console.println(s"Defining class ${name}")
         result = defineClass(name, classBytes, 0, classBytes.length);
+        save(name)
+        Console.println(s"Class ${name} defined!")
       } catch {
         case e: Exception => {
           throw new ClassNotFoundException(name);
@@ -47,10 +53,16 @@ class ByteArrayClassLoader(parent: ClassLoader) extends URLClassLoader(Array[URL
 }
 
 object ByteClassLoader {
+  var classesToRegister: Map[String, Array[Byte]] = Map()
   var registeredClasses: Map[String, Array[Byte]] = Map()
 
   def register(name: String, classBytes: Array[Byte]) {
-    registeredClasses += (name -> classBytes)
+    classesToRegister += (name -> classBytes)
+  }
+
+  def save(name: String): Unit ={
+    registeredClasses += (name -> classesToRegister(name))
+    classesToRegister -= name
   }
 }
 
@@ -68,13 +80,19 @@ object LoadClassBytes {
     val ds = Files.newDirectoryStream(
       parentDir,
       new DirectoryStream.Filter[Path]{
-        def accept(file: Path) : Boolean = file.getFileName().toString().matches(fileNameHead+"(\\$.+)?\\.class")
+        def accept(file: Path) : Boolean = {
+          // Examples of a filename head: SomeClass, SomeClass$, SomeClass$$anonFun$3
+          // Thus, base filename may include $ chars
+          val fnameRegex = fileNameHead.replace("$","\\$")
+          file.getFileName().toString().matches(fnameRegex+".*\\.class")
+        }
       })
     try {
       val iter = ds.iterator()
       while (iter.hasNext()) {
         val p = iter.next()
-        res += (((basePath.relativize(p)).toString().split("\\.")(0).replace('/', '.')) -> Files.readAllBytes(p))
+        val classQualifiedName = ((basePath.relativize(p)).toString().split("\\.")(0).replace('/', '.'))
+        res += (classQualifiedName -> Files.readAllBytes(p))
       }
     } finally {
       ds.close
