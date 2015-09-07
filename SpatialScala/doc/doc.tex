@@ -10,7 +10,6 @@
 \usepackage{url}
 \usepackage{xspace}
 \usepackage{float}
-
 \usepackage{listings}
 
 
@@ -295,7 +294,7 @@ Here, the subgoal is to answer the following question: does Scala/Akka represent
 
 \subsection*{Step 2: extend the system to support distribution}
 
-Now the question is: does Scala/Akka adequately support the development of distributed systems?
+Does Scala/Akka adequately support the development of distributed systems? We may want to set up a simulation where a few computational nodes run a subset of the devices each.
 
 \subsection*{Step 3: turn the project to a (possibly, easy-to-use) framework}
 
@@ -303,7 +302,7 @@ The primary goal remains the same: building a framework to facilitate the develo
 
 \subsection*{Step 4: investigate on the issue of code mobility}
 
-At this point, we ask: does Akka provide support for the shipping of code to remote components/actors?
+At this point, we ask: does Akka provide support for the shipping of code to remote components/actors? If not, how can we implement such a feature?
 
 \newpage
 
@@ -328,7 +327,7 @@ Some of the forces that impact on the framework architecture and the tools we us
  		\item Behavior of a single device
  		\item System membership (devices leaving/entering the logical system boundaries)
  		\item Logical mobility (devices changing their spatial position)
- 		\item Physical mobility (devices moving across computational nodes)
+ 		\item Physical mobility (devices moving across computational nodes)?
  		\end{itemize}
 \end{itemize}
 
@@ -374,9 +373,12 @@ Some of the forces that impact on the framework architecture and the tools we us
 Notes
 
 \begin{itemize}
+\item Each device repeatedly runs its computation function and propagates its current state to its neighbors
+\item The computation of a device is a function of its state and a context given by its inputs (which comprise a neighbor-state map)
+\item Despite the simplicity of the computation function, we may observe global behaviors emerge out of the local interactions among the devices
 \item The system may be \emph{distributed}, i.e., it may run on multiple physical machines (or nodes)
-\item The boundaries of the system are ``porous'' in the sense that they allow for devices to join or leave the system
-\item The notion of \emph{locality} (that in turn defines the notion of \emph{neighborhood} for a device) is logical and independent from the physical structure or the deployment of the system
+\item The boundaries of the system may be ``porous'' in the sense that they may allow for devices to join or leave the system
+\item The notion of locality (that in turn defines the notion of \emph{neighborhood} for a device) is a logical one (and is independent of the physical structure or the deployment of the system) but in the context of spatial computing it has a spatial connotation, so we can represent spatial locations as 3D points. If a device moves (i.e., changes its position), its neighborhood may change.
 \end{itemize}
 
 \subsection{Scala project organization and dependencies}
@@ -724,7 +726,7 @@ $\\\\$
 When it comes to define the behavior of the devices, you have at least three choices:
 
 \begin{enumerate}
-\item Reuse a behavior already defined as a member of the \texttt{it.unibo.spala.domain.}\ttb{DeviceBehaviors} object
+\item Reuse a behavior already defined as a member of the \sloppy \texttt{it.unibo.spala.domain.}\ttb{DeviceBehaviors} object
 \item Define your function of type \ttb{DevBehavior[S]} which is actually a type alias for \texttt{(s: S, ctx: DevBehaviorContext) => S}
 \item Define a subclass of \ttb{DBehavior[S]} using one the following two approaches:
 
