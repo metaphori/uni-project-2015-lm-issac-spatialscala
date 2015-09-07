@@ -9,8 +9,10 @@ import it.unibo.spala.CyclicBehavior
 import it.unibo.spala.math.Point3D
 
 /**
- * Created by roby on 01/09/15.
+ * Created by: Roberto Casadei
+ * Created on date: 01/09/15.
  */
+
 class BasicGUIActor(val width: Int, val height: Int)
   extends Actor with CyclicBehavior {
 

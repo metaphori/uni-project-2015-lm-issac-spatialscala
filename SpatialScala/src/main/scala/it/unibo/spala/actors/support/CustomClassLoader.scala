@@ -6,7 +6,8 @@ import java.nio.file.{DirectoryStream, Files, Paths, Path}
 import akka.actor.Actor
 
 /**
- * Created by roby on 04/09/15.
+ * Created by: Roberto Casadei
+ * Created on date: 04/09/15.
  */
 
 class ClassLoaderActor extends Actor {

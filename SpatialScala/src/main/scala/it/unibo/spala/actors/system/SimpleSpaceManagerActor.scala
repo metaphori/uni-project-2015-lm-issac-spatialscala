@@ -6,8 +6,10 @@ import it.unibo.spala.domain.space.BasicSpace
 import it.unibo.spala.math.Point3D
 
 /**
- * Created by roby on 01/09/15.
+ * Created by: Roberto Casadei
+ * Created on date: 01/09/15.
  */
+
 class SimpleSpaceManagerActor extends SpaceManagerActor with BasicSpace {
   override var actors: Map[String,DevInfo] = Map[String,DevInfo]()
 

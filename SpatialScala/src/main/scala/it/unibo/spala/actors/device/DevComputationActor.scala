@@ -8,7 +8,8 @@ import it.unibo.spala.domain.{DevBehaviorContext, DevBehavior}
 import scala.concurrent.duration.FiniteDuration
 
 /**
- * Created by roby on 01/09/15.
+ * Created by: Roberto Casadei
+ * Created on date: 01/09/15.
  */
 class DevComputationActor[S](computation: DevBehavior[S],
                              override var workInterval: FiniteDuration,
