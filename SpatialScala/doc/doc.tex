@@ -428,9 +428,9 @@ The top-level package is \ttb{it.unibo.spala}. Then, the code is organized into 
 The following elements can be found under the \ttb{it.unibo.spala.domain} package.
 
 \begin{itemize}
- \item A device \hlb{Dev[S]} has a name, a state, and a behavior
+ \item A device \hlb{Dev[S]} has a name, a state of type $S$, and a behavior
  
- \item The behavior of a device \hlb{DevBehavior[S]} can be seen as a function of its state and context, where the context gives access to the inputs and the neighbor map of the device
+ \item The behavior of a device \hlb{DevBehavior[S]} can be seen as a function of its state (of type $S$) and context, where the context gives access to the inputs and the neighbor map of the device
  
 \begin{lstlisting}
 type MealyFunType[S, I] = (S, I) => S
@@ -443,13 +443,13 @@ trait DevBehaviorContext {
 \end{lstlisting}
  
  \item A \texttt{space.}\hlb{Space[E,P]} is an abstraction for a spatial container of elements: 
-   elements can be retrieved and the space can be queried for the location of an element
+   elements  (of type $E$) can be retrieved and the space can be queried for the location (of type $P$) of an element
  \begin{itemize}
     \item A \hlb{MutableSpace[E,P]} allows for the insertion, move and removal of elements
     \item A \ttb{Basic3DSpace[E]} is a mutable space of elements of type E which are located by means of 3D points (x,y,z)
  \end{itemize}
  
- \item A \texttt{space.}\hlb{DistanceStrategy[E,P,D]} defines how distance and locality (neighborhood) 
+ \item A \texttt{space.}\hlb{DistanceStrategy[E,P,D]} defines how distance (of type $D$) and locality (neighborhood) 
    are calculated for a given \texttt{Space[E,P]}
  \begin{itemize}
     \item \ttb{EuclideanStrategy[E]} defines the euclidean distance (Double) on a 3D space
@@ -462,8 +462,8 @@ trait DevBehaviorContext {
 The following elements can be found under the \ttb{it.unibo.spala.actors} package.
 
 \begin{itemize}
- \item \texttt{device.}\hlb{DevActor[S,I]} is the actor that represents a device. 
- It internally dispatches a \texttt{device.}\ttb{DevComputationActor} for executing the device behavior and may observe a number of \texttt{device.}\ttb{InputProviderActor}s which effectively work as sensors 
+ \item \texttt{device.}\hlb{DevActor[S]} is the actor that represents a device (with state of type $S$). 
+ It internally dispatches a \texttt{device.}\ttb{DevComputationActor[S]} for executing the device behavior and may observe a number of \texttt{device.}\ttb{InputProviderActor}s which effectively work as sensors 
  \item \texttt{system.}\hlb{SpaceManagerActor} is an abstract actor that represents a spatial container for actors. It is specialized by \texttt{system.}\ttb{SimpleSpaceManagerActor} which is a 3D space manager actor with an euclidean distance strategy
  \item \texttt{env.}\ttb{BasicGUIActor} observes the states of the device actors and provides a 
    graphical representation of the evolution of the system along time
@@ -520,7 +520,8 @@ The following UML Class Diagram provides an excerpt of the structural design. No
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.56]{imgs/ClassDiagram.png}
+\hspace*{-0,7in}
+\includegraphics[scale=0.6]{imgs/ClassDiagram.png}
 \end{center}
 \caption{Class diagram.}
 \end{figure}
@@ -531,7 +532,7 @@ The following UML Class Diagram provides an excerpt of the structural design. No
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.56]{imgs/SpalaCommunicationDiagram_Setup.png}
+\includegraphics[scale=0.6]{imgs/SpalaCommunicationDiagram_Setup.png}
 \end{center}
 \caption{Communication diagram of the setup phase of the system.
 The rectangles represent actors. The lines express association. The arrows represent messages. The numbers express the order in which messages are \emph{sent}. Letters such as in $1.1a$ and $1.1b$ are used to express concurrent messages (here, within activation $1.1$). Notation \texttt{\_k} means that a message is dispatched to $k$ recipients.}
@@ -539,7 +540,7 @@ The rectangles represent actors. The lines express association. The arrows repre
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.56]{imgs/SpalaCommunicationDiagram_Running.png}
+\includegraphics[scale=0.6]{imgs/SpalaCommunicationDiagram_Running.png}
 \end{center}
 \caption{Communication diagram showing an excerpt of the interactions for a single device actor. Note that, due to asynchronicity, several alternative message orderings are possible.}
 \end{figure}
@@ -622,7 +623,11 @@ Then, import the project with Eclipse via
 
 %$
 
-From the Welcome window, select \texttt{Import Project}, navigate up the path \texttt{./spatialScala/SpatialScala} and then choose \texttt{Import project from external model $\Rightarrow$ SBT}
+From the Welcome window, select \texttt{Import Project}, navigate up the path \sloppy \texttt{./spatialScala/SpatialScala} and then choose 
+
+\begin{center}
+\texttt{Import project from external model $\Rightarrow$ SBT}
+\end{center}
 
 \subsection{Running}
 
@@ -865,7 +870,7 @@ First of all, there are a number of \textbf{project-related activities} to be do
 
  Then, one important extension is the support of \textbf{code mobility}. In particular we would like to send to a remote device actor the code to be executed as its behavior. 
 
- Last but not least, the framework should evolve to provide the expressivity, in terms of style of programming and features, of \textbf{MIT Proto}. This style of programming (from global to local) is currently missing and is paramount.
+ Last but not least, the framework should evolve to provide the expressivity, in terms of style of programming and features, of \textbf{MIT Proto}. This style of programming (from global to local) is currently missing and is actually the ultimate reason of the project itself.
 
 \newpage
 
