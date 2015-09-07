@@ -20,7 +20,9 @@ object SimpleProgram extends App {
   type S = Int
 
   // Creation of the actor system
-  val sys = ActorSystem("MySystemName", ConfigFactory.defaultApplication())
+  val sys = ActorSystem(
+    "MySystemName",
+    ConfigFactory.defaultApplication())
 
   // Creation of the devices
   val devs = (1 to 10).map { n =>

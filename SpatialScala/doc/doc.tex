@@ -470,6 +470,22 @@ The following elements can be found under the \ttb{it.unibo.spala.actors} packag
 \end{itemize}
 
 
+\subsubsection{ActorLifecycleBehavior} 
+
+$\\$
+
+This trait, declared with self-type \texttt{Actor}, provides a common FSM-like behavior structure with template methods to be specialized.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{imgs/ActorLifecycleBehavior.png}
+\end{center}
+\caption{The round boxes represent \texttt{Receive} behaviors. These may be composed of other behaviors; in that case, the priority is $A > B$. The squares represent method invocations. These methods are activated upon reception of certain messages, as defined by the current behavior. Notation $B.M$ means that message $M$ is handled by the behavior $B$. The red-bordered squares are empty template methods that are provided and intended to be overridden in subclasses.}
+\end{figure}
+
+Note that such a structure has been conceived also to support periodic task execution; it suffices to call \texttt{ScheduleNextWorkingCycle(delay: FiniteDuration)} in \texttt{DoJob()} to auto-send a \texttt{GoOn} message after \texttt{delay}.
+
+For example, \texttt{DevActor}'s \texttt{DoJob()} is responsible to propagate the device's state to its neighbors and notify observers, whereas \texttt{DevComputationActor}'s \texttt{DoJob()} is where the device computation function is actually executed.
 
 \subsection{Informal system architecture}
 
@@ -495,12 +511,23 @@ Notes
 \item \ttb{Akka Remote} is the Akka module that allows for \emph{location transparency} -- all you need to send a message to a remote actor is its \texttt{ActorRef}
 \end{itemize}
 
+\subsection{Design models: dimension of structure}
+
+The following UML Class Diagram provides an excerpt of the structural design. Note that many important details have been omitted 
+  in favor of clarity and synthesis.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.56]{imgs/ClassDiagram.png}
+\end{center}
+\caption{Class diagram.}
+\end{figure}
 
 \subsection{Design models: dimension of interaction}
 
 \emph{``Communication Diagram is a kind of UML interaction diagram which shows interactions between objects and/or parts (represented as lifelines) using sequenced messages in a free-form arrangement''} \footnote{\url{http://www.uml-diagrams.org/communication-diagrams.html}}.
 
-\begin{figure}
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.56]{imgs/SpalaCommunicationDiagram_Setup.png}
 \end{center}
@@ -789,14 +816,31 @@ The \ttb{ConfigHelper} object contains a set of utility methods for the distribu
 
 \begin{itemize}
 \item \ttb{RandomLocations(SimpleRandomSettings)}: randomly generates a list of 2D positions within a rectangle
+
+\begin{lstlisting}
+case class SimpleRandomSettings(min: Double = 0,
+                                max: Double = 1000) extends ShapeSettings
+\end{lstlisting}
+
 \item \ttb{GridLocations(GridSettings)}: generates a list of positions along a grid, possibly with random deviations within a tolerance
+
+\begin{lstlisting}
+case class GridSettings(nrows: Int = 10,
+                        ncols: Int = 10,
+                        stepx: Double = 100,
+                        stepy: Double = 80,
+                        tolerance: Double = 0,
+                        offsetx: Double = 0,
+                        offsety: Double = 0) extends ShapeSettings
+\end{lstlisting}
+
 \end{itemize}
 
 \subsection{Creating a system: the long way}
 
 You can take a look at the definition of \texttt{SpatialSystem} to see how a Spala actor system is built from scratch.
 
-Abstracting from configuration and setup details, the essential recipe is reported in the following listing.
+Abstracting from many configuration and setup details, the essential recipe is reported in the following listing.
 
 \lstinputlisting[emph={ActorSystem,SimpleSpaceManagerActor,BasicGUIActor,MsgAddObserver,DevActorWithRegistry,PositionProviderActor,DevBehavior,MsgWithBehavior,MsgWithInput,MsgStart,MsgStartAndRegisterTo, DevBehaviorContext,getNeighborsStates,getInput,InputNames,Source1,SpatialSystem,Settings},emphstyle=\textbf]{../src/main/scala/it/unibo/spala/programs/SimpleProgram.scala}
 
@@ -812,11 +856,12 @@ First of all, there are a number of \textbf{project-related activities} to be do
 \item Write unit and integration tests (see about Akka testing and TestKit\footnote{\url{http://doc.akka.io/docs/akka/snapshot/scala/testing.html}})
 \item Refactoring (this project started with an exploratory inclination and well-defined time constraints)
 \item Error handling and fault-tolerance (see about Akka supervision strategies\footnote{\url{http://doc.akka.io/docs/akka/snapshot/scala/fault-tolerance.html}})
+\item The GUI should be generalized and extended to allow customized visualizations of the simulation
 \end{itemize}
 
  We also recognize the need for load and \textbf{performance testing}. Is the framework scalable? The current solution has an obvious centralization point, the \texttt{SpaceManager} actor which works as a registry and a space container. At the present time, many algorithms are a bit naive and could be largely improved.
 
- Then, one important extension is the support of \textbf{code mobility}. In particular we would like to send, to a remote device actor, the code to be executed as its behavior.
+ Then, one important extension is the support of \textbf{code mobility}. In particular we would like to send to a remote device actor the code to be executed as its behavior. 
 
  Last but not least, the framework should evolve to provide the expressivity, in terms of style of programming and features, of \textbf{MIT Proto}. This style of programming (from global to local) is currently missing and is paramount.
 
@@ -832,9 +877,23 @@ First of all, there are a number of \textbf{project-related activities} to be do
 \item Java platform's richness in terms of libraries and documentation
 \end{itemize}
 
-In particular, the Actor model is promising since the systems we address are composed of a high number of distributed, autonomous, concurrent elements that interact asynchronously.
+In particular, the Actor model is promising since the systems we address are composed of a high number of distributed, autonomous, concurrent elements that interact asynchronously. For example, in a IoT scenario, it comes naturally to us to map any computational node with an actor and adopt a message-passing model of interaction in order to abstract out of the specific communication technology.
 
-In this project, we have tested the fitness of the model and the easiness with which our systems can be brought to a distributed setting. To make a system distributed, it suffices to clear local system assumptions out, add a project dependency to \texttt{akka-remote} and deal with some configuration and deployment issues; application code does not have to change.
+In this project, we have tested the fitness of the model and the easiness with which our systems can be brought to a distributed setting. To make a system distributed, it suffices to clear local system assumptions out, add a project dependency to \texttt{akka-remote} and deal with some configuration and deployment issue; application code does not have to change.
+
+A first prototype has been developed in short time, despite some 
+  difficulties related to:
+  
+\begin{itemize}
+\item learning curve for the Akka framework -- from working details to the recovering of internal complexity that was hidden for the sake of simplicity of use
+\item learning curve for the Actor model -- it is very clean for toy examples, but it does require careful design
+\item identification of the right abstractions -- building a good model is not easy
+\item generalization of the found abstractions -- there is an effort in enabling reuse and composability,
+\end{itemize}
+
+and this means that the abstraction gap is not excessive. In fact, many significant challenges related to concurrency and distribution do not need to be tackled as they have already been by Akka developers -- these features are encapsulated at the level of the software infrastructure.
+
+There is still work to do to get our spatial computing framework, but the basis is encouraging.
 
 \newpage
 
@@ -1007,8 +1066,13 @@ sys.actorSelection(remoteSystemPath + "/user/Device1")
 
 
 
-\subsubsection{Known issues}
+\subsubsection{Issues}
 
-As it is, the solution doesn't work with closures.
+The main limitation is the \emph{lack of transparency} to the users. 
+It should be possible to arrange a part of the system to activate the shipping of the class definition upon need. When the custom class loader discovers that a class is not defined, it could request the class' bytecode from the remote actor system originating the request. The remote system has to provide an actor responsible of shipping class definitions. In this solution, one key issue is about how to associate a missing-class error with the situation of interest: a message involving objects of unknown class from a remote actor system. Moreover, how to save the message in order to be delivered at the end of the class-discovery process?
+
+Another limitation is that the solution doesn't work with \emph{closures}.
+  Shipping class definitions is not enough, in some cases we also need a portion of the execution context.
+ 
 
 \end{document}
